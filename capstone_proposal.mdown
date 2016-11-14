@@ -73,18 +73,14 @@ The labels in this dataset are simple. There are three possible values:
 
 
 ## Benchmark Model
-(approximately 1-2 paragraphs)
-In this section, provide the details for a benchmark model or result that relates to the domain, problem statement, and intended solution. Ideally, the benchmark model or result contextualizes existing methods or known information in the domain and problem given, which could then be objectively compared to the solution. Describe how the benchmark model or result is measurable (can be measured by some metric and clearly observed) with thorough detail.
+With a simplistic data transformation and with the help of Random Forest Classfier, we have created a benchmark submission of 0.7970 for which source code is [here](https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb)
+
 
 
 ## Evaluation Metrics
-(approx. 1-2 paragraphs)
-In this section, propose at least one evaluation metric that can be used to quantify the performance of both the benchmark model and the solution model. The evaluation metric(s) you propose should be appropriate given the context of the data, the problem statement, and the intended solution. Describe how the evaluation metric(s) are derived and provide an example of their mathematical representations (if applicable). Complex evaluation metrics should be clearly defined and quantifiable (can be expressed in mathematical or logical terms).
 
+The metric used is the classification rate, which calculates the percentage of rows where the predicted class in the submission matches the actual class in the test set. The maximum is 1 and the minimum is 0. The goal is to maximize the classification rate.
 
-The metric used for this competition is the classification rate, which calculates the percentage of rows where the predicted class in the submission matches the actual class in the test set. The maximum is 1 and the minimum is 0. The goal is to maximize the classification rate.
-
-Evaluation Metric
 
 <math display="block">
     <mi>Classification Rate</mi>
@@ -98,14 +94,42 @@ Evaluation Metric
 
 
 ## Project Design
-(approx. 1 page)
-In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.
+
+As shown in below image, we are going to do a step by step development progress on here.
+![Udacity Machine Learning Course Plan](https://github.com/msampathkumar/datadriven_pumpit/blob/master/UDACITY_ML_COURSE_GIST.png?raw=true)
+
+With Random Forest Classifier, we were able to generate a benchmark of 0.7970. So, first we will start with going to deeper understanding of Random Forest worked and what features contributed it to generate this score in training.
+
+(Basic Implementation Plan)
+
+1. Questions on data
+2. Feature Exploration
+ * PCA Transformation Checking
+ * Select K Best Checking
+ * Exploration - outliers check
+3. Alogorithm Selection
+ * Un-supervised Learning Exploration(Gaussian Process, Neural Nets)
+ * Supervised Learning(GBT Trees, Nearest Neighbors, RF)
+ * Parameter Tuning
+4. Evaluation. Back to 1 with.
+
+For next submission we are expecting a training benchmark of 88%.
+
+Considered Model: Gradient Boosting Trees, Nearest Neighbors, Random Forest(RF).
 
 
+![Classifers Comparision](http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png)
 
+As we can see from above ananlysis, I find that `Nearest Neightbour` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest. 
 
-[^1]: asdfa
+We will be using Gaussian Process, Neural Nets for unsupervised Learning exploration. No specific reason but taken, two models different kinds of models for exploration.
 
+## Sources & References
+* [DataDriven](https://www.drivendata.org/competitions/7)
+* [Submission Code](https://github.com/msampathkumar/datadriven_pumpit)
 * [Wikipedia: Water Supply & Sanitation in Tanzanania](https://en.wikipedia.org/wiki/Water_supply_and_sanitation_in_Tanzania)
 * [UN Report](http://www.unwater.org/fileadmin/user_upload/unwater_new/docs/Publications/TZA_pagebypage.pdf)
 * [UN 2007 Water Taps Installation](http://www.un.org/africarenewal/magazine/april-2007/water-betters-lives-tanzania)
+* [GBT Video Lecture](http://videolectures.net/solomon_caruana_wslmw/)
+* [GBT](http://fastml.com/what-is-better-gradient-boosted-trees-or-random-forest/)
+* [Classifier Comparision](http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html)
