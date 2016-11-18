@@ -19,57 +19,268 @@ Dataset is collected from Taarifa and the Tanzanian Ministry of Water which are 
 
 Dataset Features:
 
-* amount_tsh - Total static head (amount water available to waterpoint)
-* date_recorded - The date the row was entered
-* funder - Who funded the well
-* gps_height - Altitude of the well
-* installer - Organization that installed the well
-* longitude - GPS coordinate
-* latitude - GPS coordinate
-* wpt_name - Name of the waterpoint if there is one
-* num_private -
-* basin - Geographic water basin
-* subvillage - Geographic location
-* region - Geographic location
-* region_code - Geographic location (coded)
-* district_code - Geographic location (coded)
-* lga - Geographic location
-* ward - Geographic location
-* population - Population around the well
-* public_meeting - True/False
-* recorded_by - Group entering this row of data
-* scheme_management - Who operates the waterpoint
-* scheme_name - Who operates the waterpoint
-* permit - If the waterpoint is permitted
-* construction_year - Year the waterpoint was constructed
-* extraction_type - The kind of extraction the waterpoint uses
-* extraction_type_group - The kind of extraction the waterpoint uses
-* extraction_type_class - The kind of extraction the waterpoint uses
-* management - How the waterpoint is managed
-* management_group - How the waterpoint is managed
-* payment - What the water costs
-* payment_type - What the water costs
-* water_quality - The quality of the water
-* quality_group - The quality of the water
-* quantity - The quantity of water
-* quantity_group - The quantity of water
-* source - The source of the water
-* source_type - The source of the water
-* source_class - The source of the water
-* waterpoint_type - The kind of waterpoint
-* waterpoint_type_group - The kind of waterpoint
+* UniqCount: pands's values_count of that feature
+* UniqVal: If Values_count is < 30, then we shall have that columns's respective values & counts
 
 
-## Solution Statement
-A smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
+|Col ID|Col Name|UniqCount|Col Values|UniqValCount|
+|------|--------|---------|----------|------------|
+|1|amount_tsh|98|||
+|2|date_recorded|356|||
+|3|funder|1897|||
+|4|gps_height|2428|||
+|5|installer|2145|||
+|6|longitude|57516|||
+|7|latitude|57517|||
+|8|wpt_name|37400|||
+|9|num_private|65|||
+|10|basin|9|Wami / Ruvu|5987|
+||||Ruvuma / Southern Coast|4493|
+||||Rufiji|7976|
+||||Internal|7785|
+||||Lake Rukwa|2454|
+||||Lake Nyasa|5085|
+||||Pangani|8940|
+||||Lake Victoria|10248|
+||||Lake Tanganyika|6432|
+|11|subvillage|19287|||
+|12|region|21|Mwanza|3102|
+||||Kagera|3316|
+||||Dodoma|2201|
+||||Lindi|1546|
+||||Morogoro|4006|
+||||Arusha|3350|
+||||Tabora|1959|
+||||Iringa|5294|
+||||Shinyanga|4982|
+||||Dar es Salaam|805|
+||||Mbeya|4639|
+||||Kilimanjaro|4379|
+||||Mtwara|1730|
+||||Kigoma|2816|
+||||Rukwa|1808|
+||||Ruvuma|2640|
+||||Manyara|1583|
+||||Pwani|2635|
+||||Singida|2093|
+||||Tanga|2547|
+||||Mara|1969|
+|13|region_code|27|1|2201|
+||||2|3024|
+||||3|4379|
+||||4|2513|
+||||5|4040|
+||||6|1609|
+||||7|805|
+||||8|300|
+||||9|390|
+||||10|2640|
+||||11|5300|
+||||12|4639|
+||||13|2093|
+||||14|1979|
+||||15|1808|
+||||16|2816|
+||||17|5011|
+||||18|3324|
+||||19|3047|
+||||20|1969|
+||||21|1583|
+||||24|326|
+||||40|1|
+||||60|1025|
+||||80|1238|
+||||90|917|
+||||99|423|
+|14|district_code|20|0|23|
+||||1|12203|
+||||2|11173|
+||||3|9998|
+||||4|8999|
+||||5|4356|
+||||6|4074|
+||||7|3343|
+||||8|1043|
+||||43|505|
+||||13|391|
+||||80|12|
+||||67|6|
+||||53|745|
+||||23|293|
+||||62|109|
+||||33|874|
+||||60|63|
+||||30|995|
+||||63|195|
+|15|lga|125|||
+|16|ward|2092|||
+|17|population|1049|||
+|18|public_meeting|2|False|5055|
+||||True|51011|
+|19|recorded_by|1|GeoData Consultants Ltd|59400|
+|20|scheme_management|12|None|1|
+||||Private operator|1063|
+||||Water authority|3153|
+||||Water Board|2748|
+||||SWC|97|
+||||Parastatal|1680|
+||||WUA|2883|
+||||Other|766|
+||||WUG|5206|
+||||Trust|72|
+||||Company|1061|
+||||VWC|36793|
+|21|scheme_name|2696|||
+|22|permit|2|False|17492|
+||||True|38852|
+|23|construction_year|55|||
+|24|extraction_type|18|windmill|117|
+||||submersible|4764|
+||||other - mkulima/shinyanga|2|
+||||mono|2865|
+||||climax|32|
+||||india mark ii|2400|
+||||afridev|1770|
+||||gravity|26780|
+||||walimi|48|
+||||cemo|90|
+||||nira/tanira|8154|
+||||other - play pump|85|
+||||other|6430|
+||||other - swn 81|229|
+||||swn 80|3670|
+||||ksb|1415|
+||||other - rope pump|451|
+||||india mark iii|98|
+|25|extraction_type_group|13|submersible|6179|
+||||rope pump|451|
+||||wind-powered|117|
+||||other motorpump|122|
+||||mono|2865|
+||||india mark ii|2400|
+||||afridev|1770|
+||||gravity|26780|
+||||other handpump|364|
+||||nira/tanira|8154|
+||||other|6430|
+||||india mark iii|98|
+||||swn 80|3670|
+|26|extraction_type_class|7|submersible|6179|
+||||handpump|16456|
+||||rope pump|451|
+||||motorpump|2987|
+||||gravity|26780|
+||||other|6430|
+||||wind-powered|117|
+|27|management|12|private operator|1971|
+||||water authority|904|
+||||unknown|561|
+||||water board|2933|
+||||parastatal|1768|
+||||wua|2535|
+||||other|844|
+||||wug|6515|
+||||trust|78|
+||||company|685|
+||||other - school|99|
+||||vwc|40507|
+|28|management_group|5|parastatal|1768|
+||||other|943|
+||||commercial|3638|
+||||user-group|52490|
+||||unknown|561|
+|29|payment|7|unknown|8157|
+||||never pay|25348|
+||||pay monthly|8300|
+||||other|1054|
+||||pay when scheme fails|3914|
+||||pay annually|3642|
+||||pay per bucket|8985|
+|30|payment_type|7|on failure|3914|
+||||per bucket|8985|
+||||monthly|8300|
+||||unknown|8157|
+||||annually|3642|
+||||never pay|25348|
+||||other|1054|
+|31|water_quality|8|fluoride|200|
+||||unknown|1876|
+||||salty abandoned|339|
+||||coloured|490|
+||||fluoride abandoned|17|
+||||salty|4856|
+||||milky|804|
+||||soft|50818|
+|32|quality_group|6|good|50818|
+||||colored|490|
+||||unknown|1876|
+||||salty|5195|
+||||milky|804|
+||||fluoride|217|
+|33|quantity|5|dry|6246|
+||||insufficient|15129|
+||||enough|33186|
+||||seasonal|4050|
+||||unknown|789|
+|34|quantity_group|5|dry|6246|
+||||insufficient|15129|
+||||enough|33186|
+||||seasonal|4050|
+||||unknown|789|
+|35|source|10|unknown|66|
+||||spring|17021|
+||||machine dbh|11075|
+||||lake|765|
+||||shallow well|16824|
+||||other|212|
+||||rainwater harvesting|2295|
+||||dam|656|
+||||river|9612|
+||||hand dtw|874|
+|36|source_type|7|river/lake|10377|
+||||spring|17021|
+||||shallow well|16824|
+||||other|278|
+||||rainwater harvesting|2295|
+||||dam|656|
+||||borehole|11949|
+|37|source_class|3|unknown|278|
+||||groundwater|45794|
+||||surface|13328|
+|38|waterpoint_type|7|hand pump|17488|
+||||communal standpipe|28522|
+||||improved spring|784|
+||||other|6380|
+||||communal standpipe multiple|6103|
+||||dam|7|
+||||cattle trough|116|
+|39|waterpoint_type_group|6|hand pump|17488|
+||||communal standpipe|34625|
+||||improved spring|784|
+||||other|6380|
+||||dam|7|
+||||cattle trough|116|
 
-Distribution of Labels
+
+
+
+### Description of the Labels
 The labels in this dataset are simple. There are three possible values:
-
 * functional - the waterpoint is operational and there are no repairs needed
 * functional needs repair - the waterpoint is operational, but needs repairs
 * non functional - the waterpoint is not operational
 
+|Col ID|Col Name|UniqCount|Col Values|UniqValCount|
+|------|--------|---------|----------|------------|
+|40|status_group|3|functional needs repair|4317|
+||||functional|32259|
+||||non functional|22824|
+
+
+
+
+## Solution Statement
+A smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
 
 ## Benchmark Model
@@ -96,7 +307,7 @@ The metric used is the classification rate, which calculates the percentage of r
 ## Project Design
 
 As shown in below image, we are going to do a step by step development progress on here.
-![Udacity Machine Learning Course Plan](https://github.com/msampathkumar/datadriven_pumpit/blob/master/UDACITY_ML_COURSE_GIST.png?raw=true)
+!$[Udacity Machine Learning Course Plan](https://github.com/msampathkumar/datadriven_pumpit/blob/master/UDACITY_ML_COURSE_GIST.png?raw=true)
 
 With Random Forest Classifier, we were able to generate a benchmark of 0.7970. So, first we will start with going to deeper understanding of Random Forest worked and what features contributed it to generate this score in training.
 
@@ -107,8 +318,8 @@ With Random Forest Classifier, we were able to generate a benchmark of 0.7970. S
  * PCA Transformation Checking
  * Select K Best Checking
  * Exploration - outliers check
-3. Alogorithm Selection
- * Un-supervised Learning Exploration(Gaussian Process, Neural Nets)
+3. Algorithm Selection
+ * Unsupervised Learning Exploration(Gaussian Process, Neural Nets)
  * Supervised Learning(GBT Trees, Nearest Neighbors, RF)
  * Parameter Tuning
 4. Evaluation. Back to 1 with.
@@ -118,7 +329,7 @@ For next submission we are expecting a training benchmark of 88%.
 Considered Model: Gradient Boosting Trees, Nearest Neighbors, Random Forest(RF).
 
 
-![Classifers Comparision](http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png)
+!$[Classifers Comparision](http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png)
 
 As we can see from above ananlysis, I find that `Nearest Neightbour` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest. 
 
