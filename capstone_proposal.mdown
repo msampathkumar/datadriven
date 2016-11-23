@@ -1,5 +1,5 @@
 # Pump it Up: Data Mining the Water Table
-November 14, 2016
+November 23, 2016
 
 ## Domain Background
 
@@ -17,21 +17,11 @@ Using data from Taarifa and the Tanzanian Ministry of Water, predicting which pu
 
 Dataset is collected from Taarifa and the Tanzanian Ministry of Water which are available [here](https://www.drivendata.org/competitions/7/data/). Taarifa is an open source platform for the crowd sourced reporting and triaging of infrastructure related issues and Tanzanian Ministry of Water is the central governing body to Tanzania.
 
-
-### Improvement
-
-The dataset(s) and/or input(s) to be used in the project are thoroughly described. Information such as how the dataset or input is (was) obtained, and the characteristics of the dataset or input, should be included. It should be clear how the dataset(s) or input(s) will be used in the project and whether their use is appropriate given the context of the problem.
-* awesome: you have a good overview of the dataset, also it was a good thing that you mentioned each feature.
-* required: include the total number of instances
-* suggestion: add the class label to the list of features and highlight it (maybe use bold).
-* required: mention the class label distributions. This is often useful as you will use this to guide which metric will be used for evaluation (more on that on my comment on metrics).
-
-
 Dataset Features:
 
+* Col ID: A simple index for counting columns
 * UniqCount: pands's values_count of that feature
 * UniqVal: If Values_count is < 30, then we shall have that columns's respective values & counts
-
 
 |Col ID|Col Name|UniqCount|Col Values|UniqValCount|
 |------|--------|---------|----------|------------|
@@ -271,11 +261,15 @@ Dataset Features:
 ||||dam|7|
 ||||cattle trough|116|
 
+(ALL 39 columns's unique values counts)(98, 356, 1897, 2428, 2145, 57516, 57517, 37400, 65, 9, 19287, 21, 27, 20, 125, 2092, 1049, 2, 1, 12, 2696, 2, 55, 18, 13, 7, 12, 5, 7, 7, 8, 6, 5, 5, 10, 7, 3, 7, 6)
+(542989639101365927794152062178992491838404172880830791680000000000000(69 digits) is product of these 39 unique values, which is exponentially greater than 59K records we have.)
 
-
+Input labels data has 39 Features with 59,400 rows. Although we seem to have a good data set, looking at the unique values counts from below 39 columns we can say that we could potentially encounter Curse of Dimensionality. But, as we can see some of columns pairs (extraction\_type, extraction\_type\_group), (quantity & quantity\_group), (source, source\_class) seems have closer relation and column by 'recorded\_by' has only one unique value. So, we might have a chance to escape Curse of Dimensionality.
 
 ### Description of the Labels
+
 The labels in this dataset are simple. There are three possible values:
+
 * functional - the waterpoint is operational and there are no repairs needed
 * functional needs repair - the waterpoint is operational, but needs repairs
 * non functional - the waterpoint is not operational
@@ -287,29 +281,23 @@ The labels in this dataset are simple. There are three possible values:
 ||||non functional|22824|
 
 
-
-
 ## Solution Statement
+
 A smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
-### Improvement
-
-Student clearly describes a solution to the problem. The solution is applicable to the project domain and appropriate for the dataset(s) or input(s) given. Additionally, the solution is quantifiable, measurable, and replicable.
-
-* awesome: you described what you are hoping to achieve from solving the problem using the problem requirements.
-* required: you also need in the solution statement to specify the overall strategy for solving the problem. In this case, you are going to use supervised learning, specifically multi-class classification.
-* suggestion: the class label distribution does not belongs here, you shall move it to the dataset section. Also, when you mention "distribution of labels", one may expect that you present the amount of instances per class label, currently you just explain the 3 distinct possible labels.
-
+We will use familiar (inherintly) multiclass Supervised Classfiers like Tree Algorithms(RF/GBT)/Support Vector Machines. These are easy to train and self learning & evaluation nature make them a general good technique. During model selection we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalenced, we believe having a One\-vs\-Rest might not perform well.
 
 ## Benchmark Model
+
 With a simplistic data transformation and with the help of Random Forest Classfier, we have created a benchmark submission of 0.7970 for which source code is [here](https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb)
-
-
 
 ## Evaluation Metrics
 
-The metric used is the classification rate, which calculates the percentage of rows where the predicted class in the submission matches the actual class in the test set. The maximum is 1 and the minimum is 0. The goal is to maximize the classification rate.
+### Accuracy Score:
 
+As the evaluation metric of the competition use [Accuracy Score](http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score) /Classification Rate, we can use this metric.
+
+The classification rate, which calculates the percentage of rows where the predicted class in the submission matches the actual class in the test set. The maximum is 1 and the minimum is 0. The goal is to maximize the classification rate.
 
 <math display="block">
     <mi>Classification Rate</mi>
@@ -321,21 +309,73 @@ The metric used is the classification rate, which calculates the percentage of r
     </msubsup>
 </math>
 
-### Improvement
+Sample Example from Python Scikit
 
-Student proposes at least one evaluation metric that can be used to quantify the performance of both the benchmark model and the solution model presented. The evaluation metric(s) proposed are appropriate given the context of the data, the problem statement, and the intended solution.
+```
+from sklearn.metrics import accuracy_score
+y_pred = [0, 2, 1, 3]
+y_true = [0, 1, 2, 3]
 
-required: you need to justify the use of accuracy based on the class labels distribution. Accuracy is meaningful if labels distributions are balanced. Consider the following example: (1) I want to predict whether a photo contains a cat or a dog and originally I have 50 dog photos and 50 cat photos; (2) If I had 95 dog photos and only 5 cat photos, my classifier would achieve 95% accuracy if it simply predicted every instance as dog photo. Notice that accuracy may deceive us if data is unbalanced as in (2).
+# caliculating score
+accuracy_score(y_true, y_pred)
+```
+
+### Weighted Accuracy Score:
+
+Approaching to a realistic perspective, this is caliculation is to help Governing/Supporting bodies to identify the water pumps that `requires repairs` or `non functional`. So, I feel prioritsing this logic identifing(being biased) these two categories is more important.
+
+To drill down further, I would say prioritise the `functional needs repairs` over `non functional`. Thus, with in limited resources(time & money) we can solve more problems.
+
+
+```
+import numpy as np
+from sklearn.metrics import accuracy_score
+y_true = [0, 1, 0, 2]
+my_sample_weight = np.array([1,2,1,5])
+
+# Alogrithm good at predicting 0's
+pred1 = [0, 2, 0, 1]
+
+# Alogrithm good at predicting 1's
+pred2 = [0, 1, 2, 1]
+
+# Alogrithm good at predicting 2's
+pred3 = [1, 1, 1, 2]
+
+for i, pred in enumerate([pred1, pred2, pred3]):
+    print 'Case %s: %f' % (i, accuracy_score(y_true, pred, sample_weight=my_sample_weight))
+```
+Results:
+```
+Case 0: 0.222222
+Case 1: 0.333333
+Case 2: 0.777778
+```
+
+As many tree algorithms(self correcting nature) can use weighted samples to prioritse,  we can use this logic in model training level itself and might genenrate better results during model evaluation stage.
+
+### Weighted F1 Score:
+
+Accuracy based on the class labels(unbalenced) distribution. [F1 Score](http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score) will help to caliculate score in proportional to data & labels.
+
+```
+from sklearn.metrics import f1_score
+y_pred = [0, 2, 1, 3]
+y_true = [0, 1, 2, 3]
+
+# caliculating score
+f1_score(y_true, y_pred, average='weighted')
+```
 
 
 ## Project Design
 
 As shown in below image, we are going to do a step by step development progress on here.
-!$[Udacity Machine Learning Course Plan](https://github.com/msampathkumar/datadriven_pumpit/blob/master/UDACITY_ML_COURSE_GIST.png?raw=true)
+![Udacity Machine Learning Course Plan](https://github.com/msampathkumar/datadriven_pumpit/blob/master/UDACITY_ML_COURSE_GIST.png?raw=true)
 
 With Random Forest Classifier, we were able to generate a benchmark of 0.7970. So, first we will start with going to deeper understanding of Random Forest worked and what features contributed it to generate this score in training.
 
-(Basic Implementation Plan)
+(Implementation Plan)
 
 1. Questions on data
 2. Feature Exploration
@@ -344,16 +384,13 @@ With Random Forest Classifier, we were able to generate a benchmark of 0.7970. S
  * Exploration - outliers check
 3. Algorithm Selection
  * Unsupervised Learning Exploration(Gaussian Process, Neural Nets)
- * Supervised Learning(GBT Trees, Nearest Neighbors, RF)
+ * Supervised Learning(GBT Trees, Nearest Neighbors, RF, One-vs-One)
  * Parameter Tuning
 4. Evaluation. Back to 1 with.
+5. Re-Evaluation with threshold improvisation check.
+6. Submission
 
-For next submission we are expecting a training benchmark of 88%.
-
-Considered Model: Gradient Boosting Trees, Nearest Neighbors, Random Forest(RF).
-
-
-!$[Classifers Comparision](http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png)
+![Classifers Comparision](http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png)
 
 As we can see from above ananlysis, I find that `Nearest Neightbour` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest. 
 
@@ -368,3 +405,7 @@ We will be using Gaussian Process, Neural Nets for unsupervised Learning explora
 * [GBT Video Lecture](http://videolectures.net/solomon_caruana_wslmw/)
 * [GBT](http://fastml.com/what-is-better-gradient-boosted-trees-or-random-forest/)
 * [Classifier Comparision](http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html)
+* [Multiclass Classification](http://www.mit.edu/~9.520/spring09/Classes/multiclass.pdf)
+* [Multiclass and multilabel algorithms](http://scikit-learn.org/stable/modules/multiclass.html#ovr-classification)
+* [Multiclass Metric](http://sebastianraschka.com/faq/docs/multiclass-metric.html)
+* [Standford UnSupervised Learning](http://ufldl.stanford.edu/wiki/index.php/UFLDL_Tutorial)
