@@ -3,7 +3,7 @@ November 23, 2016
 
 ## Domain Background
 
-Across Africa, cholera, typhoid, dysentery and other diseases kill thousands each year. To help the people of Tanzanian(in 2007), The Tanzanian government, with support from UN Development Programme(UNDP), responded to the water problems by install Drinking Water Taps and Decentralised the maintenance for quick repsonse. Today this water infrastructure is facing repair and maintenance issues causing a disconnection for drinking water needs.
+Across Africa, cholera, typhoid, dysentery and other diseases kill thousands each year. To help the people of Tanzania(2007), The Tanzanian government, with support from UN Development Programme(UNDP), responded to the water problems by install Drinking Water Taps and Decentralised the maintenance for quick response. Today this water infrastructure is facing repair and maintenance issues causing a disconnection for drinking water needs.
 
 This is also an intermediate-level practice competition by [DrivenData](https://www.drivendata.org/competitions/7).
 
