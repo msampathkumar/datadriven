@@ -1,3 +1,7 @@
 *.csv
 *.pyc
+*.pkl
+*.pickle
 .ipynb_checkpoints/*
+*.DS_store
+*.html
