@@ -1,6 +1,6 @@
+import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
-
-%matplotlib inline
 
 # settings
 plot_col_value_count_limit = 55
@@ -14,7 +14,7 @@ def sam_dataframe_cols_value_count_analysis(dataframe):
     if type(dataframe) is not pd.core.frame.DataFrame:
         print 'dataframe is not pd.core.frame.DataFrame'
         return
-    
+
     # preparing a list cols
     i = 1
     bag = []
@@ -33,7 +33,7 @@ def sam_dataframe_cols_value_count_analysis(dataframe):
     def hack(col_name='scheme_management', ax=axarr, fontsize=6):
         ss = dataframe[col_name].value_counts()
         if show_percentages:
-            ss = 100 * ss/ np.sum(ss)
+            ss = 100 * ss / np.sum(ss)
         _ = ss.plot(ax=ax, kind='barh')
         ax.set_title(col_name.upper())
 
@@ -49,18 +49,19 @@ def sam_dataframe_cols_value_count_analysis(dataframe):
             else:
                 # empty plots
                 pass
-            
+
     # Debug
     print 'Showing Plot for Columns:\n', bag
+
 
 def sam_dataframe_markup_value_counts(dataframe, max_print_value_counts=30, show_plots=False, figsize=(9, 3)):
     '''
     prints value counts of each feature in data frame
-    
+
     plots will be invidual.
     '''
     if not figsize:
-        figsize=(9, 3)
+        figsize = (9, 3)
     mydf = pd.DataFrame.copy(dataframe)
     i = 0
     raw_markup_data = []
@@ -77,8 +78,7 @@ def sam_dataframe_markup_value_counts(dataframe, max_print_value_counts=30, show
             flag = True
             for key, val in dict(sam_value_counts).iteritems():
                 if flag:
-                    pp('|%i|%s|%i|%s|%s|' % (
-                            i, col, sam_value_counts_len, key, val))
+                    pp('|%i|%s|%i|%s|%s|' % (i, col, sam_value_counts_len, key, val))
                     flag = False
                 else:
                     pp('||-|-|%s|%s|' % (key, val))

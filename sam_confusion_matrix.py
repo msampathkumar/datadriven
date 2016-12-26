@@ -1,12 +1,16 @@
 from __future__ import division
 
 import itertools
+import numpy as np
+
 from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+
 
 def sam_plot_confusion_matrix(cm, classes,
-                          normalize=False,
-                          title='Confusion matrix',
-                          cmap=plt.cm.Blues):
+                              normalize=False,
+                              title='Confusion matrix',
+                              cmap=plt.cm.Blues):
     """
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
@@ -34,9 +38,9 @@ def sam_plot_confusion_matrix(cm, classes,
 
     plt.tight_layout()
     plt.ylabel('True label')
-    plt.xlabel('Predicted label')    
+    plt.xlabel('Predicted label')
 
-    
+
 def sam_confusion_maxtrix(y_test, y_pred, class_names):
     '''
     Example
@@ -49,11 +53,9 @@ def sam_confusion_maxtrix(y_test, y_pred, class_names):
     cnf_matrix = confusion_matrix(y_test, y_pred)
     np.set_printoptions(precision=2)
     # Plot non-normalized confusion matrix
-    plt.figure(figsize=(8,8))
-    sam_plot_confusion_matrix(cnf_matrix, classes=class_names,
-                          title='Confusion matrix, without normalization')
+    plt.figure(figsize=(8, 8))
+    sam_plot_confusion_matrix(cnf_matrix, classes=class_names, title='Confusion matrix, without normalization')
     # Plot normalized confusion matrix
-    plt.figure(figsize=(8,8))
-    sam_plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True,
-                          title='Normalized confusion matrix')
+    plt.figure(figsize=(8, 8))
+    sam_plot_confusion_matrix(cnf_matrix, classes=class_names, normalize=True, title='Normalized confusion matrix')
     plt.show()
