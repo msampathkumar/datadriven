@@ -141,7 +141,7 @@ The labels in this dataset are simple. There are three possible values for statu
 
 As described in the introduction, a smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
-We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF/GBT)/Support Vector Machines. These are easy to train and self learning & evaluation nature make them a general good technique. During model selection we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe having a One\-vs\-Rest might not perform well.
+We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF/GBT)/Support Vector Machines. These are easy to train and self learning & evaluation nature make them a general good technique. During model selection we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe that a One\-vs\-Rest might not perform well.
 
 
 ## Initial Project Design
@@ -173,19 +173,36 @@ As we can see from above analysis, I find that `Nearest Neighbour` performs bett
 We will be using Gaussian Process, Neural Nets for unsupervised Learning exploration. No specific reason but taken, two models different kinds of models for exploration.
 
 
-
-
-
-
 ## Benchmark Model
 
 With a simplistic data transformation and with the help of Random Forest Classifiers, we have created a benchmark submission of 0.7970 for which source code is [here](https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb)
 
 
+# Methodology
 
+## Data Preprocessing
 
+As mentioned earlier majority of the data is object columns,
 
+* Date Columns: We have one columns `date_recorded`, which supposed to show on which data record was added.
 
+* Bool Columns: Instead of deleting null or replacing null with True or False, we have converted all these into numbers and thus not losing any information.
+```
+True -> 1, Flase ->2, Nan or None ->3
+```
+
+* Int Columns: For some integer columns like geo location co ordinates, the precision is so good that we can point the locaiton to centimeter level. But this seemed to too precise(too much information) and so in hit and trial, when we reduced the presicion up to 3 digit we found that our benchmark model was performing well.
+
+For other numerical model, we are apply labelisation which will work as MinMaxScalar.
+
+* Object Columns:
+During the sub group plotting we have noticed that minor text capitalisation issue and spaces. So we have applied a transformer to convert all the object data to lower case ascii strings.
+
+* funder,1898
+* installer,2146
+* wpt_name,37400
+* subvillage,19288
+* scheme_nam,2697
 
 
 
