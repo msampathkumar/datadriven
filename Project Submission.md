@@ -139,7 +139,7 @@ The labels in this dataset are simple. There are three possible values for statu
 * non functional - the water point is not operational
 
 
-
+# Methodology
 # Algorithms and Techniques
 
 As described in the introduction, a smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
@@ -180,7 +180,6 @@ We will be using Gaussian Process, Neural Nets for unsupervised Learning explora
 
 With a simplistic data transformation and with the help of Random Forest Classifiers, we have created a benchmark submission of 0.7970 for which source code is [here][benchmark_model]
 
-# Methodology
 
 ## Data Preprocessing
 
@@ -242,21 +241,61 @@ In the Ipython Notebook, we have created a generic application helper script to 
 
 For futher references say, lets call this new formatted/transformed data as (Pre-)Processed Data. At this stage we are having 43 features.
 
-## Dimensionality Reduction
+## Feature Selection
 
 After preprocessing, we have tried 3 methods of dimensionality reductions.
 
 * Variance Threshold:
-    To remove the columns which are showing less variance & has less information gain.
-    << explain information gain or Variance Threshold >>
+
+    VarianceThreshold is a simple baseline approach to feature selection. It removes all features whose variance doesn’t meet some threshold. By default, it removes all zero-variance features, i.e. features that have the same value in all samples.
+
+    We have taken a variance threshold limit of 80%, implies columns with less than 80 are to be dropped. We found one columns `recorded_by` which has a variacne threshold less than 80%.
+
 
 * KBest select
-    << explain >>
+     KBest is one the Univariate feature selection meathod that works by selecting the best features based on univariate statistical tests.
+
+     Well known statistical tests for classification are chi2, f_classif, mutual_info_classif. We have tried all these three methods to be sure and also looped from 25 to the maximum number of columns to find the best number of minimum required columns/features.
+
+    Conclusion:
+
+    Results of KBest Runs.
+
+    """
+    AMOUNT_TSH, DATE_RECORDED, FUNDER, GPS_HEIGHT, INSTALLER, LONGITUDE, LATITUDE, NUM_PRIVATE, BASIN, SUBVILLAGE, REGION, REGION_CODE, DISTRICT_CODE, LGA, WARD, POPULATION, PUBLIC_MEETING, SCHEME_MANAGEMENT, SCHEME_NAME, PERMIT, CONSTRUCTION_YEAR, EXTRACTION_TYPE, EXTRACTION_TYPE_GROUP, EXTRACTION_TYPE_CLASS, MANAGEMENT, MANAGEMENT_GROUP, PAYMENT, PAYMENT_TYPE
+    """
+
+    """Python
+    # results of previous runs
+    [{'cols': 1, 'test': 0.52659932659932662, 'train': 0.57483726150392822},
+     {'cols': 5, 'test': 0.68962962962962959, 'train': 0.94240179573512906},
+     {'cols': 9, 'test': 0.7211447811447812, 'train': 0.97638608305274976},
+     {'cols': 13, 'test': 0.75380471380471381, 'train': 0.97955106621773291},
+     {'cols': 17, 'test': 0.76134680134680133, 'train': 0.98071829405162736},
+     {'cols': 21, 'test': 0.76511784511784509, 'train': 0.98076318742985413},
+     {'cols': 25, 'test': 0.80033670033670035, 'train': 0.98316498316498313},
+     {'cols': 29, 'test': 0.80053872053872055, 'train': 0.98379349046015707},
+     {'cols': 33, 'test': 0.80040404040404045, 'train': 0.98390572390572395},
+     {'cols': 37, 'test': 0.79993265993265994, 'train': 0.98341189674523011}]
+
+    [{'cols': 23, 'test': 0.7976430976430976, 'train': 0.9836812570145903},
+     {'cols': 25, 'test': 0.80033670033670035, 'train': 0.98316498316498313},
+     {'cols': 27, 'test': 0.80101010101010106, 'train': 0.9829405162738496},
+     {'cols': 29, 'test': 0.80053872053872055, 'train': 0.98379349046015707},
+     {'cols': 31, 'test': 0.80000000000000004, 'train': 0.98381593714927051}]
+
+    [{'cols': 26, 'test': 0.80309764309764309, 'train': 0.98359147025813698},
+     {'cols': 27, 'test': 0.80101010101010106, 'train': 0.9829405162738496},
+     {'cols': 28, 'test': 0.80222222222222217, 'train': 0.98334455667789}]
+    """
+
+    As per Okham Razor's rules, we are going to select the simplest and well performing. Luckily, we have got kbest_selected_cols at **26** which is comparitively top performer among other K-selections and also lower than actualy number of columns
+
 
 * PCA
-    << explain >>
+    Linear dimensionality reduction using Singular Value Decomposition of the data to project it to a lower dimensional space.
 
-
+    Like KBest, in a simmilar fashion we have tried PCA model but we have encounter some decrease in score.
 
 
 ## Benchmark Model
@@ -264,7 +303,7 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
 With a simplistic data transformation and with the help of Random Forest Classifiers, we have created a benchmark submission of 0.7970 for which source code is [here][benchmark_model]
 
 
-### Algorithms and Techniques
+## Algorithms and Techniques
 
 As we can observe this is
 
@@ -295,30 +334,6 @@ We have tried following Algorithms to check which kind of family model fits well
 ## Results
 
 
-## Project Design
-
-As shown in below image, we are going to do a step by step development progress on here.
-![Udacity Machine Learning Course Plan][udacity_ml_course_plan]
-
-With Random Forest Classifier, we were able to generate a benchmark of 0.7970. So, first we will start with going to deeper understanding of Random Forest worked and what features contributed it to generate this score in training.
-
-(Implementation Plan)
-
-1. Questions on data
-2. Feature Exploration
-    * PCA Transformation Checking
-    * Select K Best Checking
-    * Exploration - outliers check
-3. Algorithm Selection
-    * Unsupervised Learning Exploration(Gaussian Process, Neural Nets)
-    * Supervised Learning(GBT Trees, Nearest Neighbours, RF, One-vs-One)
-    * Parameter Tuning
-4. Evaluation. Back to 1 with.
-5. Re-Evaluation with threshold improvisation check.
-6. Submission
-
-![Classifiers Comparison][classifier_comparision]
-
 As we can see from above analysis, I find that `Nearest Neighbour` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest.
 
 We will be using Gaussian Process, Neural Nets for unsupervised Learning exploration. No specific reason but taken, two models different kinds of models for exploration.
@@ -326,6 +341,9 @@ We will be using Gaussian Process, Neural Nets for unsupervised Learning explora
 ## Sources & References
 
 * [DataDriven](https://www.drivendata.org/competitions/7)
+* [Choosing a ML Classifier](http://blog.echen.me/2011/04/27/choosing-a-machine-learning-classifier/)
+
+
 * [Submission Code](https://github.com/msampathkumar/datadriven_pumpit)
 * [Wikipedia: Water Supply & Sanitation in Tanzania](https://en.wikipedia.org/wiki/Water_supply_and_sanitation_in_Tanzania)
 * [UN Report](http://www.unwater.org/fileadmin/user_upload/unwater_new/docs/Publications/TZA_pagebypage.pdf)
