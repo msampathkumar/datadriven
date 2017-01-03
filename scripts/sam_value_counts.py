@@ -12,7 +12,7 @@ show_percentages = True
 def sam_dataframe_cols_value_count_analysis(dataframe):
     # input validations
     if type(dataframe) is not pd.core.frame.DataFrame:
-        print 'dataframe is not pd.core.frame.DataFrame'
+        print('dataframe is not pd.core.frame.DataFrame')
         return
 
     # preparing a list cols
@@ -42,7 +42,7 @@ def sam_dataframe_cols_value_count_analysis(dataframe):
     for x in range(x_plots_limit):
         for y in range(y_plots_limit):
             if i < len(bag):
-                print i + 1, col, len(bag)
+                print(i + 1, col, len(bag))
                 col = bag[i]
                 i += 1
                 hack(col, axarr[x, y])
@@ -51,7 +51,7 @@ def sam_dataframe_cols_value_count_analysis(dataframe):
                 pass
 
     # Debug
-    print 'Showing Plot for Columns:\n', bag
+    print('Showing Plot for Columns:\n', bag)
 
 
 def sam_dataframe_markup_value_counts(dataframe, max_print_value_counts=30, show_plots=False, figsize=(9, 3)):
