@@ -1,3 +1,9 @@
+"""Feature selection tools for variance thresholds check on dataframes.
+
+Using skelarn.feature_selection.VarianceThreshold, created a minor function
+ to know more about details.
+"""
+
 import numpy as np
 import pandas as pd
 from sklearn.feature_selection import VarianceThreshold
@@ -6,9 +12,7 @@ from sklearn.feature_selection import VarianceThreshold
 def get_low_variance_columns(dframe=None, columns=[],
                              skip_columns=[], threshold=0.0,
                              autoremove=False):
-    """
-    Wrapper for sklearn VarianceThreshold for use on pandas dataframes.
-    """
+    """Wrapper for sklearn VarianceThreshold for use on pandas dataframes."""
     print("Finding low-variance features.")
     removed_features = []
     ranking_variance_thresholds = {}
@@ -53,7 +57,8 @@ def get_low_variance_columns(dframe=None, columns=[],
         vt.fit(X)
 
         # threshold ranking
-        ranking_variance_thresholds = dict(zip(remaining_columns, vt.variances_))
+        ranking_variance_thresholds = dict(list(zip(remaining_columns,
+                                                    vt.variances_)))
 
         # get the indices of the features that are being kept
         feature_indices = vt.get_support(indices=True)
@@ -68,8 +73,8 @@ def get_low_variance_columns(dframe=None, columns=[],
         # get the columns to be removed
         removed_features = list(np.setdiff1d(remaining_columns,
                                              feature_names))
-        print("Found {0} low-variance columns."
-              .format(len(removed_features)))
+        print(("""Found {0} low-variance columns.
+                """.format(len(removed_features))))
 
         # remove the columns
         if autoremove:

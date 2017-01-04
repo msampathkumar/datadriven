@@ -1,10 +1,15 @@
-import numpy as np
+"""A custom labler class.
+
+Custom labler for checking and removing less used categorical
+ class and also ensure to data coverage is effective.
+
+Default settings for data coverage is 80%.
+"""
 import pandas as pd
 
 
 class CUST_CATEGORY_LABELER():
-    '''
-    A Custom Mapper Function
+    """Custom Mapper Function.
 
     Based on pd.Series.values_counts, a labler is prepared
      to cover one of following details
@@ -29,8 +34,10 @@ class CUST_CATEGORY_LABELER():
         >>>
         >>> _ =  labler.check_data_coverage(90)
         90 percentage of DATA coverage mean, 666 (in number) groups
-    '''
+    """
+
     def __init__(self):
+        """Defaults."""
         self.DB = None
         self.GROUP_COVERAGE = 500
         self.DATA_COVERAGE_LIMIT = 80
@@ -38,10 +45,11 @@ class CUST_CATEGORY_LABELER():
         self.DATA_VC = None
 
     def fit(self, col_data):
-        '''
+        """Fit the data to class.
+
         Args:
             data(ndarray)
-        '''
+        """
         if type(col_data) != pd.core.series.Series:
             return 'Error: input data should be - pd.core.series.Series'
 
@@ -54,12 +62,11 @@ class CUST_CATEGORY_LABELER():
         self.DATA_VC /= (self.DATA.shape[0] / 100)
 
     def check_data_coverage(self, data_coverage=None):
-        '''
-        To find how many groups required to cover a major portion of data(80% default).
+        """Check the data coverage.
 
         Args:
             check_data_coverage(float): Range is (0.0, 100.0)
-        '''
+        """
         if data_coverage is None:
             # default coverage is 80(%)
             data_coverage = self.DATA_COVERAGE_LIMIT
@@ -67,17 +74,19 @@ class CUST_CATEGORY_LABELER():
             return 'InputError: provide inputs between (0.0 and 100.00]'
         counter = 1
         cum_group_percentage = 0
-        for group_name, group_percentage in self.DATA_VC.iteritems():
+        for group_name, group_percentage in list(self.DATA_VC.items()):
             counter += 1
             cum_group_percentage += group_percentage
 
             if cum_group_percentage > data_coverage:
                 break
-        print('%s percentage of DATA coverage mean, %s (in number) groups' % (data_coverage, counter))
+        tmp = '%s percentage of DATA coverage mean, %s (in number) groups'
+        tmp %= (data_coverage, counter)
+        print(tmp)
         return counter
 
     def check_group_coverage(self, groups_coverage=80):
-        '''
+        """
         param: groups_coverage - can be provided as fraction/int.
 
         To convert fraction into proper count for inter checks.
@@ -85,7 +94,7 @@ class CUST_CATEGORY_LABELER():
         Args:
             * data_coverage(int): Range between (0 - 100)
                 percentage(%) of the groups to be covered.
-        '''
+        """
         groups_count = 0
         if groups_coverage:
             if 0 < groups_coverage < 100:
@@ -95,17 +104,21 @@ class CUST_CATEGORY_LABELER():
         else:
             groups_count = self.GROUP_COVERAGE
             print('Using default groups_coverage !')
-        print(('%s percentage of GROUPS coverage mean, %s(in number) groups') % (groups_coverage, groups_count))
+        tmp = '%s percentage of GROUPS coverage mean, %s(in number) groups'
+        tmp %= (groups_coverage, groups_count)
+        print(tmp)
         return groups_count
 
     def transform_analysis(self, data_coverage=None, groups_coverage=None):
-        '''
+        """Post transform data view.
+
         Args:
             * data_coverage(int): Range between (0 - 100)
                 percentage(%) of the amount data to be covered.
 
             * groups_coverage(int/float):
-                Limit the amount groups(variety) coverage. All input can provided as fraction or a specific count with in limit.
+                Limit the amount groups(variety) coverage. All input can be
+                 provided as fraction or a specific count with in limit.
 
         Example:
             >>> labler = CUST_CATEGORY_LABELER()
@@ -113,7 +126,7 @@ class CUST_CATEGORY_LABELER():
             >>>
             >>> # to checking report for covering 85.50% data
             >>> labler.transform_analysis(data_coverage=85.50)
-        '''
+        """
         counter = 0
         cum_group_percentage = 0
 
@@ -130,10 +143,11 @@ class CUST_CATEGORY_LABELER():
             data_coverage = 100
             groups_coverage = self.check_group_coverage(groups_coverage)
 
-        for group_name, group_percentage in self.DATA_VC.iteritems():
+        for group_name, group_percentage in list(self.DATA_VC.items()):
             counter += 1
             cum_group_percentage += group_percentage
-            res = "%d, %.2f, %s, %.2f" % (counter, cum_group_percentage, group_name, group_percentage)
+            res = "%d, %.2f, %s, %.2f" % (counter, cum_group_percentage,
+                                          group_name, group_percentage)
             print(res)
 
             # hard limit counter - as print used in above.
@@ -141,15 +155,18 @@ class CUST_CATEGORY_LABELER():
                 break
 
             # soft limit counter
-            if (cum_group_percentage > data_coverage) or (counter > groups_coverage):
+            if (cum_group_percentage > data_coverage):
+                break
+            if (counter > groups_coverage):
                 break
 
     def transform(self, groups_coverage=None):
-        '''
+        """
         Default transformation is based on coverage.
 
-        If cumulative sum of groups frequencies then label is to only cover upto top 80% of groups.
-        '''
+        If cumulative sum of groups frequencies then
+         label is to only cover upto top 80% of groups.
+        """
         if not groups_coverage:
             groups_coverage = self.check_data_coverage()
 
@@ -165,5 +182,6 @@ class CUST_CATEGORY_LABELER():
         return self.DATA.apply(mapper)
 
     def fit_transform(self, col_data):
+        """Fit data and then transform."""
         self.fit(col_data)
         return self.transform()

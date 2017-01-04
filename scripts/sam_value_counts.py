@@ -1,3 +1,4 @@
+"""Data Analysis for DataFrames."""
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,6 +11,12 @@ show_percentages = True
 
 
 def sam_dataframe_cols_value_count_analysis(dataframe):
+    """Value count analysis of dataframe.
+
+    Args:
+        * dataframe(pandas.Dataframe): input data
+
+    """
     # input validations
     if type(dataframe) is not pd.core.frame.DataFrame:
         print('dataframe is not pd.core.frame.DataFrame')
@@ -42,7 +49,7 @@ def sam_dataframe_cols_value_count_analysis(dataframe):
     for x in range(x_plots_limit):
         for y in range(y_plots_limit):
             if i < len(bag):
-                print(i + 1, col, len(bag))
+                print((i + 1, col, len(bag)))
                 col = bag[i]
                 i += 1
                 hack(col, axarr[x, y])
@@ -51,15 +58,17 @@ def sam_dataframe_cols_value_count_analysis(dataframe):
                 pass
 
     # Debug
-    print('Showing Plot for Columns:\n', bag)
+    print(('Showing Plot for Columns:\n', bag))
 
 
-def sam_dataframe_markup_value_counts(dataframe, max_print_value_counts=30, show_plots=False, figsize=(9, 3)):
-    '''
-    prints value counts of each feature in data frame
+def sam_dataframe_markup_value_counts(dataframe,
+                                      max_print_value_counts=30,
+                                      show_plots=False,
+                                      figsize=(9, 3)):
+    """Print value counts of each feature in data frame.
 
     plots will be invidual.
-    '''
+    """
     if not figsize:
         figsize = (9, 3)
     mydf = pd.DataFrame.copy(dataframe)
@@ -76,9 +85,10 @@ def sam_dataframe_markup_value_counts(dataframe, max_print_value_counts=30, show
         sam_value_counts_len = len(sam_value_counts)
         if 1 < sam_value_counts_len < max_print_value_counts:
             flag = True
-            for key, val in dict(sam_value_counts).iteritems():
+            for key, val in list(dict(sam_value_counts).items()):
                 if flag:
-                    pp('|%i|%s|%i|%s|%s|' % (i, col, sam_value_counts_len, key, val))
+                    pp('|%i|%s|%i|%s|%s|' % (i, col, sam_value_counts_len,
+                                             key, val))
                     flag = False
                 else:
                     pp('||-|-|%s|%s|' % (key, val))

@@ -10,15 +10,15 @@ KeyWords:
 
 # Introduction
 
-Across Africa, cholera, typhoid, dysentery and other diseases kill thousands each year. To help the people of Tanzania(2007), The Tanzanian government, with support from UN Development Programme(UNDP), responded to the water problems by installation of Drinking Water Taps and Decentralised the maintenance for quick response. Today this water infrastructure is facing repair and maintenance issues causing a disconnection for drinking water needs.
+Across Africa, cholera, typhoid, dysentery and other diseases kill thousands each year. To help the people of Tanzania(2007), The Tanzanian government, with support from UN Development Programme(UNDP), responded to the water problems by the installation of Drinking Water Taps and Decentralized the maintenance for a quick response. Today this water infrastructure is facing repair and maintenance issues causing a disconnection for drinking water needs.
 
-The Taarifa Platform is an open source web API, designed to close citizen feedback loops. Using Taarifa people can report their social issues(like water, electricity, food and other) from different forms of communications like SMS, Web Forums, Emails or Twitter. Later these reports are placed into a workflow where they can be followed up and acted up on while engaging citizens and community. A message then will to local central governing body notifying the issue & the location.
+The Taarifa Platform is an open source web API, designed to close citizen feedback loops. Using Taarifa people can report their social issues(like water, electricity, food and other) from different forms of communications like SMS, Web Forums, Emails or Twitter. Later these reports are placed into a work flow where they can be followed up and acted up on while engaging citizens and community. A message then will to local central governing body notifying the issue & the location.
 
-![Image](http://drivendata.materials.s3.amazonaws.com/pumps/pumping.jpg)
+![Image][water_pump_with_kids]
 
 # Problem Statement
 
-Using the data gathered from Taarifa and the Tanzanian Ministry of Water, can we predict which pumps are functional, which need some repairs, and which don't work at all? Predicting one of these three classes based and a smart understanding of which waterpoints will fail, can improve the maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
+Using the data gathered from Taarifa and the Tanzanian Ministry of Water, can we predict which pumps are functional, which need some repairs, and which don't work at all? Predicting one of these three classes based and a smart understanding of which water points will fail, can improve the maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
 This project is inspired by [DataDriven][datadriven7]!
 
@@ -28,7 +28,7 @@ Metric we are going to use is Accuracy Score.
 
 As the evaluation metric of the competition use [Accuracy Score][url_metric] /Classification Rate, we can use this metric.
 
-The classification rate, which calculates the percentage of rows where the predicted class in the submission matches the actual class in the test set. The maximum is 1 and the minimum is 0. The goal is to maximise the classification rate.
+The classification rate, which calculates the percentage of rows where the predicted class in the submission matches the actual class in the test set. The maximum is 1 and the minimum is 0. The goal is to maximize the classification rate.
 
 <math display="block">
     <mi>Classification Rate</mi>
@@ -61,14 +61,14 @@ Here are files provided at [DataDriven][datadriven7]
 
 |File|Description|
 |----|-----------|
-[Training set values][file1]|The independent variables for the training set|
-[Training set labels][file2]|The dependent variable (status_group) for each of the rows in Training set values|
-[Test set values][file3]|The independent variables that need predictions|
-[Submission format][file4]|The format for submitting your predictions|
+|[Training set values][input_file1]|The independent variables for the training set|
+|[Training set labels][input_file2]|The dependent variable (status_group) for each of the rows in Training set values|
+|[Test set values][input_file3]|The independent variables that need predictions|
+|[Submission format][input_file4]|The format for submitting your predictions|
 
 ## Data Exploration
 
-Test & Train Data sets consists of 39 columns, 1 multi labeled columns for prediction. Shape of data set is 59400 rows with 39 columns and test data set consists of 14850 rows with 39 columns.
+Test & Train data sets consists of 39 columns, 1 multi-labeled columns for prediction. The shape of data set is 59400 rows with 39 columns and test data set consists of 14850 rows with 39 columns.
 
 Here is a simple analysis of data the columns. As the input data mostly consists of categorical data, for each we have also taken unique groups counts (or value counts) and plotted in horizontal bar charts for easy read.
 
@@ -116,10 +116,10 @@ Here is a simple analysis of data the columns. As the input data mostly consists
 |38|waterpoint_type_group|6| ['communal', 'standpipe', 'communal']|
 
 
-(These 39 columns's unique values counts)(98, 356, 1897, 2428, 2145, 57516, 57517, 37400, 65, 9, 19287, 21, 27, 20, 125, 2092, 1049, 2, 1, 12, 2696, 2, 55, 18, 13, 7, 12, 5, 7, 7, 8, 6, 5, 5, 10, 7, 3, 7, 6)
+(These 39 column's unique values counts)(98, 356, 1897, 2428, 2145, 57516, 57517, 37400, 65, 9, 19287, 21, 27, 20, 125, 2092, 1049, 2, 1, 12, 2696, 2, 55, 18, 13, 7, 12, 5, 7, 7, 8, 6, 5, 5, 10, 7, 3, 7, 6)
 (542989639101365927794152062178992491838404172880830791680000000000000(69 digits) is product of these 39 unique values, which is exponentially greater than 59K records we have) is the ideal amount of sufficient data to cover each and every category.
 
-Input labels data has 39(27 object columns and 16 non object columns) Features with 59,400 rows. Although we seem to have a good data set, looking at the unique values counts from below 39 columns we can say that we could potentially encounter Curse of Dimensionality. But, as we can see some of columns pairs (extraction\_type, extraction\_type\_group), (quantity & quantity\_group), (source, source\_class) seems have closer relation and column by 'recorded\_by' has only one unique value. So, we might have a chance to escape Curse of Dimensionality.
+Input labels data has 39(27 object columns and 16 non-object columns) Features with 59,400 rows. Although we seem to have a good data set, looking at the unique values counts from below 39 columns we can say that we could potentially encounter Curse of Dimensionality. But, as we can see some of columns pairs (extraction\_type, extraction\_type\_group), (quantity & quantity\_group), (source, source\_class) seems have closer relation and column by 'recorded\_by' has only one unique value. So, we might have a chance to escape Curse of Dimensionality.
 
 
 ## Exploratory Visualization
@@ -136,7 +136,7 @@ The labels in this dataset are simple. There are three possible values for statu
 
 * functional - the water point is operational and there are no repairs needed
 * functional needs repair - the water point is operational, but needs repairs
-* non functional - the water point is not operational
+* non-functional - the water point is not operational
 
 
 # Methodology
@@ -144,15 +144,15 @@ The labels in this dataset are simple. There are three possible values for statu
 
 As described in the introduction, a smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
-We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF/GBT)/Support Vector Machines. These are easy to train and self learning & evaluation nature make them a general good technique. During model selection we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe that a One\-vs\-Rest might not perform well.
+We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF/GBT)/Support Vector Machines. These are easy to train and self-learning & evaluation nature make them a general good technique. During model selection, we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe that a One\-vs\-Rest might not perform well.
 
 
 ## Initial Project Design
 
 As shown in below image, we are going to do a step by step development progress on here.
-![Udacity Machine Learning Course Plan][image_plan]
+![Udacity Machine Learning Course Plan][udacity_ml_course_plan]
 
-With Random Forest Classifier, we were able to generate a benchmark of 0.7970. So, first we will start with going to deeper understanding of Random Forest worked and what features contributed it to generate this score in training.
+With Random Forest Classifier, we were able to generate a benchmark of 0.7970. So, first we will start with going to check understanding of Random Forest worked and what features contributed it to generate this score in training.
 
 (Implementation Plan)
 
@@ -163,7 +163,7 @@ With Random Forest Classifier, we were able to generate a benchmark of 0.7970. S
  * Exploration - outliers check
 3. Algorithm Selection
  * Unsupervised Learning Exploration(Gaussian Process, Neural Nets)
- * Supervised Learning(GBT Trees, Nearest Neighbours, RF, One-vs-One)
+ * Supervised Learning(GBT Trees, Nearest Neighbors, RF, One-vs-One)
  * Parameter Tuning
 4. Evaluation. Back to 1 with.
 5. Re-Evaluation with threshold improvisation check.
@@ -171,7 +171,7 @@ With Random Forest Classifier, we were able to generate a benchmark of 0.7970. S
 
 ![Classifiers Comparison][classifier_comparision]
 
-As we can see from above analysis, I find that `Nearest Neighbour` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest.
+As we can see from above analysis, I find that `Nearest Neighbor` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest.
 
 We will be using Gaussian Process, Neural Nets for unsupervised Learning exploration. No specific reason but taken, two models different kinds of models for exploration.
 
@@ -193,12 +193,12 @@ As mentioned earlier majority of the data is object columns,
     True -> 1, False ->2, Nan or None ->3
 ```
 
-* Int Columns: For some integer columns like geo location co ordinates, the precision is so good that we can point the locaiton to centimeter level. But this seemed to too precise(too much information) and so in hit and trial, when we reduced the presicion up to 3 digit we found that our benchmark model was performing well.
+* Int Columns: For some integer columns like Geo location co ordinates, the precision is so good that we can point the location to centimeter level. But this seemed to too precise(too much information) and so in hit and trial, when we reduced the precision up to 3 digit we found that our benchmark model was performing well.
 
 For other numerical model, we are apply labelisation which will work as MinMaxScalar.
 
 * Object Columns:
-During the sub group plotting we have noticed that minor text capitalisation issue and spaces. So we have applied a transformer to convert all the object data to lower case ascii strings.
+During the sub group plotting we have noticed that minor text capitalization issue and spaces. So we have applied a transformer to convert all the object data to lower case ASCII strings.
 
 Top 5 columns with huge varieties.
     * funder,1898
@@ -237,9 +237,9 @@ For these columns as we look into details we have observed that most of the data
 NOTE:
     Marked with double hashes are the selected values for coverage
 
-In the Ipython Notebook, we have created a generic application helper script to do this and Ipython Widget for understand these.
+In the Ipython Notebook, we have created a generic helper script to do this and Ipython Widget for experimentations.
 
-For futher references say, lets call this new formatted/transformed data as (Pre-)Processed Data. At this stage we are having 43 features.
+For further references say, lets call this new formatted/transformed data as (Pre-)Processed Data. At this stage we are having 43 features.
 
 ## Feature Selection
 
@@ -249,11 +249,11 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
 
     VarianceThreshold is a simple baseline approach to feature selection. It removes all features whose variance doesn’t meet some threshold. By default, it removes all zero-variance features, i.e. features that have the same value in all samples.
 
-    We have taken a variance threshold limit of 80%, implies columns with less than 80 are to be dropped. We found one columns `recorded_by` which has a variacne threshold less than 80%.
+    We have taken a variance threshold limit of 80%, implies columns with less than 80 are to be dropped. We found one columns `recorded_by` which has a variance threshold less than 80%.
 
 
 * KBest select
-     KBest is one the Univariate feature selection meathod that works by selecting the best features based on univariate statistical tests.
+     KBest is one the Univariate feature selection method that works by selecting the best features based on univariate statistical tests.
 
      Well known statistical tests for classification are chi2, f_classif, mutual_info_classif. We have tried all these three methods to be sure and also looped from 25 to the maximum number of columns to find the best number of minimum required columns/features.
 
@@ -289,13 +289,13 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
      {'cols': 28, 'test': 0.80222222222222217, 'train': 0.98334455667789}]
     """
 
-    As per Okham Razor's rules, we are going to select the simplest and well performing. Luckily, we have got kbest_selected_cols at **26** which is comparitively top performer among other K-selections and also lower than actualy number of columns
+    As per Okham Razor's rules, we are going to select the simplest and well performing. Luckily, we have got kbest_selected_cols at `26` which is comparatively top performer among other K-selections and also lower than actually number of columns
 
 
 * PCA
     Linear dimensionality reduction using Singular Value Decomposition of the data to project it to a lower dimensional space.
 
-    Like KBest, in a simmilar fashion we have tried PCA model but we have encounter some decrease in score.
+    Like KBest, in a similar fashion we have tried PCA model but we have encounter some decrease in score.
 
 
 ## Benchmark Model
@@ -304,14 +304,6 @@ With a simplistic data transformation and with the help of Random Forest Classif
 
 
 ## Algorithms and Techniques
-
-As we can observe this is
-
-In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
-
-- _Are the algorithms you will use, including any default variables/parameters in the project clearly defined?_
-- _Are the techniques to be used thoroughly discussed and justified?_
-- _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
 
 
 As per problem statement, a smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania. This clearly is a classification problem.
@@ -322,7 +314,7 @@ We will use familiar (inherently) multi-class Supervised Classifiers like Tree A
 We have tried following Algorithms to check which kind of family model fits well data with simple parameters. During
 
     * GBT Trees
-    * Nearest Neighbours
+    * Nearest Neighbors
     * Random Forest
     * Multi Class
         * One vs Rest with Random Forest
@@ -334,7 +326,7 @@ We have tried following Algorithms to check which kind of family model fits well
 ## Results
 
 
-As we can see from above analysis, I find that `Nearest Neighbour` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest.
+As we can see from above analysis, I find that `Nearest Neighbor` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest.
 
 We will be using Gaussian Process, Neural Nets for unsupervised Learning exploration. No specific reason but taken, two models different kinds of models for exploration.
 
@@ -342,8 +334,6 @@ We will be using Gaussian Process, Neural Nets for unsupervised Learning explora
 
 * [DataDriven](https://www.drivendata.org/competitions/7)
 * [Choosing a ML Classifier](http://blog.echen.me/2011/04/27/choosing-a-machine-learning-classifier/)
-
-
 * [Submission Code](https://github.com/msampathkumar/datadriven_pumpit)
 * [Wikipedia: Water Supply & Sanitation in Tanzania](https://en.wikipedia.org/wiki/Water_supply_and_sanitation_in_Tanzania)
 * [UN Report](http://www.unwater.org/fileadmin/user_upload/unwater_new/docs/Publications/TZA_pagebypage.pdf)
@@ -357,15 +347,24 @@ We will be using Gaussian Process, Neural Nets for unsupervised Learning explora
 * [Standford UnSupervised Learning](http://ufldl.stanford.edu/wiki/index.php/UFLDL_Tutorial)
 
 
+<!--- Input Files -->
+
+[input_file1]: https://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv
+[input_file2]: https://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv
+[input_file3]: https://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv
+[input_file4]: https://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv
+
+<!--- Images -->
 
 [classifier_comparision]: http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png
-[udacity_ml_course_plan]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/UDACITY_ML_COURSE_GIST.png?raw=true
+[url_metric]: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score
+[water_pump_with_kids]: http://drivendata.materials.s3.amazonaws.com/pumps/pumping.jpg
+[udacity_ml_course_plan]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/UDACITY_ML_COURSE_GIST.png?raw=true
+[cols_value_counts]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/cols_value_count_li55.png?style=centerme
+
+
+<!--- others -->
+
 [benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb
 [datadriven7]: https://www.drivendata.org/competitions/7/ "Data Driven"
-[file1]: https://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv
-[file2]: https://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv
-[file3]: https://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv
-[file4]: https://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv
-[image_plan]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/UDACITY_ML_COURSE_GIST.png?raw=true
-[url_metric]: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score
-[cols_value_counts]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/cols_value_count_li55.png?style=centerme
+
