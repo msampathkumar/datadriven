@@ -5,9 +5,6 @@ Sampath Kumar
 
 December 18st, 2016
 
-KeyWords:
-
-
 # Introduction
 
 Across Africa, cholera, typhoid, dysentery and other diseases kill thousands each year. To help the people of Tanzania(2007), The Tanzanian government, with support from UN Development Programme(UNDP), responded to the water problems by the installation of Drinking Water Taps and Decentralized the maintenance for a quick response. Today this water infrastructure is facing repair and maintenance issues causing a disconnection for drinking water needs.
@@ -200,12 +197,13 @@ For other numerical model, we are apply labelisation which will work as MinMaxSc
 * Object Columns:
 During the sub group plotting we have noticed that minor text capitalization issue and spaces. So we have applied a transformer to convert all the object data to lower case ASCII strings.
 
-Top 5 columns with huge varieties.
-    * funder,1898
-    * installer,2146
-    * wpt_name,37400
-    * subvillage,19288
-    * scheme_nam,2697
+Top 5 columns with huge varieties
+
+* funder, 1898
+* installer, 2146
+* wpt_name, 37400
+* subvillage, 19288
+* scheme_nam, 2697
 
 
 For these columns as we look into details we have observed that most of the data has lots cardinality issue and here are some stats collected for these columns.
@@ -214,6 +212,7 @@ For these columns as we look into details we have observed that most of the data
     * 100.0 percentage of DATA coverage mean, 1881 (in number) groups
     * 97.0 percentage of DATA coverage mean, 592 (in number) groups ##
     * 90.5 percentage of DATA coverage mean, 237 (in number) groups
+
 * installer:
     * 100.0 percentage of DATA coverage mean, 1867 (in number) groups
     * 97.0 percentage of DATA coverage mean, 599 (in number) groups ##
@@ -224,18 +223,19 @@ For these columns as we look into details we have observed that most of the data
 * subvillage:
     * 80.5 percentage of DATA coverage mean, 8715 (in number) groups ##
     * 83.0 percentage of DATA coverage mean, 9458 (in number) groups
+
 * ward:
     * 80.0 percentage of DATA coverage mean, 998 (in number) groups ##
     * 91.5 percentage of DATA coverage mean, 1397 (in number) groups
     * 100.0 percentage of DATA coverage mean, 2093 (in number) groups
+
 * scheme_name:
     * 100.0 percentage of DATA coverage mean, 2486 (in number) groups
     * 91.5 percentage of DATA coverage mean, 870 (in number) groups
     * 80.5 percentage of DATA coverage mean, 363 (in number) groups
     * 85.0 percentage of DATA coverage mean, 524 (in number) groups ##
 
-NOTE:
-    Marked with double hashes are the selected values for coverage
+NOTE: Marked with double hashes are the selected values for coverage
 
 In the Ipython Notebook, we have created a generic helper script to do this and Ipython Widget for experimentations.
 
@@ -265,7 +265,7 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
     AMOUNT_TSH, DATE_RECORDED, FUNDER, GPS_HEIGHT, INSTALLER, LONGITUDE, LATITUDE, NUM_PRIVATE, BASIN, SUBVILLAGE, REGION, REGION_CODE, DISTRICT_CODE, LGA, WARD, POPULATION, PUBLIC_MEETING, SCHEME_MANAGEMENT, SCHEME_NAME, PERMIT, CONSTRUCTION_YEAR, EXTRACTION_TYPE, EXTRACTION_TYPE_GROUP, EXTRACTION_TYPE_CLASS, MANAGEMENT, MANAGEMENT_GROUP, PAYMENT, PAYMENT_TYPE
     """
 
-    """Python
+    """ Python
     # results of previous runs
     [{'cols': 1, 'test': 0.52659932659932662, 'train': 0.57483726150392822},
      {'cols': 5, 'test': 0.68962962962962959, 'train': 0.94240179573512906},
@@ -346,14 +346,12 @@ We will be using Gaussian Process, Neural Nets for unsupervised Learning explora
 * [Multi-class Metric](http://sebastianraschka.com/faq/docs/multiclass-metric.html)
 * [Standford UnSupervised Learning](http://ufldl.stanford.edu/wiki/index.php/UFLDL_Tutorial)
 
-
 <!--- Input Files -->
 
 [input_file1]: https://s3.amazonaws.com/drivendata/data/7/public/4910797b-ee55-40a7-8668-10efd5c1b960.csv
 [input_file2]: https://s3.amazonaws.com/drivendata/data/7/public/0bf8bc6e-30d0-4c50-956a-603fc693d966.csv
 [input_file3]: https://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv
 [input_file4]: https://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv
-
 <!--- Images -->
 
 [classifier_comparision]: http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png
@@ -361,10 +359,7 @@ We will be using Gaussian Process, Neural Nets for unsupervised Learning explora
 [water_pump_with_kids]: http://drivendata.materials.s3.amazonaws.com/pumps/pumping.jpg
 [udacity_ml_course_plan]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/UDACITY_ML_COURSE_GIST.png?raw=true
 [cols_value_counts]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/cols_value_count_li55.png?style=centerme
-
-
-<!--- others -->
+<!---others-->
 
 [benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb
 [datadriven7]: https://www.drivendata.org/competitions/7/ "Data Driven"
-
