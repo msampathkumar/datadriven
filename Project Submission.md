@@ -1,11 +1,15 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Project
 
+[TOC]
+
 Sampath Kumar
 
 December 18st, 2016
 
-# Introduction
+# Definition
+
+## Background
 
 Across Africa, cholera, typhoid, dysentery and other diseases kill thousands each year. To help the people of Tanzania(2007), The Tanzanian government, with support from UN Development Programme(UNDP), responded to the water problems by the installation of Drinking Water Taps and Decentralized the maintenance for a quick response. Today this water infrastructure is facing repair and maintenance issues causing a disconnection for drinking water needs.
 
@@ -13,13 +17,13 @@ The Taarifa Platform is an open source web API, designed to close citizen feedba
 
 ![Image][water_pump_with_kids]
 
-# Problem Statement
+## Problem Statement
 
 Using the data gathered from Taarifa and the Tanzanian Ministry of Water, can we predict which pumps are functional, which need some repairs, and which don't work at all? Predicting one of these three classes based and a smart understanding of which water points will fail, can improve the maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
 This project is inspired by [DataDriven][datadriven7]!
 
-# Metrics
+## Metrics
 
 Metric we are going to use is Accuracy Score.
 
@@ -51,9 +55,8 @@ accuracy_score(y_true, y_pred)
 
 # Analysis
 
-## Data Files
 
-Here are files provided at [DataDriven][datadriven7]
+Source/data files are available at [DataDriven][datadriven7]
 
 
 |File|Description|
@@ -65,7 +68,7 @@ Here are files provided at [DataDriven][datadriven7]
 
 ## Data Exploration
 
-Test & Train data sets consists of 39 columns, 1 multi-labeled columns for prediction. The shape of data set is 59400 rows with 39 columns and test data set consists of 14850 rows with 39 columns.
+Test & Train data sets consists of 39 columns to predict 1 multi-labeled column. The shape of data set is 59400 rows with 39 columns and test data set consists of 14850 rows with 39 columns.
 
 Here is a simple analysis of data the columns. As the input data mostly consists of categorical data, for each we have also taken unique groups counts (or value counts) and plotted in horizontal bar charts for easy read.
 
@@ -121,13 +124,15 @@ Input labels data has 39(27 object columns and 16 non-object columns) Features w
 
 ## Exploratory Visualization
 
-
-
 ![Image][cols_value_counts]
 
 
+## Benchmark Model
 
-### Description of the Labels
+With a simplistic data transformation and with the help of Random Forest Classifiers, we have created a benchmark submission of 0.7970 for which source code is [here][benchmark_model]
+
+
+__Description of the Labels__
 
 The labels in this dataset are simple. There are three possible values for status_group:
 
@@ -137,11 +142,27 @@ The labels in this dataset are simple. There are three possible values for statu
 
 
 # Methodology
-# Algorithms and Techniques
+
+## Algorithms and Techniques
+
 
 As described in the introduction, a smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
 We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF/GBT)/Support Vector Machines. These are easy to train and self-learning & evaluation nature make them a general good technique. During model selection, we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe that a One\-vs\-Rest might not perform well.
+
+We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF/GBT)/Support Vector Machines. These are easy to train and self learning & evaluation nature make them a general good technique. During model selection we will also explore One-vs-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe having a One-vs-Rest might not perform well.
+
+We have tried following Algorithms to check which kind of family model fits well data with simple parameters. During
+
+    * GBT Trees
+    * Nearest Neighbors
+    * Random Forest
+    * Multi Class
+        * One vs Rest with Random Forest
+        * One vs One with Random Forest
+    * Parameter tuning
+    * XGBOOST
+
 
 
 ## Initial Project Design
@@ -171,11 +192,6 @@ With Random Forest Classifier, we were able to generate a benchmark of 0.7970. S
 As we can see from above analysis, I find that `Nearest Neighbor` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest.
 
 We will be using Gaussian Process, Neural Nets for unsupervised Learning exploration. No specific reason but taken, two models different kinds of models for exploration.
-
-
-## Benchmark Model
-
-With a simplistic data transformation and with the help of Random Forest Classifiers, we have created a benchmark submission of 0.7970 for which source code is [here][benchmark_model]
 
 
 ## Data Preprocessing
@@ -265,8 +281,8 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
     AMOUNT_TSH, DATE_RECORDED, FUNDER, GPS_HEIGHT, INSTALLER, LONGITUDE, LATITUDE, NUM_PRIVATE, BASIN, SUBVILLAGE, REGION, REGION_CODE, DISTRICT_CODE, LGA, WARD, POPULATION, PUBLIC_MEETING, SCHEME_MANAGEMENT, SCHEME_NAME, PERMIT, CONSTRUCTION_YEAR, EXTRACTION_TYPE, EXTRACTION_TYPE_GROUP, EXTRACTION_TYPE_CLASS, MANAGEMENT, MANAGEMENT_GROUP, PAYMENT, PAYMENT_TYPE
     """
 
+    Results of previous runs
     """ Python
-    # results of previous runs
     [{'cols': 1, 'test': 0.52659932659932662, 'train': 0.57483726150392822},
      {'cols': 5, 'test': 0.68962962962962959, 'train': 0.94240179573512906},
      {'cols': 9, 'test': 0.7211447811447812, 'train': 0.97638608305274976},
@@ -298,37 +314,22 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
     Like KBest, in a similar fashion we have tried PCA model but we have encounter some decrease in score.
 
 
-## Benchmark Model
-
-With a simplistic data transformation and with the help of Random Forest Classifiers, we have created a benchmark submission of 0.7970 for which source code is [here][benchmark_model]
 
 
-## Algorithms and Techniques
+# Results
 
+## Model Evaluation and Validation
 
-As per problem statement, a smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania. This clearly is a classification problem.
-
-
-We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF/GBT)/Support Vector Machines. These are easy to train and self learning & evaluation nature make them a general good technique. During model selection we will also explore One-vs-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe having a One-vs-Rest might not perform well.
-
-We have tried following Algorithms to check which kind of family model fits well data with simple parameters. During
-
-    * GBT Trees
-    * Nearest Neighbors
-    * Random Forest
-    * Multi Class
-        * One vs Rest with Random Forest
-        * One vs One with Random Forest
-    * Parameter tuning
-    * XGBOOST
-
-
-## Results
-
+## Justification
 
 As we can see from above analysis, I find that `Nearest Neighbor` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest.
 
 We will be using Gaussian Process, Neural Nets for unsupervised Learning exploration. No specific reason but taken, two models different kinds of models for exploration.
+
+
+# Conclusion
+
+## Future improvements
 
 ## Sources & References
 
