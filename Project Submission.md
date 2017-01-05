@@ -156,25 +156,27 @@ To create a generic model which could work in all scenarion, we will use stratif
 
 ![Image][features_vc_histogram]
 
-Observation and Actions
+__ Observations and Suggestions __
 
 * Most of the data seems categorical: As this would increase the number of dimensions the results vary, we can take a deep look of how data is distributed across the groups and focus of the groups which contribute more information overall.
 
-* Need to check numeric and date columns.
+* Need to check __Date columns__
     * we shall convert date -> day, month, year, weekday, total_no_of_day_from_reference_point. These splits for two reasons.
         * Reason1: It might be possible that in some location all specific set of complaints are registered on a start/mid/at end of the month. It might also be possible that they are registered on every Monday or so.
         * Reason2: Taking as much information as possible.
-    * Numerical(float) values like longitude and latitude are too much preceise(in input date) that would make it too diffult to generalise. As generally water pumps are not installed next to each other to maintain a precision of high accuracy, we can reduce it.
 
-* Need to check **cols_categorical_check**(TODO2)
-    * longitutude & latitude seem to hold (0,0) instead of NULL which is acting as outlier for now.
+* Need to check __Float and Bool columns__
+    * Longitutude & latitude(features) seem to hold (0,0) instead of NULL which is acting as outlier for now.
+    * Longitude and latitude(features) are too much preceise(in input date) that would make it too diffult to generalise. As generally water pumps are not installed next to each other to maintain a precision of high accuracy, we can reduce it.
+    * Few boolean columns are having Nan(NAN or Null) values which does not completely make them boolean series. If we look into this scenario of observing not having data as another symption(new information), to preserve this knowledge we can convert them into labels.
 
-* Following pairs looks closesly related - cleanup (TODO3)
+* Following pairs looks closesly related
     * quantity & quantity_group
     * quality_group & water_quality
     * extraction_type, extraction_type_class & extraction_type_group
 
-* Other - cleanup (TODO4)
+* Other
+    * categorical columns like installer, funder, scheme_name seems to hold data issue like text capitlisation & trailing spaces.
     * recorded_by, seems to hold only a single value
     * population & amount_tsh, values are for some given as zero
 
@@ -184,25 +186,6 @@ With simplistic data labelisation and with the help of Random Forest Classifiers
 
 # Methodology
 
-## Algorithms and Techniques
-
-As described in the introduction, a smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
-
-We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF/GBT). As these models are easy to train, self-learning & evaluation nature make them a general good technique.
-
-During model selection, we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe that a One\-vs\-Rest might perform well.
-
-We have tried following Algorithms to check which kind of family model fits well data with simple parameters. During
-
-    * GBT Trees
-    * Nearest Neighbors
-    * Random Forest
-    * Multi Class
-        * One vs Rest with Random Forest
-        * One vs One with Random Forest
-    * Parameter tuning
-    * XGBOOST
-
 ## Initial Project Design
 
 As shown in below image, we are going to do a step by step development progress on here.
@@ -210,7 +193,7 @@ As shown in below image, we are going to do a step by step development progress 
 
 With Random Forest Classifier, we were able to generate a benchmark of 0.7970. So, first we will start with going to check understanding of Random Forest worked and what features contributed it to generate this score in training.
 
-(Implementation Plan)
+(Implementation Steps)
 
 1. Questions on data
 2. Feature Exploration
@@ -225,17 +208,43 @@ With Random Forest Classifier, we were able to generate a benchmark of 0.7970. S
 5. Re-Evaluation with threshold improvisation check.
 6. Submission
 
+
+## Algorithms and Techniques
+
+As described in the introduction, a smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
+
+
+A Classifier comparision from [Sklearn's documentation][classifier_comparision_page]
+
 ![Classifiers Comparison][classifier_comparision]
 
-As we can see from above analysis, I find that `Nearest Neighbor` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest.
+For initial understanding, as we can see from above analysis on different kinds of datasets, I find that _Nearest Neighbor_ performs better when Random Forest is performing low. Also to have different learning process from that of Random Forest, we will also consider GBT Trees, which seem  seems performed better than Random Forest.
 
 We will be using Gaussian Process, Neural Nets for unsupervised Learning exploration. No specific reason but taken, two models different kinds of models for exploration.
+
+
+So, We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF, GBT). As these models are easy to train, self-learning & evaluation nature make them a general good technique.
+
+From dataset features, we have coordinates like longitude, latitude and pump models and other, it might even possible that simmilar issues are observed in certain neighbour and have been reported already so Nearest Neighbour models could also perform well.
+
+During model selection, we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe that a One\-vs\-Rest might perform well.
+
+We have tried following Algorithms to check which kind of family model fits well data with simple parameters. During
+
+* GBT Trees
+* Nearest Neighbors
+* Random Forest
+* Multi Class
+    * One vs Rest with Random Forest
+    * One vs One with Random Forest
+* Parameter tuning
+* XGBOOST
 
 ## Data Preprocessing
 
 As mentioned earlier majority of the data is object columns,
 
-* Date Columns: We have one columns `date_recorded`, which supposed to show on which data record was added.
+* Date Columns: We have one columns _date\_recorded_, which supposed to show on which data record was added.
 
 * Bool Columns: Instead of deleting null or replacing null with True or False, we have converted all these into numbers and thus not losing any information.
 
@@ -258,8 +267,7 @@ Top 5 columns with huge varieties
 * subvillage, 19288
 * scheme_nam, 2697
 
-
-For these columns as we look into details we have observed that most of the data has lots cardinality issue and here are some stats collected for these columns.
+For these columns as we look into details we have observed that most of the data has lots of cardinality issues and here are some stats collected for these columns.
 
 * funder:
     * 100.0 percentage of DATA coverage mean, 1881 (in number) groups
@@ -302,7 +310,7 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
 
     VarianceThreshold is a simple baseline approach to feature selection. It removes all features whose variance doesn’t meet some threshold. By default, it removes all zero-variance features, i.e. features that have the same value in all samples.
 
-    We have taken a variance threshold limit of 80%, implies columns with less than 80 are to be dropped. We found one columns `recorded_by` which has a variance threshold less than 80%.
+    We have taken a variance threshold limit of 80%, implies columns with less than 80 are to be dropped. We found one columns _recorded_by_ which has a variance threshold less than 80%.
 
 
 * KBest select
@@ -349,26 +357,23 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
      {'cols': 28, 'test': 0.80222222222222217, 'train': 0.98334455667789}]
     ```
 
-    As per Okham Razor's rules, we are going to select the simplest and well performing. Luckily, we have got kbest_selected_cols at `26` which is comparatively top performer among other K-selections and also lower than actually number of columns
+    As per Okham Razor's rules, we are going to select the simplest and well performing. Luckily, we have got kbest_selected_cols at _26_ which is comparatively top performer among other K-selections and also lower than actually number of columns
 
 
 * PCA
     Linear dimensionality reduction using Singular Value Decomposition of the data to project it to a lower dimensional space.
 
-    Like KBest, in a similar fashion we have tried PCA model but we have encounter some decrease in score.
-
-
+    Like KBest, in a similar fashion we have tried PCA model but we have encounter some decrease in score. As we can understand from the results, that transformed will have lower dimentions but it might be always to learn from it.
 
 
 # Results
+
+During training we
 
 ## Model Evaluation and Validation
 
 ## Justification
 
-As we can see from above analysis, I find that `Nearest Neighbor` performs better when Random Forest is performing low. Also for different learning process from that of Random Forest. GBT Tree, sometime have seems performed better than Random Forest.
-
-We will be using Gaussian Process, Neural Nets for unsupervised Learning exploration. No specific reason but taken, two models different kinds of models for exploration.
 
 
 # Conclusion
@@ -398,6 +403,8 @@ We will be using Gaussian Process, Neural Nets for unsupervised Learning explora
 [input_file3]: https://s3.amazonaws.com/drivendata/data/7/public/702ddfc5-68cd-4d1d-a0de-f5f566f76d91.csv
 [input_file4]: https://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv
 <!---Images-->
+
+[classifier_comparision_page]: http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html
 
 [classifier_comparision]: http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png
 [accuracy_score]: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score
