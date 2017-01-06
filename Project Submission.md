@@ -312,74 +312,74 @@ For further references say, lets call this new formatted/transformed data as (Pr
 
 After preprocessing, we have tried 3 methods of dimensionality reductions.
 
-* Variance Threshold:
+### Variance Threshold:
 
-    VarianceThreshold is a simple baseline approach to feature selection. It removes all features whose variance doesn’t meet some threshold. By default, it removes all zero-variance features, i.e. features that have the same value in all samples.
+VarianceThreshold is a simple baseline approach to feature selection. It removes all features whose variance doesn’t meet some threshold. By default, it removes all zero-variance features, i.e. features that have the same value in all samples.
 
-    We have taken a variance threshold limit of 80%, implies columns with less than 80 are to be dropped. We found one columns _recorded_by_ which has a variance threshold less than 80%.
-
-
-* KBest select
-    KBest is one of the Univariate feature selection methods that works by selecting the best features based on univariate statistical tests.
-
-    Well known statistical tests for classification are chi2, f_classif, mutual_info_classif. Using __Random Forest__ we are checking which statistical method is generating better results for K=30(selected columns).
+We have taken a variance threshold limit of 80%, implies columns with less than 80 are to be dropped. We found one columns _recorded_by_ which has a variance threshold less than 80%.
 
 
-    |Statistical Test | Train Score| Test Score|
-    |-----------------|------------|-----------|
-    |chi2|0.98428731762065091|0.79966329966329963|
-    |f_classif|0.97432098765432096|0.79286195286195282|
-    |mutual_info_classif|0.98410774410774415|0.79447811447811445|
+### KBest select
+KBest is one of the Univariate feature selection methods that works by selecting the best features based on univariate statistical tests.
 
-    KBest statistical method: __Chi2__ wins.
-
-    Like we have tried all these three methods to be sure, we shall also check the number of columns to find the best number of minimum required columns/features to better score.
-
-    AMOUNT_TSH, DATE_RECORDED, FUNDER, GPS_HEIGHT, INSTALLER, LONGITUDE, LATITUDE, NUM_PRIVATE, BASIN, SUBVILLAGE, REGION, REGION_CODE, DISTRICT_CODE, LGA, WARD, POPULATION, PUBLIC_MEETING, SCHEME_MANAGEMENT, SCHEME_NAME, PERMIT, CONSTRUCTION_YEAR, EXTRACTION_TYPE, EXTRACTION_TYPE_GROUP, EXTRACTION_TYPE_CLASS, MANAGEMENT, MANAGEMENT_GROUP, PAYMENT, PAYMENT_TYPE
-
-    Results of previous runs
-    Trail 1
-
-    ```python
-    [{'cols': 1, 'test': 0.52659932659932662, 'train': 0.57483726150392822},
-     {'cols': 5, 'test': 0.68962962962962959, 'train': 0.94240179573512906},
-     {'cols': 9, 'test': 0.7211447811447812, 'train': 0.97638608305274976},
-     {'cols': 13, 'test': 0.75380471380471381, 'train': 0.97955106621773291},
-     {'cols': 17, 'test': 0.76134680134680133, 'train': 0.98071829405162736},
-     {'cols': 21, 'test': 0.76511784511784509, 'train': 0.98076318742985413},
-     {'cols': 25, 'test': 0.80033670033670035, 'train': 0.98316498316498313},
-     {'cols': 29, 'test': 0.80053872053872055, 'train': 0.98379349046015707},
-     {'cols': 33, 'test': 0.80040404040404045, 'train': 0.98390572390572395},
-     {'cols': 37, 'test': 0.79993265993265994, 'train': 0.98341189674523011}]
-    ```
-
-    Trail 2
-    ```python
-    [{'cols': 23, 'test': 0.7976430976430976, 'train': 0.9836812570145903},
-     {'cols': 25, 'test': 0.80033670033670035, 'train': 0.98316498316498313},
-     {'cols': 27, 'test': 0.80101010101010106, 'train': 0.9829405162738496},
-     {'cols': 29, 'test': 0.80053872053872055, 'train': 0.98379349046015707},
-     {'cols': 31, 'test': 0.80000000000000004, 'train': 0.98381593714927051}]
-    ```
-
-    Trail 3
-    ```python
-    [{'cols': 26, 'test': 0.80309764309764309, 'train': 0.98359147025813698},
-     {'cols': 27, 'test': 0.80101010101010106, 'train': 0.9829405162738496},
-     {'cols': 28, 'test': 0.80222222222222217, 'train': 0.98334455667789}]
-    ```
-
-    As per Okham Razor's rules, we are going to select the simplest and well performing. Luckily, we have got kbest_selected_cols at _26_ which is comparatively top performer among other K-selections and also lower than actually number of columns
-
-    _Conclusion: Using __Chi2__ with __KBest__, we found 26 best selected columns for generating results._
+Well known statistical tests for classification are chi2, f_classif, mutual_info_classif. Using __Random Forest__ we are checking which statistical method is generating better results for K=30(selected columns).
 
 
-* PCA
-    PCA, Linear dimensionality reduction using Singular Value Decomposition of the data to project it to a lower dimensional space.
+|Statistical Test | Train Score| Test Score|
+|-----------------|------------|-----------|
+|chi2|0.98428731762065091|0.79966329966329963|
+|f_classif|0.97432098765432096|0.79286195286195282|
+|mutual_info_classif|0.98410774410774415|0.79447811447811445|
 
-    Here is the cumulative
+KBest statistical method: __Chi2__ wins.
 
-    Like KBest, in a similar fashion we have tried PCA model but we have encounter some decrease in score. As we can understand from the results, that transformed will have lower dimentions but it might be always to learn from it.
+Like we have tried all these three methods to be sure, we shall also check the number of columns to find the best number of minimum required columns/features to better score.
+
+AMOUNT_TSH, DATE_RECORDED, FUNDER, GPS_HEIGHT, INSTALLER, LONGITUDE, LATITUDE, NUM_PRIVATE, BASIN, SUBVILLAGE, REGION, REGION_CODE, DISTRICT_CODE, LGA, WARD, POPULATION, PUBLIC_MEETING, SCHEME_MANAGEMENT, SCHEME_NAME, PERMIT, CONSTRUCTION_YEAR, EXTRACTION_TYPE, EXTRACTION_TYPE_GROUP, EXTRACTION_TYPE_CLASS, MANAGEMENT, MANAGEMENT_GROUP, PAYMENT, PAYMENT_TYPE
+
+Results of previous runs
+Trail 1
+
+```python
+[{'cols': 1, 'test': 0.52659932659932662, 'train': 0.57483726150392822},
+ {'cols': 5, 'test': 0.68962962962962959, 'train': 0.94240179573512906},
+ {'cols': 9, 'test': 0.7211447811447812, 'train': 0.97638608305274976},
+ {'cols': 13, 'test': 0.75380471380471381, 'train': 0.97955106621773291},
+ {'cols': 17, 'test': 0.76134680134680133, 'train': 0.98071829405162736},
+ {'cols': 21, 'test': 0.76511784511784509, 'train': 0.98076318742985413},
+ {'cols': 25, 'test': 0.80033670033670035, 'train': 0.98316498316498313},
+ {'cols': 29, 'test': 0.80053872053872055, 'train': 0.98379349046015707},
+ {'cols': 33, 'test': 0.80040404040404045, 'train': 0.98390572390572395},
+ {'cols': 37, 'test': 0.79993265993265994, 'train': 0.98341189674523011}]
+```
+
+Trail 2
+```python
+[{'cols': 23, 'test': 0.7976430976430976, 'train': 0.9836812570145903},
+ {'cols': 25, 'test': 0.80033670033670035, 'train': 0.98316498316498313},
+ {'cols': 27, 'test': 0.80101010101010106, 'train': 0.9829405162738496},
+ {'cols': 29, 'test': 0.80053872053872055, 'train': 0.98379349046015707},
+ {'cols': 31, 'test': 0.80000000000000004, 'train': 0.98381593714927051}]
+```
+
+Trail 3
+```python
+[{'cols': 26, 'test': 0.80309764309764309, 'train': 0.98359147025813698},
+ {'cols': 27, 'test': 0.80101010101010106, 'train': 0.9829405162738496},
+ {'cols': 28, 'test': 0.80222222222222217, 'train': 0.98334455667789}]
+```
+
+As per Okham Razor's rules, we are going to select the simplest and well performing. Luckily, we have got kbest_selected_cols at _26_ which is comparatively top performer among other K-selections and also lower than actually number of columns
+
+_Conclusion: Using __Chi2__ with __KBest__, we found 26 best selected columns for generating results._
+
+
+### PCA
+PCA, Linear dimensionality reduction using Singular Value Decomposition of the data to project it to a lower dimensional space.
+
+Here is the cumulative
+
+Like KBest, in a similar fashion we have tried PCA model but we have encounter some decrease in score. As we can understand from the results, that transformed will have lower dimensions but it might be always to learn from it.
 
 
 # Results
@@ -388,13 +388,13 @@ Initial benchmark using Random Forest was 0.7970.
 
 ## First revision
 
-After initial benchmark, as planned in project design we tried basic data transformations, labelisations, different algorithmns, hyper parameter tuning and even multi class classifiers. At this stage we did not go much deep into understanding of data labels and transformation and we kept it as second revision.
+After initial benchmark, as planned in project design we tried basic data transformations, Labeling, different algorithms, hyper parameter tuning and even multi class classifiers. At this stage we did not go much deep into understanding of data labels and transformation and we kept it as second revision.
 
 ![Image][new_benchmark_score]
 
 ## Second revision
 
-In the second revision, we have build a special custom Labeliser to get in depth understanding of labels and analyzed that labels like funder, wpt_name, subvillage and other. Here we found the interesting details like only 50% or 30% of total groups are covering 80% to 90% of data while only minimal amount of data is too much scattered. So, we have optimized these groups accordingly in funder, wpt_name, ward and other columns. (Details of these are already explained in the Data PreProcessing Stage.)
+In the second revision, we have build a special custom Labeler to get in depth understanding of labels and analyzed that labels like funder, wpt_name, subvillage and other. Here we found the interesting details like only 50% or 30% of total groups are covering 80% to 90% of data while only minimal amount of data is too much scattered. So, we have optimized these groups accordingly in funder, wpt_name, ward and other columns. (Details of these are already explained in the Data PreProcessing Stage.)
 
 ![Image][final_benchmark_score]
 
@@ -430,11 +430,11 @@ Final score we achieved is [0.8201][final_benchmark_model].
 
 [classifier_comparision]: http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png?style=centerme
 [water_pump_with_kids]: http://drivendata.materials.s3.amazonaws.com/pumps/pumping.jpg?style=centerme
-[udacity_ml_course_plan]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/UDACITY_ML_COURSE_GIST.png?style=centerme
+[udacity_ml_course_plan]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/UDACITY_ML_COURSE_GIST.png?style=centerme
 [cols_value_counts]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/cols_value_count_li55.png?style=centerme
 [features_vc_compare]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/features_vc_compare.png?style=centerme
 [features_vc_histogram]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/features_vc_histogram.png?style=centerme
-[new_benchmark_score]:   https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/submissions_current_rank_192.png
+[new_benchmark_score]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/submissions_current_rank_192.png
 [final_benchmark_score]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/BenchmarkScore_0.8201.png?style=centerme
 
 <!---others-->
