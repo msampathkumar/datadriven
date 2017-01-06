@@ -6,6 +6,8 @@ Sampath Kumar
 
 December 18st, 2016
 
+__ INDEX __
+
 [TOC]
 
 # Definition
@@ -148,11 +150,15 @@ To create a generic model which could work in all scenarion, we will use stratif
 
 ## Exploratory Visualization
 
-
+Visualization of Object Columns Value Counts.
 
 ![Image][cols_value_counts]
 
+Bar plot of all Object Columns's Value counts.
+__ NOTES:__ Values shown in image are log transformed to show differences visually.
 ![Image][features_vc_compare]
+
+Histogram of all Object Columns's Value counts.
 
 ![Image][features_vc_histogram]
 
@@ -201,7 +207,7 @@ With Random Forest Classifier, we were able to generate a benchmark of 0.7970. S
  * Select K Best Checking
  * Exploration - outliers check
 3. Algorithm Selection
- * Unsupervised Learning Exploration(Gaussian Process, Neural Nets)
+ * Unsupervised Learning Exploration(Gaussian Process, KMeans)
  * Supervised Learning(GBT Trees, Nearest Neighbors, RF, One-vs-One)
  * Parameter Tuning
 4. Evaluation. Back to 1 with.
@@ -220,7 +226,7 @@ A Classifier comparision from [Sklearn's documentation][classifier_comparision_p
 
 For initial understanding, as we can see from above analysis on different kinds of datasets, I find that _Nearest Neighbor_ performs better when Random Forest is performing low. Also to have different learning process from that of Random Forest, we will also consider GBT Trees, which seem  seems performed better than Random Forest.
 
-We will be using Gaussian Process, Neural Nets for unsupervised Learning exploration. No specific reason but taken, two models different kinds of models for exploration.
+We will be using Gaussian Process, KMeans clustering for unsupervised Learning exploration. We have taken two models different kinds of models for exploration, so that we can compare one among them.
 
 
 So, We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF, GBT). As these models are easy to train, self-learning & evaluation nature make them a general good technique.
@@ -296,7 +302,7 @@ For these columns as we look into details we have observed that most of the data
     * 80.5 percentage of DATA coverage mean, 363 (in number) groups
     * 85.0 percentage of DATA coverage mean, 524 (in number) groups ##
 
-NOTE: Marked with double hashes are the selected values for coverage
+__NOTE:__ Marked with double hashes are the selected values for coverage.
 
 In the Ipython Notebook, we have created a generic helper script to do this and Ipython Widget for experimentations.
 
@@ -314,20 +320,26 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
 
 
 * KBest select
-     KBest is one the Univariate feature selection method that works by selecting the best features based on univariate statistical tests.
+    KBest is one of the Univariate feature selection methods that works by selecting the best features based on univariate statistical tests.
 
-     Well known statistical tests for classification are chi2, f_classif, mutual_info_classif. We have tried all these three methods to be sure and also looped from 25 to the maximum number of columns to find the best number of minimum required columns/features.
+    Well known statistical tests for classification are chi2, f_classif, mutual_info_classif. Using __Random Forest__ we are checking which statistical method is generating better results for K=30(selected columns).
 
-    Conclusion:
 
-    Columns order of KBest Runs.
+    |Statistical Test | Train Score| Test Score|
+    |-----------------|------------|-----------|
+    |chi2|0.98428731762065091|0.79966329966329963|
+    |f_classif|0.97432098765432096|0.79286195286195282|
+    |mutual_info_classif|0.98410774410774415|0.79447811447811445|
 
-    ```
+    KBest statistical method: __Chi2__ wins.
+
+    Like we have tried all these three methods to be sure, we shall also check the number of columns to find the best number of minimum required columns/features to better score.
+
     AMOUNT_TSH, DATE_RECORDED, FUNDER, GPS_HEIGHT, INSTALLER, LONGITUDE, LATITUDE, NUM_PRIVATE, BASIN, SUBVILLAGE, REGION, REGION_CODE, DISTRICT_CODE, LGA, WARD, POPULATION, PUBLIC_MEETING, SCHEME_MANAGEMENT, SCHEME_NAME, PERMIT, CONSTRUCTION_YEAR, EXTRACTION_TYPE, EXTRACTION_TYPE_GROUP, EXTRACTION_TYPE_CLASS, MANAGEMENT, MANAGEMENT_GROUP, PAYMENT, PAYMENT_TYPE
-    ```
 
     Results of previous runs
     Trail 1
+
     ```python
     [{'cols': 1, 'test': 0.52659932659932662, 'train': 0.57483726150392822},
      {'cols': 5, 'test': 0.68962962962962959, 'train': 0.94240179573512906},
@@ -359,16 +371,20 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
 
     As per Okham Razor's rules, we are going to select the simplest and well performing. Luckily, we have got kbest_selected_cols at _26_ which is comparatively top performer among other K-selections and also lower than actually number of columns
 
+    _Conclusion: Using __Chi2__ with __KBest__, we found 26 best selected columns for generating results._
+
 
 * PCA
-    Linear dimensionality reduction using Singular Value Decomposition of the data to project it to a lower dimensional space.
+    PCA, Linear dimensionality reduction using Singular Value Decomposition of the data to project it to a lower dimensional space.
+
+    Here is the cumulative
 
     Like KBest, in a similar fashion we have tried PCA model but we have encounter some decrease in score. As we can understand from the results, that transformed will have lower dimentions but it might be always to learn from it.
 
 
 # Results
 
-During training we
+After data transformations, features selections, model selection, model hyper parameter tuning and multi class wrapping we are able to score 81.26% in training.
 
 ## Model Evaluation and Validation
 
@@ -417,5 +433,8 @@ During training we
 
 [benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb
 [datadriven7]: https://www.drivendata.org/competitions/7/ "Data Driven"
+
+
+__INDEX__
 
 [TOC]
