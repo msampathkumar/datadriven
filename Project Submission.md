@@ -4,7 +4,7 @@
 
 Sampath Kumar
 
-December 18st, 2016
+January 6th, 2017
 
 __ INDEX __
 
@@ -146,7 +146,7 @@ The labels in this dataset are simple. There are three possible values for statu
 
 As numbers show we have data for unequal proportions. So the in normal circumstances if we train a model to learn the there might be changes where model tried to predict only first two groups which would only include ~92% data for learning.
 
-To create a generic model which could work in all scenarion, we will use stratification selection for splitting test-train data.
+To create a generic model which could work in all scenario, we will use stratification selection for splitting test-train data.
 
 ## Exploratory Visualization
 
@@ -154,11 +154,11 @@ Visualization of Object Columns Value Counts.
 
 ![Image][cols_value_counts]
 
-Bar plot of all Object Columns's Value counts.
+Bar plot of all Object Column's Value counts.
 __ NOTES:__ Values shown in image are log transformed to show differences visually.
 ![Image][features_vc_compare]
 
-Histogram of all Object Columns's Value counts.
+Histogram of all Object Column's Value counts.
 
 ![Image][features_vc_histogram]
 
@@ -168,27 +168,27 @@ __ Observations and Suggestions __
 
 * Need to check __Date columns__
     * we shall convert date -> day, month, year, weekday, total_no_of_day_from_reference_point. These splits for two reasons.
-        * Reason1: It might be possible that in some location all specific set of complaints are registered on a start/mid/at end of the month. It might also be possible that they are registered on every Monday or so.
-        * Reason2: Taking as much information as possible.
+        * Reason 1: It might be possible that in some location all specific set of complaints are registered on a start/mid/at end of the month. It might also be possible that they are registered on every Monday or so.
+        * Reason 2: Taking as much information as possible.
 
 * Need to check __Float and Bool columns__
-    * Longitutude & latitude(features) seem to hold (0,0) instead of NULL which is acting as outlier for now.
-    * Longitude and latitude(features) are too much preceise(in input date) that would make it too diffult to generalise. As generally water pumps are not installed next to each other to maintain a precision of high accuracy, we can reduce it.
-    * Few boolean columns are having Nan(NAN or Null) values which does not completely make them boolean series. If we look into this scenario of observing not having data as another symption(new information), to preserve this knowledge we can convert them into labels.
+    * Longitude & latitude(features) seem to hold (0,0) instead of NULL which is acting as outliers for now.
+    * Longitude and latitude(features) are too much precise(in input date) that would make it too difficult to generalize. As generally water pumps are not installed next to each other to maintain a precision of high accuracy, we can reduce it.
+    * Few boolean columns are having Nan(NAN or Null) values which does not completely make them boolean series. If we look into this scenario of observing not having data as another indication (new information), to preserve this knowledge we can convert them into labels.
 
-* Following pairs looks closesly related
+* Following pairs looks closely related
     * quantity & quantity_group
     * quality_group & water_quality
     * extraction_type, extraction_type_class & extraction_type_group
 
 * Other
-    * categorical columns like installer, funder, scheme_name seems to hold data issue like text capitlisation & trailing spaces.
+    * categorical columns like installer, funder, scheme_name seems to hold data issue like text capitalization & trailing spaces.
     * recorded_by, seems to hold only a single value
     * population & amount_tsh, values are for some given as zero
 
 ## Benchmark Model
 
-With simplistic data labelisation and with the help of Random Forest Classifiers, we have created a benchmark submission of 0.7970 for which source code is [here][benchmark_model].
+With simplistic data labeling and with the help of Random Forest Classifiers, we have created a benchmark submission of 0.7970 for which source code is [here][benchmark_model].
 
 # Methodology
 
@@ -220,7 +220,7 @@ With Random Forest Classifier, we were able to generate a benchmark of 0.7970. S
 As described in the introduction, a smart understanding of which water points will fail can improve maintenance operations and ensure that clean, potable water is available to communities across Tanzania.
 
 
-A Classifier comparision from [Sklearn's documentation][classifier_comparision_page]
+A Classifier comparison from [Sklearn's documentation][classifier_comparision_page]
 
 ![Classifiers Comparison][classifier_comparision]
 
@@ -231,7 +231,7 @@ We will be using Gaussian Process, KMeans clustering for unsupervised Learning e
 
 So, We will use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(RF, GBT). As these models are easy to train, self-learning & evaluation nature make them a general good technique.
 
-From dataset features, we have coordinates like longitude, latitude and pump models and other, it might even possible that simmilar issues are observed in certain neighbour and have been reported already so Nearest Neighbour models could also perform well.
+From dataset features, we have coordinates like longitude, latitude and pump models and other, it might even possible that similar issues are observed in certain neighbor and have been reported already so Nearest Neighbor models could also perform well.
 
 During model selection, we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe that a One\-vs\-Rest might perform well.
 
@@ -260,7 +260,7 @@ As mentioned earlier majority of the data is object columns,
 
 * Int Columns: For some integer columns like Geo location co ordinates, the precision is so good that we can point the location to centimeter level. But this seemed to too precise(too much information) and so in hit and trial, when we reduced the precision up to 3 digit we found that our benchmark model was performing well.
 
-For other numerical model, we are apply labelisation which will work as MinMaxScalar.
+For other numerical model, labeling will work as MinMaxScalar.
 
 * Object Columns:
 During the sub group plotting we have noticed that minor text capitalization issue and spaces. So we have applied a transformer to convert all the object data to lower case ASCII strings.
@@ -384,17 +384,25 @@ After preprocessing, we have tried 3 methods of dimensionality reductions.
 
 # Results
 
-After data transformations, features selections, model selection, model hyper parameter tuning and multi class wrapping we are able to score 81.26% in training.
+Initial benchmark using Random Forest was 0.7970.
 
-## Model Evaluation and Validation
+## First revision
 
-## Justification
+After initial benchmark, as planned in project design we tried basic data transformations, labelisations, different algorithmns, hyper parameter tuning and even multi class classifiers. At this stage we did not go much deep into understanding of data labels and transformation and we kept it as second revision.
 
+![Image][new_benchmark_score]
 
+## Second revision
 
-# Conclusion
+In the second revision, we have build a special custom Labeliser to get in depth understanding of labels and analyzed that labels like funder, wpt_name, subvillage and other. Here we found the interesting details like only 50% or 30% of total groups are covering 80% to 90% of data while only minimal amount of data is too much scattered. So, we have optimized these groups accordingly in funder, wpt_name, ward and other columns. (Details of these are already explained in the Data PreProcessing Stage.)
 
-## Future improvements
+![Image][final_benchmark_score]
+
+Final score we achieved is [0.8201][final_benchmark_model].
+
+## Future Improvements Projects
+* Like correlation for numerical columns, objects Columns can be looked up for Associations Techniques.
+* Unsupervised learning explorations were failed and could not generate much results till now, so there is score for further research in Unsupervised learning.
 
 ## Sources & References
 
@@ -420,21 +428,20 @@ After data transformations, features selections, model selection, model hyper pa
 [input_file4]: https://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv
 <!---Images-->
 
-[classifier_comparision_page]: http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html
-
-[classifier_comparision]: http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png
-[accuracy_score]: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score
-[water_pump_with_kids]: http://drivendata.materials.s3.amazonaws.com/pumps/pumping.jpg
-[udacity_ml_course_plan]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/UDACITY_ML_COURSE_GIST.png?raw=true
+[classifier_comparision]: http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png?style=centerme
+[water_pump_with_kids]: http://drivendata.materials.s3.amazonaws.com/pumps/pumping.jpg?style=centerme
+[udacity_ml_course_plan]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/UDACITY_ML_COURSE_GIST.png?style=centerme
 [cols_value_counts]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/cols_value_count_li55.png?style=centerme
 [features_vc_compare]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/features_vc_compare.png?style=centerme
 [features_vc_histogram]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/features_vc_histogram.png?style=centerme
+[new_benchmark_score]:   https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/submissions_current_rank_192.png
+[final_benchmark_score]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/BenchmarkScore_0.8201.png?style=centerme
+
 <!---others-->
 
-[benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb
-[datadriven7]: https://www.drivendata.org/competitions/7/ "Data Driven"
+[benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb "Ipython Notebook Link"
+[final_benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.8201.ipynb "Ipython Notebook Link"
+[datadriven7]: https://www.drivendata.org/competitions/7/ "Driven Data Competition Page Link"
+[classifier_comparision_page]: http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html "Reference Page Link"
+[accuracy_score]: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score "Reference Page Link"
 
-
-__INDEX__
-
-[TOC]
