@@ -185,3 +185,17 @@ class CUST_CATEGORY_LABELER():
         """Fit data and then transform."""
         self.fit(col_data)
         return self.transform()
+
+    def etransform(self, data):
+        """For external pd.series transformations."""
+        groups_coverage = self.check_data_coverage()
+
+        self.DB = dict(self.DATA_VC.head(groups_coverage))
+        ss = dict(self.DATA_VC.head(groups_coverage))
+
+        def mapper(x):
+            if x in ss:
+                return x
+            else:
+                return 'someother'
+        return data.apply(mapper)

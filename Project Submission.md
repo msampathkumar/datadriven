@@ -269,9 +269,6 @@ With simplistic data labeling and with the help of Random Forest Classifiers, we
 
 
 
-
-
-
 ## Methodology
 
 As explained in Problem Description, we will all those steps but in a step by step Prototype/Spiral - Software development methodology. Prototype/Spiral development methodology, in simple steps is same as well know Waterfall model but in a iterative fashion till we reach end goal(a satisfied product).
@@ -599,8 +596,27 @@ Here is the cumulative
 
 Like KBest, in a similar fashion we have tried PCA model but we have encounter some decrease in score. As we can understand from the results, that transformed will have lower dimensions but it might be always to learn from it.
 
+__Results of Iteration 2__: Following are the test results of Random Forest.
 
+* Loading PCA Processed Data Score:
 
+```
+AC Score: 0.699393939394 F1 Score: 0.709020068049
+```
+
+* Loading KBest Processed Data: 0.79649831649831648
+
+```
+AC Score: 0.796498316498 F1 Score: 0.803530383556
+```
+
+* Loading Normal Processed Data: 0.79892255892255892
+
+```
+AC Score: 0.798922558923 F1 Score: 0.805559066743
+```
+
+As we can observe, we were able to reduce the number of dimensions using PCA but results can show us that transforming data is great but sometimes models might find difficult to learn transformed data. We can also observe that compared to our Normal Processed Data, we can see that __KBest Processed Data__ shows better results.
 
 ### Refinement
 
