@@ -46,8 +46,12 @@ def df_check_stats(*dfs):
     return
 
 
-def data_transformations(raw_x, raw_y, raw_test_x):
-    """Label Encodes the given data."""
+def data_transformations(raw_x, raw_y, raw_test_x, pickle_path=False):
+    """Label Encodes the given data.
+
+    If `pickle_path` provided, transformers labels will be saved as pickles
+        at provided location.
+    """
     d = defaultdict(preprocessing.LabelEncoder)
 
     # Labels Fit
@@ -59,6 +63,16 @@ def data_transformations(raw_x, raw_y, raw_test_x):
 
     le = preprocessing.LabelEncoder().fit(raw_y[u'status_group'])
     y = le.transform(raw_y[u'status_group'])
+
+    if pickle_path:
+        if pickle_path in [True, False]:
+            fp1 = open('d.pkl', 'wb')
+            fp2 = open('le.pkl', 'wb')
+        else:
+            fp1 = open(pickle_path + 'd.pkl', 'wb')
+            fp2 = open(pickle_path + 'le.pkl', 'wb')
+        pickle.dump(d, fp1)
+        pickle.dump(le, fp2)
 
     return new_x, y, new_test_x
 
