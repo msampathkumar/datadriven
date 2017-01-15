@@ -1,4 +1,6 @@
 """Script for all local tools."""
+from __future__ import absolute_import
+import sys
 import pickle
 import numpy as np
 import pandas as pd
@@ -11,6 +13,82 @@ from sklearn.multiclass import OneVsOneClassifier, OneVsRestClassifier
 
 from collections import defaultdict
 from sklearn import preprocessing
+
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
+
+from IPython.core.magic import (Magics, magics_class, cell_magic)
+from IPython.core.display import HTML
+# from IPython.display import display
+
+from markdown import markdown
+from datetime import datetime
+
+now = datetime.now
+
+
+@magics_class
+class MarkdownMagics(Magics):
+    """Markdown ipython helper tools."""
+
+    @cell_magic
+    def asmarkdown(self, line, cell):
+        """To print data as markdown."""
+        buffer = StringIO()
+        stdout = sys.stdout
+        sys.stdout = buffer
+        try:
+            exec(cell, locals(), self.shell.user_ns)
+        except:
+            sys.stdout = stdout
+            raise
+        sys.stdout = stdout
+        ext_format = markdown(buffer.getvalue(),
+                              extensions=['markdown.extensions.extra'])
+        return HTML("<p>{}</p>".format(ext_format))
+        return buffer.getvalue() + 'test'
+
+    def timer_message(self, start_time):
+        """To check rum time."""
+#         print self
+        time_diff = (now() - start_time).total_seconds()
+        if time_diff < 0.001:
+            time_diff = 0
+            print('\n<pre>In', time_diff, 'Secs</pre>')
+        else:
+            print('\n<pre>In', time_diff, 'Secs</pre>')
+
+    @cell_magic
+    def timer(self, line, cell):
+        """Wrapper for timer funciton."""
+        now = datetime.datetime.now
+        start_time = now()
+        buffer = StringIO()
+        stdout = sys.stdout
+        sys.stdout = buffer
+        try:
+            exec(cell, locals(), self.shell.user_ns)
+            self.timer_message(start_time)
+        except:
+            sys.stdout = stdout
+            raise
+        ext_format = markdown(buffer.getvalue(),
+                              extensions=['markdown.extensions.extra'])
+        return HTML("<p>{}</p>".format(ext_format))
+        return buffer.getvalue() + 'test'
+
+
+def show_object_dtypes(df, others=True):
+    """Show dataframe  dtypes for non object cols."""
+    dtype = object
+    if others:
+        return df.dtypes[df.dtypes == dtype]
+    else:
+        return df.dtypes[df.dtypes != dtype]
 
 
 def sam_pickle_save(df_x, df_y, df_test_x, prefix="tmp/Iteration1_"):
