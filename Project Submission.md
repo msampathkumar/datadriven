@@ -806,6 +806,7 @@ Final post submission score we achieved is [0.8201][final_benchmark_model].
 ### Free-Form Visualization
 ### Reflection
 ### Improvement
+* Using Longitude and Latitude, finding actually GPS Height and check if -tive GPS do exist using [Google Api](https://developers.google.com/maps/documentation/elevation/intro)
 * Like correlation for numerical columns, objects Columns can be looked up for Associations Techniques.
 * Unsupervised learning explorations were failed and could not generate much results till now, so there is score for further research in Unsupervised learning.
 
