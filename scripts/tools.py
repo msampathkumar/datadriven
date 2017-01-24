@@ -157,16 +157,18 @@ def data_transformations(raw_x, raw_y, raw_test_x, pickle_path=False):
 
 def check_metric(y_pred, y_test, show_cm=False):
     """Check score and print output."""
+    ac_score = sk_metrics.accuracy_score(y_pred, y_test)
+    f1_score = sk_metrics.f1_score(y_pred, y_test, average='weighted')
     if show_cm:
         print('------------------------------------------------')
         print(sk_metrics.classification_report(y_pred, y_test))
     print('------------------------------------------------')
-    print('AC Score:', sk_metrics.accuracy_score(y_pred, y_test),
-          'F1 Score:', sk_metrics.f1_score(y_pred, y_test, average='weighted'))
-    return
+    print('AC Score:', ac_score,
+          'F1 Score:', f1_score)
+    return (ac_score, f1_score)
 
 
-def game(x_train, x_test, y_train, y_test, algo='rf', show_train_scores=True):
+def game(x_train, x_test, y_train, y_test, algo='rf', show_train_scores=False):
     """Standard Alogrithms fit and return scores.
 
     * Default Random State is set as 192 when posible.
@@ -190,11 +192,21 @@ def game(x_train, x_test, y_train, y_test, algo='rf', show_train_scores=True):
                                                          random_state=192))
 
     else:
-        print('improper model name, select[rf, gb, knn, mc_ovo_rf, mc_ova_rf]')
+        print('improper model name, please check help')
 
     clf = clf.fit(x_train, y_train)
 
+    # if user does not opt
+    ac_score, f1_score = 0, 0
+
     if show_train_scores:
-        check_metric(clf.predict(x_train), y_train)
-    check_metric(clf.predict(x_test), y_test)
-    return clf
+        ac_score, f1_score = check_metric(clf.predict(x_train), y_train)
+
+    ac_score1, f1_score1 = check_metric(clf.predict(x_test), y_test)
+    ret = {'classifier': clf,
+           'test_ac_score': ac_score,
+           'test_f1_score': f1_score,
+           'train_ac_score': ac_score1,
+           'train_f1_score': f1_score1,
+           }
+    return ret
