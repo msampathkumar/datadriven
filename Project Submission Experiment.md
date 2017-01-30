@@ -718,9 +718,14 @@ Due to the limitation of resources(time & documentation), we have avoided these 
 <!---others-->
 
 [F1_Score]: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score
-[benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb "IPython Notebook Link"
-[final_benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.8201.ipynb "IPython Notebook Link"
 [datadriven7]: https://www.drivendata.org/competitions/7/ "Driven Data Competition Page Link"
 [classifier_comparision_page]: http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html "Reference Page Link"
 [accuracy_score]: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score "Reference Page Link"
+[benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb "IPython Notebook Link"
+[final_benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.8201.ipynb "IPython Notebook Link"
+[PumpIt01]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-01.ipynb "IPython Notebook Link - Benchmark"
+[PumpIt02]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-02.ipynb "IPython Notebook Link - Data Analysis"
+[PumpIt03]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-03.ipynb "IPython Notebook Link - Data Transformations and Algorithm selection"
+[PumpIt04]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-04.ipynb "IPython Notebook Link - Curiosity & Classifier Performance Checks"
+[PumpIt05]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-05.ipynb "IPython Notebook Link - Xgboost & Final Submission"
 
