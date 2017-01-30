@@ -4,15 +4,17 @@ import sys
 import pickle
 import numpy as np
 import pandas as pd
-import sklearn.metrics as sk_metrics
+from collections import defaultdict
+from sklearn.metrics import accuracy_score, f1_score
+from sklearn.metrics import classification_report
+from IPython.display import display
+from sklearn import preprocessing
 
+from sklearn.dummy import DummyClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.multiclass import OneVsOneClassifier, OneVsRestClassifier
-
-from collections import defaultdict
-from sklearn import preprocessing
 
 
 try:
@@ -155,26 +157,58 @@ def data_transformations(raw_x, raw_y, raw_test_x, pickle_path=False):
     return new_x, y, new_test_x
 
 
+def classification_report_df(y_true,
+                             y_pred,
+                             target_names=['class 0', 'class 1', 'class 2']):
+    """To create a Classification Report DataFrame."""
+    cr = classification_report(y_true, y_pred, target_names=target_names)
+    # Parse rows
+    tmp = list()
+    for row in cr.split("\n"):
+        parsed_row = [x for x in row.split("  ") if len(x) > 0]
+        if len(parsed_row) > 0:
+            tmp.append(parsed_row)
+
+    # Store in dictionary
+    measures = tmp[0]
+
+    d_class_data = defaultdict(dict)
+    for row in tmp[1:]:
+        class_label = row[0]
+        for j, m in enumerate(measures):
+            d_class_data[class_label][m.strip()] = float(row[j + 1].strip())
+    return pd.DataFrame(d_class_data).T
+
+
 def check_metric(y_pred, y_test, show_cm=False):
-    """Check score and print output."""
-    ac_score = sk_metrics.accuracy_score(y_pred, y_test)
-    f1_score = sk_metrics.f1_score(y_pred, y_test, average='weighted')
+    """Check score and print output.
+
+    Read more at:
+    http://scikit-learn.org/stable/modules/model_evaluation.html#multiclass-and-multilabel-classification
+
+    In Subseciton multiclass-and-multilabel-classification
+    """
+    ac_score = accuracy_score(y_test, y_pred)
+    f1_score1 = f1_score(y_test, y_pred, average='micro')
     if show_cm:
         print('------------------------------------------------')
-        print(sk_metrics.classification_report(y_pred, y_test))
+        display(classification_report_df(y_test, y_pred))
     print('------------------------------------------------')
     print('AC Score:', ac_score,
-          'F1 Score:', f1_score)
-    return (ac_score, f1_score)
+          'F1 Score:', f1_score1)
+    return (ac_score, f1_score1)
 
 
-def game(x_train, x_test, y_train, y_test, algo='rf', show_train_scores=False):
+def game(x_train, x_test, y_train, y_test, algo='rf', show_train_scores=True):
     """Standard Alogrithms fit and return scores.
 
     * Default Random State is set as 192 when posible.
-    * Available models - rf, gb, knn, mc_ovo_rf, mc_ova_rf
+    * Available models - dc, rf, gb, knn, mc_ovo_rf, mc_ova_rf
     """
-    if algo is 'rf':
+    if algo is 'dc':
+        clf = clf = DummyClassifier(strategy='most_frequent', random_state=192)
+
+    elif algo is 'rf':
         clf = RandomForestClassifier(n_jobs=-1, random_state=192)
 
     elif algo is 'gb':
@@ -193,6 +227,7 @@ def game(x_train, x_test, y_train, y_test, algo='rf', show_train_scores=False):
 
     else:
         print('improper model name, please check help')
+        return 0, 0
 
     clf = clf.fit(x_train, y_train)
 
@@ -200,8 +235,10 @@ def game(x_train, x_test, y_train, y_test, algo='rf', show_train_scores=False):
     ac_score, f1_score = 0, 0
 
     if show_train_scores:
+        print('Training Scores')
         ac_score, f1_score = check_metric(clf.predict(x_train), y_train)
 
+    print('\nTesting Scores')
     ac_score1, f1_score1 = check_metric(clf.predict(x_test), y_test)
     ret = {'classifier': clf,
            'test_ac_score': ac_score,
