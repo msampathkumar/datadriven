@@ -243,21 +243,13 @@ As we have already taken __Random Forest Classifier__ for generating a Benchmark
 
 For initial understanding, as we can see from above analysis on different kinds of datasets, I find that __Nearest Neighbor__ performs better when __Random Forest__ is performing low. From dataset features, we have coordinates like longitude, latitude and pump models and other, so we believe it might even possible that similar issues can be observed in certain neighborhoods and have been reported already so Nearest Neighbor models could also perform well.
 
-<!-- We will be use both available(in Sklearn) __Gaussian Process__, __KMeans__ clustering for unsupervised Learning exploration. As we have taken two models for exploration, we can compare one among them like we can for RF and GBT. -->
-
-
 Given that this is a multi class classification, we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe that a One\-vs\-Rest might perform well. <!-- In `Refinement Phase`, we will be selecting the model which performs best from earlier suggestion unsupervised models. --> Thus we might be improving the well performing model to next level.
 
 To summaries, we will be using following model in following pattern
 
-* Supervised Learning
-    * Random Forest
-    * Gradient Boosting
-    * Nearest Neighbors
-
-* Multi Class
-    * One vs Rest
-    * One vs One
+* Random Forest
+* Gradient Boosting
+* Nearest Neighbors
 
 ### Benchmark Model
 
@@ -506,12 +498,12 @@ So, we will be using Gradient Boosting Trees as our model for solution building 
 * Gradient Boosting Trees(75% Acc) are able to provide good testing compared to Random Forest(79% Acc) and KNN(70% Acc)
 * Gradient Boosting test-train score difference is less than 1%, which is lower than Random Forest(~20%) and KNN(8%)
 
-Out of curiosity and from our inspiration from SKlearn Documentation, we have copied the code from documentation and applied to our data to understand the performance of other models.
+Out of curiosity and from our inspiration from SKlearn Documentation, we have copied the code from documentation and applied to our transformed data to understand the performance of other models and estimate if our model selection is been good enough.
 
 
 ![Image](https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/CompareClassfiers.png)
 
-Details of this experiment can be found [here](PumpIt04).
+Details of this experiment can be found [here](PumpIt04). Surprising, as we expected one our expected model did happen to be a top performer of these shown classifiers.
 
 
 
