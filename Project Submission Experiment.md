@@ -6,6 +6,9 @@ Sampath Kumar
 
 January 6th, 2017
 
+
+Keywords: Stats, Labeling, Transformation, Variance Threshold, Chi2, F1 Score, Random Forest, Gradient Boosting, Xgboost.
+
 __ INDEX __
 
 [TOC]
@@ -379,9 +382,10 @@ As you can see there is are details in a systematic order like Data Analysis(2),
 
 ### Data Preprocessing
 
-Based up on the observations of [Analysis](#analysis), we have already show cased the finding in _Data Exploration_(Second step in described methodology). Here we will describing details why and how and what we did to fix/solve these issues or observations from Analysis.
+Based up on the observations of [Analysis](#analysis), we have already show cased the finding in _Data Exploration_(Second step in described methodology), here we will describing details of how and what we did to fix/solve these issues or observations from Analysis. Before we start lets start with understanding of two most used feature engineering concepts like [Features Scaling](https://en.wikipedia.org/wiki/Feature_scaling) and Noise reduction(Data Cleansing/Data Scrubbing).
 
-Before we start lets start with understanding of two most used feature engineering concepts like [Features Scaling](https://en.wikipedia.org/wiki/Feature_scaling) and Noise reduction(Data Cleansing/Data Scrubbing). As we can understand from its name itself, Features Scaling is a kind of data transformation technique of numerical data from one dimension to another simpler dimensions, which can be done with out any loss of information. For example say in our data set we have regions codes like  4001, 4002, 4003,.. and so one. Say we are subtract 4000 from each one then the region code become like, 1, 2, 3,.. and so on. As you can understand, even the computations involved with these numbers reduce as multiplying another number with 1 or 2 or 3 is much easier than with 4001 or 4002 or 4003.
+
+As we can understand from its name itself, Features Scaling is a kind of data transformation technique of numerical data from one dimension to another simpler dimensions, which can be done with out any loss of information. For example say in our data set we have regions codes like  4001, 4002, 4003,.. and so on. Say we are subtract 4000 from each one then the region code become like, 1, 2, 3,.. and so on. As you can understand, the computations involved with these numbers reduce as the number of bits involved in the computation is also less. Now consider, if we are using this number for a multiplication or division or in finding distance formula, with 1 or 2 or 3 is much easier than with 4001 or 4002 or 4003.
 
 As for Noise Reduction or Outliers Detections, we refer to the huge variances/entropy found in categorical columns like Funder, Lga, Schema_name. In these columns, we observe huge variety of unique groups. As you can understand, having a unique id will help in identifying a row perfectly, but it will help in finding a pattern and so we called these as Noise or Outliers. So built a custom Label Transformer, to see how groups are actings are noise and cleaned them(replace with `other`) with out much loss of information.
 
@@ -473,9 +477,13 @@ Here is plot after Data Transformations
 
 Also when we take a closer look at the data longitude and latitude details, the precision of data is up to such a level that one can even pin point the location to millimeters. As public water pumps are generally not install for every house and kept in open area which is accessible for lots of people, we reduced the precision where it can point location with in meters.
 
-As for the values used to replace (0, 0), we had to study the how longitude and latitudes are in specific to a region. Here is a plot of how longitude and latitude are in specific to region. This chart and code for generating this chart can be seen [Data Analysis][PumpIt02].
+As for the values used to replace (0, 0) with approximate location coordinate values, we had to study the how longitude and latitudes are in specific for a region. Here is a plot of how longitude and latitude are in specific to region. This chart and code for generating this chart can be seen [Data Analysis][PumpIt02].
 
 ![Image](https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/LONG_LAT_TRENDS.png?raw=true)
+
+_Plot: X - Axis, we have Location details, Y - Axis we have coordinates and lines are several approximate stats values related to each regions._
+
+Notes: Due limited width size of plot this image is only showing 5 X-axis point labels, but there are more point as we can observe from graphs and also from regions data available from [Data Exploration](data_exploration) section.
 
 Here is the python function used for data transformations
 
@@ -623,18 +631,27 @@ After these data transformations, we have around 25 columns and code and details
 
 ### Implementation
 
-As described earlier, the algorithms we have selected for finding our multi class classifier model training are Random Forest, Gradient Boosting Tree and KNN Classifier. Now the data is cleaned and preprocessed for model learning, we have done the model training for these classifier and obtained following results using a custom function called `game`.
+As described earlier, the algorithms we have selected for finding our multi class classifier model training are Random Forest, Gradient Boosting Tree and KNN Classifier. Now the data is cleaned and preprocessed for model learning, we have done the model training for these classifier and obtained following results using a custom function called `GAME`.
 
-As the process of initiating a classifier and training it, testing it on train data and test data and then running scoring metric functions and printing these results in nice manner, all these are like single tightly couples jobs, so we clubbed them into simpler function called __game__ function. All the classifier initiated in game are using the default parameters except for random_state which was set to 192 to make results reproducible as much. Scripts details can be found [here](https://github.com/msampathkumar/datadriven_pumpit/blob/master/scripts/tools.py). For dummy classifier, we have used `most_frequent` which was explained in the Benchmark section.
+As the process of initiating a classifier and training it, testing it on train data and test data and then running scoring metric functions and printing these results in nice manner, all these are like single tightly couples jobs, so we clubbed them into simpler function called __game__ function.
+
+![Image](images/GAME.png?style=centerme)
+
+All the classifier initiated in game are using the default parameters except for random_state which was set to 192 to make results reproducible as much. Scripts details can be found [here](https://github.com/msampathkumar/datadriven_pumpit/blob/master/scripts/tools.py). For dummy classifier, we have used `most_frequent` which was explained in the Benchmark section.
+
 
 _Note:_
 
 * AC Score - implies Accuracy Score.
-* F1 Score - F1 Score(micro)
+* F1 Score - implies F1 Score(micro)
+* In this section, code comments has both python code and output are display. All the Python
 
 __Random Forest__
 
-```
+``` Python
+>>> # Random Forest
+>>> clf = game(X_train, X_test, y_train, y_test, algo='rf')
+
 Training Scores
 ------------------------------------------------
 AC Score: 0.982356902357 F1 Score: 0.982356902357
@@ -646,7 +663,10 @@ AC Score: 0.798720538721 F1 Score: 0.798720538721
 
 __Gradient Boosting Trees__
 
-```
+``` Python
+>>> # Random Forest
+>>> clf = game(X_train, X_test, y_train, y_test, algo='gb')
+
 Training Scores
 ------------------------------------------------
 AC Score: 0.755824915825 F1 Score: 0.755824915825
@@ -658,7 +678,10 @@ AC Score: 0.751043771044 F1 Score: 0.751043771044
 
 __KNN__
 
-```
+``` Python
+>>> # Random Forest
+>>> clf = game(X_train, X_test, y_train, y_test, algo='knn')
+
 Training Scores
 ------------------------------------------------
 AC Score: 0.788507295174 F1 Score: 0.788507295174
@@ -707,9 +730,9 @@ Details of this experiment can be found [here][PumpIt04]. Surprising, as we expe
 
 ### Refinement
 
-During the search Gradient Boosting parameter tuning, we found another gradient boosting model in Python. [Xgboost](https://xgboost.readthedocs.io/en/latest/) module which is an Extreme Gradient Boosting designed to be Flexible and Scalable. As current Gradient models is  slightly slow, so for further improvement, we used Xgboost Extreme Gradient Boosting Classifier for our multi class prediction.
+During the search for Gradient Boosting parameter tuning, we found another gradient boosting model in Python. [Xgboost](https://xgboost.readthedocs.io/en/latest/) module which is an Extreme Gradient Boosting designed to be Flexible and Scalable. As current Gradient models is  slightly slow, so for further improvement, we used Xgboost Extreme Gradient Boosting Classifier for our multi class prediction.
 
-During data processing stage, we completed the data transformations based on the evidences we found from the data and removed the unnecessary columns by intusion. So, to further optimize this search for best columns and train a model we did [pipeline](http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline) of features selection as suggested in Sklearn.
+During data processing stage, we completed the data transformations based on the evidences we found from the data and removed the unnecessary columns by intuition. So, to further optimize this search for best columns and train a model we did [pipeline](http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline) of features selection and [RandomizedSearchCV](http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV)
 
 
 For Finer model building, we generated a model building curve.
