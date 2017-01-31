@@ -11,44 +11,56 @@ __ INDEX __
 [TOC]
 
 
-
-
-
-
-
-
-
 ## Definition
 
 ### Project Overview
 
 Across Africa, cholera, typhoid, dysentery and other diseases kill thousands each year. To help the people of Tanzania(2007), The Tanzanian government, with support from UN Development Programme(UNDP), responded to the water problems by the installation of Drinking Water Taps and Decentralized the maintenance for a quick response. Today this water infrastructure is facing repair and maintenance issues causing a disconnection for drinking water needs.
 
-The Taarifa Platform is an open source web API, designed to close citizen feedback loops. Using Taarifa people can report their social issues(like water, electricity, food and other) from different forms of communications like SMS, Web Forums, Emails or Twitter. Later these reports are placed into a workflow where they can be followed up and acted upon while engaging citizens and community. A message then will to local central governing body notifying the issue & the location.
+The Taarifa Platform is an open source web API, designed to close citizen feedback loops. Using Taarifa people can report their social issues(like water, electricity, food and other) from different forms of communications like SMS, Web Forums, Emails or Twitter. Later these reports are placed into a work flow where they can be followed up and acted upon while engaging citizens and community. A message then will to local central governing body notifying the issue & the location.
 
-![Image][water_pump_with_kids]
+<!-- ![Image1][water_pump_with_kids] -->
 
-__Personal Motivation__: Long before I joined a school I remember a glimpse from the past, where lots of people standing in long queue for drinking water. May be it was the first time I have ever seen people struggling for drinking water till late evenings(like the above image show), on that day I felt sad. Every time I read about this problem statement I still do feel the same way.
+In this Project, we will be using the well known algorithms like [Random Forest](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf), [Gradient Boosting Trees](https://www.cse.cuhk.edu.hk/irwin.king/_media/presentations/2001_greedy_function_approximation_a_gradient_boosting_machine.pdf), [Support Vector Machines](http://research.microsoft.com/en-us/um/people/cburges/papers/svmtutorial.pdf) and [Xgboost](https://xgboost.readthedocs.io/en/latest/). External Resources, where you can find the code and scripts used are available in below links.
 
-We all are given wonderful opportunity(by Mother Nature/Life/God) for growth and education to live a good life filled with hard work, sweat that would lead to a happy life. And I believe its right to providing/sharing basic facilities is minimum help we can do our fellow passengers in our journey of life.
+1. [Benchmark (Data Load + Clean Up + Algorithm)](PumpIt01)
+2. [Data Analysis](PumpIt02)
+3. [Manual Data Transformations (Data Load + Clean Up + Algorithm)](PumpIt03)
+4. [Analysis of Algorithm Selection and Comparison](PumpIt04)
+5. [Algorithmic Features Selection & Hyper Parameter Tuning](PumpIt05)
 
-> We all are not the same but when we all share what we have, then there would be no one better than us.
+
+__Personal Motivation__: When I was a child, I used see lots of common people standing in long queue for drinking water. May be it was the first time I have ever seen people struggling for drinking water till late evenings(like the above image show), on that day I did not know how to help them. Every time I read about this problem statement I still do feel the same way. We realize that trying a few algorithms and feature engineering techniques might not solve this problem of fixing the water issues of our fellow beings in Tanzania, but we hope and expect that this project to serve as a platform for building tools for proactive identifying .
+
+> What we do is less than a drop in the ocean. But if it were missing, the ocean would lack something.  - Mother Teresa
 
 ### Problem Statement
 
 Using the data gathered from Taarifa and the Tanzanian Ministry of Water, can we predict which pumps are functional, which need some repairs, and which don't work at all? Predicting one of these three classes that might have caused the failure of a water pump, can improve the maintenance operations to well prepare and ensure that clean, potable water is available to communities across Tanzania.
 
-This project is inspired by [DataDriven][datadriven7]! From logical perspective, as we can understand we are looking at a __Supervised Multi Class Classification problem__ and our goal is identifying which label is the cause for an issues entry in Taarifa complaints records. So based on the features and size of dataset, our course of action would be to identify a classifier out of many different kinds of classifiers which could understand and predict well.
-
+This project is inspired by [DataDriven][datadriven7]! From logical perspective, as we can understand we are looking at a __Supervised Multi Label Classification problem__ and our goal is identifying which label, out of 3 possible labels is the cause for an issues entry in Taarifa complaints records. <!--  So based on the features and size of dataset, our course of action would be to identify a classifier out of many different kinds of classifiers which could understand and predict well. --> <!--
 As shown in below image, we are going to do a step by step development progress on here.
-![Udacity Machine Learning Course Plan][udacity_ml_course_plan]
+![Udacity Machine Learning Course Plan][udacity_ml_course_plan] -->
 
-After finding a suitable classifier we will try to build accuracy over it by featuring engineering and parameter tuning methods. At the same time we will also try to re-evaluate other suitable classifier to check if data quality is improved. As better the data quality, the better the accuracy and consistently top performing classifier will be our classifier for this classification.
+Few key things to note:
+* Multi Label Prediction
+* Taarifa complaints records(Manually added data though a Social Application Platform)
 
+As observed from dataset given by Taarifa and DataDriven, most of the data is labeled data and would need concise text processing for improving data quality in a way that an AI Machine Learning Algorithm can understand & see patterns in data. So for improving the quality of data, first we need a reference benchmark point score to look and keep improving our data quality and progress towards build a solution. After setting a benchmark, we explore few well known Algorithms and followed by some further improvements of features selection and parameter tuning. As we believe good data is what generates a good model, we will try to focus more on building good quality data set.
 
 ### Metrics
 
-#### Weighted F1 Score
+Before we begin metrics selection, lets look at the distribution of labels in the data. The labels in this dataset are simple. There are three possible values:
+
+* functional - the waterpoint is operational and there are no repairs needed
+* functional needs repair - the waterpoint is operational, but needs repairs
+* non functional - the waterpoint is not operational
+
+![Image1](http://drivendata.materials.s3.amazonaws.com/pumps/labeldistribution.png)
+
+In multi-class classification class imbalance effects more easily the typical performance metrics. As per competition posted by Data Driven suggests a simple Accuracy, given its imbalanced classes. So we have added a small wrapper function to provide both Scores for understanding a models performance, while Accuracy score is focuses on overall model performance, we added F1 Score to focus on balanced precision and recall scores in according to each classes distribution.
+
+#### Micro F1 Score
 
 The [F1 Score][F1_Score] can be interpreted as a weighted average of the precision and recall, where an F1 score reaches its best value at 1 and worst score at 0. The relative contribution of precision and recall to the F1 score are equal. The formula for the F1 score is:
 
@@ -56,12 +68,17 @@ The [F1 Score][F1_Score] can be interpreted as a weighted average of the precisi
 F1 = 2 * (precision * recall) / (precision + recall)
 ```
 
-When average parameter is set as `weighted`, F1 Score calculate metrics for each label, and find their average, weighted by support (the number of true instances for each label). This alters ‘macro’ to account for label imbalance; it can result in an F-score that is not between precision and recall.
+As this is a multi class classification for averaging (`average` parameter of [sklearn.metric.f1_score](http://scikit-learn.org/stable/modules/generated/sklearn.metrics.f1_score.html)) the score, we need to choose one of existing methods like binary, micro, macro, weighted and samples. As stated in SKlearn, F1 Micro calculate metrics globally by counting the total true positives, false negatives and false positives. So we have opted for F1 Score Micro.
+
 
 ``` python
 >>> from sklearn.metrics import f1_score
 >>> y_true = [0, 1, 2, 0, 1, 2]
 >>> y_pred = [0, 2, 1, 0, 0, 1]
+>>> f1_score(y_true, y_pred, average='macro')
+0.26...
+>>> f1_score(y_true, y_pred, average='micro')
+0.33...
 >>> f1_score(y_true, y_pred, average='weighted')
 0.26...
 >>> f1_score(y_true, y_pred, average=None)
@@ -99,7 +116,7 @@ Example from Python Scikit [Accuracy Score][accuracy_score]
 2
 ```
 
-During the project, we will use both the metrics for measurements for understanding but as the suggested metric is Accuracy Score, we will give preference to Accuracy Score.
+In the code comments, we shall denote Accuracy Score as __AC Score__ and F1 Score as __F1 Score__.
 
 ## Analysis
 
@@ -117,7 +134,7 @@ Source/data files are available at [DataDriven][datadriven7]
 
 Test & Train data sets consists of 39 columns each with 59400 rows and  14850 rows respectively, to predict 1 multi-labeled column.
 
-Here is some simple analysis of columns along with some sample d. As the input data mostly consists of categorical data, for each we have also taken unique groups counts (or value counts) and plotted in horizontal bar charts for easy read.
+Here is some simple analysis of columns along with some sample data. As the input data mostly consists of categorical data, for each we have also taken unique groups counts (or value counts) and plotted in horizontal bar charts for easy read.
 
 __Description of the Features__
 
@@ -193,39 +210,44 @@ To create a generic model which could work in all scenario, we will use stratifi
 
 Visualization of Object Columns Value Counts.
 
-![Image][cols_value_counts]
+![Image1][cols_value_counts]
 
 Bar plot of all Object Column's Value counts.
 __ NOTES:__ Values shown in image are log transformed to show differences visually.
-![Image][features_vc_compare]
+![Image1][features_vc_compare]
 
 Histogram of all Object Column's Value counts.
 
-![Image][features_vc_histogram]
+![Image1][features_vc_histogram]
 
-__ Observations and Suggestions __
 
-* Most of the data seems categorical: As this would increase the number of dimensions the results vary, we can take a deep look of how data is distributed across the groups and focus of the groups which contribute more information overall.
+__Observations:__
 
-* Need to check __Date columns__
-    * we shall convert date -> day, month, year, weekday, total_no_of_day_from_reference_point. These splits for two reasons.
-        * Reason 1: It might be possible that in some location all specific set of complaints are registered on a start/mid/at end of the month. It might also be possible that they are registered on every Monday or so.
-        * Reason 2: Taking as much information as possible.
+ * scheme_name has too many null values.
+ * longitude has zeros which is not possible.
+ * public_meetings, permit, amount_tsh, gps_height, population, construction_year columns required interfiling of data has lots of outliers(as zeros)
+ * wpt_name, ward, subvillage, schema_name, installer, funder has lots of categorical values
 
-* Need to check __Float and Bool columns__
-    * Longitude & latitude(features) seem to hold (0,0) instead of NULL which is acting as outliers for now.
-    * Longitude and latitude(features) are too much precise(in input date) that would make it too difficult to generalize. As generally water pumps are not installed next to each other to maintain a precision of high accuracy, we can reduce it.
-    * Few boolean columns are having Nan(NAN or Null) values which does not completely make them boolean series. If we look into this scenario of observing not having data as another indication (new information), to preserve this knowledge we can convert them into labels.
+Few columns which seems to hold similar kind of information
 
-* Following pairs looks closely related
-    * quantity & quantity_group
-    * quality_group & water_quality
-    * extraction_type, extraction_type_class & extraction_type_group
+ * extraction_type, extraction_type_group, extraction_type_class
+ * management, management_group
+ * scheme_management, scheme_name
+ * payment, payment_type
+ * water_quality, quality_group
+ * source, source_type, source_class
+ * waterpoint_type, waterpoint_type_group
 
-* Other
-    * categorical columns like installer, funder, scheme_name seems to hold data issue like text capitalization & trailing spaces.
-    * recorded_by, seems to hold only a single value
-    * population & amount_tsh, values are for some given as zero
+
+__Geo Location information:__ All following parameter are available for same reason, to find the address.
+
+ * longitude, latitude
+ * region
+ * district_code within region
+ * ward
+ * subvillage
+
+Compared to all other geo columns `regions` columns has complete data.
 
 
 
@@ -235,33 +257,73 @@ As described in the introduction, a smart understanding of which water points wi
 
 A Classifier comparison from [Sklearn's documentation][classifier_comparision_page]
 
-As we have already taken __Random Forest Classifier__ for generating a Benchmark Score, we will use continue to use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(__RF__, __GBT__). As these models are easy to train, self-learning & self evaluation nature make them a general good technique to consider. Unlike RF, GBT Model is a boosting method, which builds on weak classifiers. The idea is to add a classifier at a time, so that the next classifier is trained to improve the already trained ensemble.
+As we have already taken __Random Forest Classifier__ for generating a Benchmark Score, we will use continue to use familiar (inherently) multi-class Supervised Classifiers like Tree Algorithms(__RF__, __GBT__). As these models are easy to train, self-learning & self evaluation nature make them a general good technique to consider. Unlike RF, GBT Model is a boosting method, which builds on weak classifiers. In GBT, the idea is to add a classifier at a time, so that the next classifier is trained to improve the already trained ensemble.
 
 ![Classifiers Comparison][classifier_comparision]
 
 For initial understanding, as we can see from above analysis on different kinds of datasets, I find that __Nearest Neighbor__ performs better when __Random Forest__ is performing low. From dataset features, we have coordinates like longitude, latitude and pump models and other, so we believe it might even possible that similar issues can be observed in certain neighborhoods and have been reported already so Nearest Neighbor models could also perform well.
 
-We will be use both available(in Sklearn) __Gaussian Process__, __KMeans__ clustering for unsupervised Learning exploration. As we have taken two models for exploration, we can compare one among them like we can for RF and GBT.
-
-
-Given that this is a multi class classification, we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe that a One\-vs\-Rest might perform well. In `Refinement Phase`, we will be selecting the model which performs best from earlier suggestion unsupervised models. Thus we might be improving the well performing model to next level.
+Given that this is a multi class classification, we will also explore One\-vs\-Rest Sklearn's MultiClassification Technique. As the data is unbalanced, we believe that a One\-vs\-Rest might perform well. <!-- In `Refinement Phase`, we will be selecting the model which performs best from earlier suggestion unsupervised models. --> Thus we might be improving the well performing model to next level.
 
 To summaries, we will be using following model in following pattern
 
-* Supervised Learning
-    * Random Forest
-    * Gradient Boosting
-    * Nearest Neighbors
-* Unsupervised Learning
-    * Gaussian
-    * KMeans
-* Multi Class
-    * One vs Rest
-    * One vs One
+* Random Forest
+* Gradient Boosting
+* Nearest Neighbors
 
 ### Benchmark Model
 
-With simplistic data labeling and with the help of Random Forest Classifiers, we have created a benchmark submission of 0.7970 for which source code is [here][benchmark_model].
+With simplistic data labeling and with the help of Random Forest Classifiers, we have created a __benchmark submission__ of 0.79 for which source code is [here][PumpIt01].
+
+But, in later stages when we have improved our scoring wrapper function to display both testing score and training score we found a huge train-test scores differences of benchmark model by random forest(scores can be seen below).
+
+```
+Training Scores
+------------------------------------------------
+AC Score: 0.984848484848 F1 Score: 0.984848484848
+
+Testing Scores
+------------------------------------------------
+AC Score: 0.799865319865 F1 Score: 0.799865319865
+```
+
+Due to this reason, we have taken a different baseline model which built and available in Scikit.
+
+When doing supervised learning, a simple sanity check consists of comparing one’s estimator against simple rules of thumb. [DummyClassifier](http://scikit-learn.org/stable/modules/model_evaluation.html#dummy-estimators) implements several such simple strategies for classification like stratified, most_frequent, prior, uniform and constant. So we have selected the __most_frequent__ strategy which generates highest baseline score for our pumpit water dataset.
+
+```
+Training Scores
+------------------------------------------------
+AC Score: 0.543075196409 F1 Score: 0.543075196409
+
+Testing Scores
+------------------------------------------------
+f1-score    precision   recall  support
+avg / total 0.38    0.29    0.54    14850.0
+class 0 0.70    0.54    1.00    8065.0
+class 1 0.00    0.00    0.00    1079.0
+class 2 0.00    0.00    0.00    5706.0
+------------------------------------------------
+AC Score: 0.543097643098 F1 Score: 0.543097643098
+```
+
+As we can see from included confusion metric data for DummyClassifier with most\_frequent strategy, we can see that our classifier is only focused on just giving the result which is seen most frequently.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -271,212 +333,69 @@ With simplistic data labeling and with the help of Random Forest Classifiers, we
 
 ## Methodology
 
-As explained in Problem Description, we will all those steps but in a step by step Prototype/Spiral - Software development methodology. Prototype/Spiral development methodology, in simple steps is same as well know Waterfall model but in a iterative fashion till we reach end goal(a satisfied product).
+As explained in the [Problem Statement](#problem-statement), we actually followed a iterative version of to and fro in feature selection, improvisation, metric evaluation, algorithm selection and algorithms fine tuning. But for clarity, we have described the whole process and segregated as much as possible into following sections/stages.
 
-Here is an image which would explain
+External Resource for checking code and other details
 
-![Image](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Software_development_methodologies.jpg/800px-Software_development_methodologies.jpg)
+1. [Benchmark (Data Load + Clean Up + Algorithm)](PumpIt01)
+2. [Data Analysis](PumpIt02)
+3. [Manual Data Transformations (Data Load + Clean Up + Algorithm)](PumpIt03)
+4. [Analysis of Algorithm Selection and Comparison](PumpIt04)
+5. [Algorithmic Features Selection & Hyper Parameter Tuning](PumpIt05)
 
-In Water Fall, as you can is like a stair case at each step we get closer to destination but once a step is passed we don't go back. So, to improve this model a cycle is added to make it look like iterative model. As each cycle complete, we fine tune the software product and we get closer to our final product.
-
-
-```
-Stage 1: Data Preparation ===> Stage 2: Model Building ===> Stage 3: Performance Evaluation
-/\                                                                      ||
-||                                                                      ||
-\- ==================================================================== -/
-                     (stage 3 to stage 1)
-```
-
-Not a complete or exact pattern but we follow(ed) above simple step in each iteration of data modeling. Below is our clear strategy for developing the model.
-
-__Iteration 0__: (Benchmark)
-
-* Goal: Set Benchmark
-
-__Iteration 1__:
-
-* Goal: Algorithm Selection
-
-__Iteration 2.1__: (Data Preprocessing)
-
-* Goal: Data Quality Improvement 1
-* Object Columns fine tuning
-
-__Iteration 2.2__: (Data Preprocessing)
-
-* Goal: Data Quality Improvement 2
-* KBest Feature Selection
-* PCA Transformation
-
-__Iteration 3__: (Refinement)
-
-* Goal: MultiClass Algorithms and Submission
-
-__Iteration 4__: (Refinement)
-
-* Goal: Parameter Tuning and grid CV
-
-__Iteration 5__: (Results)
-
-* Goal: Final Model
-
-
-__Note__: As per strategy, we are first doing Algorithm selection so we are interchanging Implementation stage and Data Processing positions.
-
-### Implementation
-
-In Iteration 0, our goal was to set a Benchmark Score. Here we did simple data transformations enough to train a data model and trained a Random Forest Model and got a testing score of 0.7970. We have Random Forest as our Data Model for two reason, one is that they are generally they are good fit for all kind of models(versatility) and second reason is that they generally don't need much to be fine tuned like GBT and other models.
-
-In Iteration 1, our goal was to identify which data model is able to relate labels and data well. As each algorithms/data model is designed to identify specific way of solving problems, we need to identify the models. For Stage 1, we have used the same data transformation used in Iteration 0 for benchmark model and in model selection, no parameters were tuned than their respective defaults.
-
-```
----------------------------------------------------------------------------
-GradientBoostingClassifier(criterion='friedman_mse', init=None,
-              learning_rate=0.1, loss='deviance', max_depth=3,
-              max_features=None, max_leaf_nodes=None,
-              min_impurity_split=1e-07, min_samples_leaf=1,
-              min_samples_split=2, min_weight_fraction_leaf=0.0,
-              n_estimators=100, presort='auto', random_state=192,
-              subsample=1.0, verbose=0, warm_start=False)
----------------------------------------------------------------------------
-Training Score
----------------------------------------------------------------------------
-             precision    recall  f1-score   support
-
-          0       0.91      0.71      0.80     31134
-          1       0.12      0.69      0.21       575
-          2       0.61      0.81      0.69     12841
-
-avg / total       0.81      0.74      0.76     44550
-
----------------------------------------------------------------------------
-AC Score: 0.735847362514
-F1 Score: 0.758420128558
----------------------------------------------------------------------------
-Testing Score
----------------------------------------------------------------------------
-             precision    recall  f1-score   support
-
-          0       0.90      0.70      0.79     10345
-          1       0.11      0.64      0.19       185
-          2       0.60      0.79      0.68      4320
-
-avg / total       0.80      0.73      0.75     14850
-
----------------------------------------------------------------------------
-AC Score: 0.728754208754
-F1 Score: 0.752040797997
----------------------------------------------------------------------------
----------------------------------------------------------------------------
-KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
-           metric_params=None, n_jobs=1, n_neighbors=5, p=2,
-           weights='uniform')
----------------------------------------------------------------------------
-Training Score
----------------------------------------------------------------------------
-             precision    recall  f1-score   support
-
-          0       0.73      0.60      0.66     29625
-          1       0.09      0.23      0.13      1221
-          2       0.40      0.50      0.45     13704
-
-avg / total       0.61      0.56      0.58     44550
-
----------------------------------------------------------------------------
-AC Score: 0.558092031425
-F1 Score: 0.57811558815
----------------------------------------------------------------------------
-Testing Score
----------------------------------------------------------------------------
-             precision    recall  f1-score   support
-
-          0       0.84      0.69      0.76      9795
-          1       0.21      0.56      0.30       402
-          2       0.58      0.71      0.64      4653
-
-avg / total       0.74      0.70      0.71     14850
-
----------------------------------------------------------------------------
-AC Score: 0.696296296296
-F1 Score: 0.711138058952
----------------------------------------------------------------------------
----------------------------------------------------------------------------
-RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',
-            max_depth=None, max_features='auto', max_leaf_nodes=None,
-            min_impurity_split=1e-07, min_samples_leaf=1,
-            min_samples_split=2, min_weight_fraction_leaf=0.0,
-            n_estimators=10, n_jobs=1, oob_score=False, random_state=192,
-            verbose=0, warm_start=False)
----------------------------------------------------------------------------
-Training Score
----------------------------------------------------------------------------
-             precision    recall  f1-score   support
-
-          0       1.00      0.98      0.99     24624
-          1       0.93      0.98      0.96      3069
-          2       0.98      0.99      0.99     16857
-
-avg / total       0.99      0.99      0.99     44550
-
----------------------------------------------------------------------------
-AC Score: 0.985521885522
-F1 Score: 0.985581500224
----------------------------------------------------------------------------
-Testing Score
----------------------------------------------------------------------------
-             precision    recall  f1-score   support
-
-          0       0.88      0.78      0.83      9087
-          1       0.27      0.49      0.35       599
-          2       0.73      0.81      0.77      5164
-
-avg / total       0.80      0.78      0.79     14850
-
----------------------------------------------------------------------------
-AC Score: 0.778181818182
-F1 Score: 0.786838161735
----------------------------------------------------------------------------
-```
-
-__Note__: To make results as much reproducible as shown, we have set random_state value as 192 for possible algorithms and numpy random seed as 69572.
-
-__Conclusion__: As we can see there are two models that are performing well(GBT, RF). Based on the testing and training data score we can say Random Forest, which seem to over fit the data and generate better results while GBT seem to fit the data properly as training and testing scores seem to be closer. Unfortunately as KNN Supervised Learning models sees to be a good fit with closely matching testing and training, but generated lower score compared to other two models.
-
-Although it look like RF over fitting the data and making prediction from it, our goal was create a model that predicts well. As initially proposed we will considering RF for model building and GBT is know how much would a normal generalized model performance.
 
 ### Data Preprocessing
 
-As per the strategy, we are taking two iterations just to improve data quality. As its popular known that data quality is what takes more than 50% of model building stuff, so we taken two iterations.
+Based up on the observations of [Analysis](#analysis), we have already show cased the finding in _Data Exploration_(Second step in described methodology).
 
-Below are the Iteration 2.1 changes.
+* __Longitude and Latitude:__ As mentioned in Exploratory Analysis, we observed (0, 0) for longitude and latitude for region in Africa. As this not possible, we suspect that is a error in records and replaced them with mean of rest of values.
 
-__Iteration 2.1__: (Data Preprocessing)
+![Image1][COL_LONG_LAT_RAW]
 
-* Goal: Data Quality Improvement 1
-* Object Columns fine tuning
+Post Data Transformation
+![Image1][COL_LONG_LAT_PROCESSED]
 
+Also when we take a closer look at the data longitude and latitude details, the precision of data is up to such a level that one can even pin point the location to millimeters. As public water pumps are generally not install for every house and kept in open area which is accessible for lots of people, we reduced the precision where it can point location with in meters.
 
-As mentioned earlier majority of the data is object columns,
+For simple explanation, below we can mentioned the transformation applied based on type of data columns have.
 
-* __Date Columns__: We have one columns _date\_recorded_, which supposed to show on which data record was added. As explained in the exploratory sections, we have created extra columns each for year, month, epoch days, date of month.
+* __Date Columns__: We have one columns _date\_recorded_, which supposed to show on which data record was added. As we know that data is a segregation of 3 details namely day of the month, month of the year and year. So the date into two, month and year. As day of the month is relatively smaller entity compared to year and month, we ignored and converted to number of days from a specific point of time. Reason is, we believe overtime based on an economy of the governing bodies and growing population, water problems are supposed to either increase or decrease over long span of time.
 
-* __Boolean Columns__: Instead of deleting null or replacing null with True or False, we have converted all these into numbers and thus not losing any information.
+* __Boolean Columns__: For boolean columns `public_meetings` and `permit`, based upon their understanding and considering worst case possible, we filled with False.
+
+* __Int(Float) Columns__: As explained in Wikipedia [Features Scaling](https://en.wikipedia.org/wiki/Feature_scaling), to make it easy for machine learning algorithms for find pattern easy, we have features scaling.
+
+Here is one example of advantages of features scale.
+
+Lets consider we need to find the distance between two points A(45122, 45125) and B(45125, 45121). As per standard Pythagoras formula, the computation goes like below
 
 ```
-True -> 1, False ->2, Nan or None ->3
+-> sqrt(square(45122 - 45125) + square(45125 - 45121))
+-> sqrt(square(3) + square(4))
+-> sqrt(9 + 16)
+-> sqrt(25)
+-> 5
 ```
 
-* __Int(Float) Columns__: For some integer columns like Geo location co ordinates, the precision is so good that we can point the location to centimeter level. But this seemed to too precise(too much information) and so in hit and trial, when we reduced the precision up to 3 digit we found that our benchmark model was performing well.
+Lets say, we moved our origin from (0, 0) to (45125, 45125), then relative locations shift to A(-3, 0) and B(0, -4)
 
-For other numerical model, labeling will work as MinMaxScalar.
+```
+-> sqrt(square(-3 - 0) + square(0 + 4))
+-> sqrt(square(3) + square(4))
+-> sqrt(9 + 16)
+-> sqrt(25)
+-> 5
+```
 
-* __Object Columns__:
-During the sub group plotting we have noticed that minor text capitalization issue and spaces. So we have applied a transformer to convert all the object data to lower case ASCII strings.
+The first step of first computation and first of the computation after shift of origin/transformation, relative both are same but different. The computations after transformations looks a bit smaller and would need lesser number memory bits are involved in computations. For a huges data sets saving each bit of computation for each step make it easy for calculate faster.
 
-In the IPython Notebook, we have created a generic helper script to do this and IPython Widget for experimentations.
+So, as mentioned in Scikit Documentation we will apply labeling for numerical columns along with non numerical columns as for other numerical columns these labeler will works as MinMaxScalar.
 
-For further references say, lets call this new formatted/transformed data as PreProcessed Data. At this stage we are having 43 features.
+* __Object Columns__: As machine learning models, generally only accept numerical data we need to transform non numerical columns to indexes(a number for each particular group).
+
+During [Analysis](#analysis) in the sub group plotting we have noticed that minor text capitalization issue like additional spaces and capitalized first letter of the word. As humanly readable data, words with training spaces or capitalized words give same meaning but for machines they work are different complete unrelated words. So we have applied a transformer to convert all the object data to lower case ASCII strings.
+
+After transformation also, we still had lots of columns with huge varieties of groups. From pattern matching point of views, if we see a complete set of only one repetitive word, we cannot find any pattern as all the date is same and in the same way, if we have too much of variance in data then also we cannot find any patterns. So, for an algorithm to find a pattern in data or behavior, we need to have an optimal amount of variance to learn and predict.
 
 Top 5 columns with huge varieties
 
@@ -486,26 +405,26 @@ Top 5 columns with huge varieties
 * subvillage, 19288
 * scheme_name, 2697
 
-For these columns as we look into details we have observed that most of the data has lots of cardinality issues and here are some stats collected for these columns.
+For these columns as we look into details we have observed that most of the data has lots of entropy(variance) issues and here are some stats collected for these columns.
 
 * funder:
     * 100.0 percentage of DATA coverage mean, 1881 (in number) groups
-    * 97.0 percentage of DATA coverage mean, 592 (in number) groups ##
+    * 97.0 percentage of DATA coverage mean, 592 (in number) groups
     * 90.5 percentage of DATA coverage mean, 237 (in number) groups
 
 * installer:
     * 100.0 percentage of DATA coverage mean, 1867 (in number) groups
-    * 97.0 percentage of DATA coverage mean, 599 (in number) groups ##
+    * 97.0 percentage of DATA coverage mean, 599 (in number) groups
 
 * wpt_name:
-    * 80.0 percentage of DATA coverage mean, 24838 (in number) groups ##
+    * 80.0 percentage of DATA coverage mean, 24838 (in number) groups
 
 * subvillage:
-    * 80.5 percentage of DATA coverage mean, 8715 (in number) groups ##
+    * 80.5 percentage of DATA coverage mean, 8715 (in number) groups
     * 83.0 percentage of DATA coverage mean, 9458 (in number) groups
 
 * ward:
-    * 80.0 percentage of DATA coverage mean, 998 (in number) groups ##
+    * 80.0 percentage of DATA coverage mean, 998 (in number) groups
     * 91.5 percentage of DATA coverage mean, 1397 (in number) groups
     * 100.0 percentage of DATA coverage mean, 2093 (in number) groups
 
@@ -513,302 +432,271 @@ For these columns as we look into details we have observed that most of the data
     * 100.0 percentage of DATA coverage mean, 2486 (in number) groups
     * 91.5 percentage of DATA coverage mean, 870 (in number) groups
     * 80.5 percentage of DATA coverage mean, 363 (in number) groups
-    * 85.0 percentage of DATA coverage mean, 524 (in number) groups ##
+    * 85.0 percentage of DATA coverage mean, 524 (in number) groups
 
-__NOTE:__ Marked with double hashes are the selected values for coverage.
+__NOTE:__ During the clean up, we have set a hard limit to cover enough groups that could describe 75% of the data.
 
-### Feature Selection
+To save time and avoid unnecessary computational costs, we have moved the last of removing columns with repetitive data to the top(just after the data is loaded from files).
 
-__Iteration 2.2__: (Data Preprocessing)
-
-* Goal: Data Quality Improvement 2
-* KBest Feature Selection
-* PCA Transformation
-
-After preprocessing, we have tried 3 methods of dimensionality reductions.
-
-#### Variance Threshold:
-
-VarianceThreshold is a simple baseline approach to feature selection. It removes all features whose variance doesn’t meet some threshold. By default, it removes all zero-variance features, i.e. features that have the same value in all samples.
-
-We have taken a variance threshold limit of 80%, implies columns with less than 80 are to be dropped. We found one columns _recorded_by_ which has a variance threshold less than 80%.
+After these data transformations, we have around 25 columns and code and details of these columns are available at [here](PumpIt03)
 
 
-#### KBest select
-KBest is one of the Univariate feature selection methods that works by selecting the best features based on univariate statistical tests.
-
-Well known statistical tests for classification are chi2, f_classif, mutual_info_classif. Using __Random Forest__ we are checking which statistical method is generating better results for K=30(selected columns).
 
 
-|Statistical Test | Train Score| Test Score|
-|-----------------|------------|-----------|
-|chi2|0.98428731762065091|0.79966329966329963|
-|f_classif|0.97432098765432096|0.79286195286195282|
-|mutual_info_classif|0.98410774410774415|0.79447811447811445|
-
-KBest statistical method: __Chi2__ wins.
-
-Like we have tried all these three methods to be sure, we shall also check the number of columns to find the best number of minimum required columns/features to better score.
-
-AMOUNT_TSH, DATE_RECORDED, FUNDER, GPS_HEIGHT, INSTALLER, LONGITUDE, LATITUDE, NUM_PRIVATE, BASIN, SUBVILLAGE, REGION, REGION_CODE, DISTRICT_CODE, LGA, WARD, POPULATION, PUBLIC_MEETING, SCHEME_MANAGEMENT, SCHEME_NAME, PERMIT, CONSTRUCTION_YEAR, EXTRACTION_TYPE, EXTRACTION_TYPE_GROUP, EXTRACTION_TYPE_CLASS, MANAGEMENT, MANAGEMENT_GROUP, PAYMENT, PAYMENT_TYPE
-
-Results of previous runs
-Trail 1
-
-```python
-[{'cols': 1, 'test': 0.52659932659932662, 'train': 0.57483726150392822},
- {'cols': 5, 'test': 0.68962962962962959, 'train': 0.94240179573512906},
- {'cols': 9, 'test': 0.7211447811447812, 'train': 0.97638608305274976},
- {'cols': 13, 'test': 0.75380471380471381, 'train': 0.97955106621773291},
- {'cols': 17, 'test': 0.76134680134680133, 'train': 0.98071829405162736},
- {'cols': 21, 'test': 0.76511784511784509, 'train': 0.98076318742985413},
- {'cols': 25, 'test': 0.80033670033670035, 'train': 0.98316498316498313},
- {'cols': 29, 'test': 0.80053872053872055, 'train': 0.98379349046015707},
- {'cols': 33, 'test': 0.80040404040404045, 'train': 0.98390572390572395},
- {'cols': 37, 'test': 0.79993265993265994, 'train': 0.98341189674523011}]
-```
-
-Trail 2
-```python
-[{'cols': 23, 'test': 0.7976430976430976, 'train': 0.9836812570145903},
- {'cols': 25, 'test': 0.80033670033670035, 'train': 0.98316498316498313},
- {'cols': 27, 'test': 0.80101010101010106, 'train': 0.9829405162738496},
- {'cols': 29, 'test': 0.80053872053872055, 'train': 0.98379349046015707},
- {'cols': 31, 'test': 0.80000000000000004, 'train': 0.98381593714927051}]
-```
-
-Trail 3
-```python
-[{'cols': 26, 'test': 0.80309764309764309, 'train': 0.98359147025813698},
- {'cols': 27, 'test': 0.80101010101010106, 'train': 0.9829405162738496},
- {'cols': 28, 'test': 0.80222222222222217, 'train': 0.98334455667789}]
-```
-
-As per Okham Razor's rules, we are going to select the simplest and well performing. Luckily, we have got kbest_selected_cols at _26_ which is comparatively top performer among other K-selections and also lower than actually number of columns
-
-_Conclusion: Using __Chi2__ with __KBest__, we found 26 best selected columns for generating results._
 
 
-#### PCA
-PCA, Linear dimensionality reduction using Singular Value Decomposition of the data to project it to a lower dimensional space.
 
-Here is the cumulative
 
-Like KBest, in a similar fashion we have tried PCA model but we have encounter some decrease in score. As we can understand from the results, that transformed will have lower dimensions but it might be always to learn from it.
 
-__Results of Iteration 2__: Following are the test results of Random Forest.
 
-* Loading PCA Processed Data Score:
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Implementation
+
+As described earlier, the algorithms we have selected for finding our multi class classifier model training are Random Forest, Gradient Boosting Tree and KNN Classifier.
+
+Now the data is cleaned and preprocessed for model learning, we have done the model training for these classifier and obtained following results.
+
+_Note:_
+
+* AC Score - implies Accuracy Score.
+* F1 Score - F1 Score(micro)
+
+__Random Forest__
 
 ```
-AC Score: 0.699393939394 F1 Score: 0.709020068049
+Training Scores
+------------------------------------------------
+AC Score: 0.982356902357 F1 Score: 0.982356902357
+
+Testing Scores
+------------------------------------------------
+AC Score: 0.798720538721 F1 Score: 0.798720538721
 ```
 
-* Loading KBest Processed Data: 0.79649831649831648
+__Gradient Boosting Trees__
 
 ```
-AC Score: 0.796498316498 F1 Score: 0.803530383556
+Training Scores
+------------------------------------------------
+AC Score: 0.755824915825 F1 Score: 0.755824915825
+
+Testing Scores
+------------------------------------------------
+AC Score: 0.751043771044 F1 Score: 0.751043771044
 ```
 
-* Loading Normal Processed Data: 0.79892255892255892
+__KNN__
 
 ```
-AC Score: 0.798922558923 F1 Score: 0.805559066743
+Training Scores
+------------------------------------------------
+AC Score: 0.788507295174 F1 Score: 0.788507295174
+
+Testing Scores
+------------------------------------------------
+AC Score: 0.705521885522 F1 Score: 0.705521885522
 ```
 
-As we can observe, we were able to reduce the number of dimensions using PCA but results can show us that transforming data is great but sometimes models might find difficult to learn transformed data. We can also observe that compared to our Normal Processed Data, we can see that __KBest Processed Data__ shows better results.
+
+In general, when we do model training as data scientists we prefer to take a generic model which can identified the closer test and train results. As the model is a generic model these scores will be closer. And the reason we avoid models with huge train-test scores is that they tend of memorize the data well making them an experts in explaining the behavior of available data but fails to be generic enough to handle new kind of problems.
+
+
+So, we will be using Gradient Boosting Trees as our model for solution building for following reasons.
+
+* Gradient Boosting Trees(75% Acc) are able to provide good testing compared to Random Forest(79% Acc) and KNN(70% Acc)
+* Gradient Boosting test-train score difference is less than 1%, which is lower than Random Forest(~20%) and KNN(8%)
+
+Out of curiosity and from our inspiration from SKlearn Documentation, we have copied the code from documentation and applied to our transformed data to understand the performance of other models and estimate if our model selection is been good enough.
+
+
+![Image1](https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/CompareClassfiers.png)
+
+Details of this experiment can be found [here](PumpIt04). Surprising, as we expected one our expected model did happen to be a top performer of these shown classifiers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Refinement
 
-__Iteration 3__: (Refinement)
+During the search Gradient Boosting parameter tuning, we found another gradient boosting model in Python. [Xgboost](https://xgboost.readthedocs.io/en/latest/) module which is an Extreme Gradient Boosting designed to be Flexible and Scalable. As current Gradient models is  slightly slow, so for further improvement, we used Xgboost Extreme Gradient Boosting Classifier for our multi class prediction.
 
-* Goal: MultiClass Algorithms and Submission
-
-#### Multi Class
-
-From sklearn.multiclass module we have selected two simple meta-estimator One-Vs-The-Rest and One-Vs-One as they seem to easily to use and performance well.
-
-One-Vs-The-Rest
-
-This strategy, also known as one-vs-all, is implemented in OneVsRestClassifier. The strategy consists in fitting one classifier per class. For each classifier, the class is fitted against all the other classes. In addition to its computational efficiency (only n_classes classifiers are needed), one advantage of this approach is its interoperability. Since each class is represented by one and only one classifier, it is possible to gain knowledge about the class by inspecting its corresponding classifier. This is the most commonly used strategy and is a fair default choice.
+During data processing stage, we completed the data transformations based on the evidences we found from the data and removed the unnecessary columns by intusion. So, to further optimize this search for best columns and train a model we did pipeline of features selection as suggested in Sklearn.
 
 
-One-Vs-One
+For Finer model building, we generated a model building curve.
 
-OneVsOneClassifier constructs one classifier per pair of classes. At prediction time, the class which received the most votes is selected. In the event of a tie (among two classes with an equal number of votes), it selects the class with the highest aggregate classification confidence by summing over the pair-wise classification confidence levels computed by the underlying binary classifiers.
+![Image1](https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/Xgb.png?raw=true)
 
+Note: Traning data used for this learning curve is our pre-processed data. No features selection is done here.
 
-Results
-```
----------------------------------------------------------------------------
-OneVsOneClassifier(estimator=GradientBoostingClassifier(random_state=192))
----------------------------------------------------------------------------
-Training Score
-------------------------------------------------
-             precision    recall  f1-score   support
-          0       0.91      0.70      0.79     31449
-          1       0.12      0.68      0.21       574
-          2       0.59      0.81      0.68     12527
-avg / total       0.81      0.73      0.76     44550
-------------------------------------------------
-AC Score: 0.732435465769
-F1 Score: 0.75580830821
----------------------------------------------------------------------------
-Testing Score
-------------------------------------------------
-             precision    recall  f1-score   support
-          0       0.91      0.70      0.79     10480
-          1       0.10      0.59      0.16       174
-          2       0.59      0.80      0.67      4196
-avg / total       0.81      0.73      0.75     14850
-------------------------------------------------
-AC Score: 0.725185185185
-F1 Score: 0.750120842313
----------------------------------------------------------------------------
-OneVsRestClassifier(estimator=GradientBoostingClassifier(random_state=192))
----------------------------------------------------------------------------
-Training Score
-------------------------------------------------
-             precision    recall  f1-score   support
-          0       0.92      0.70      0.79     31606
-          1       0.10      0.74      0.18       438
-          2       0.59      0.81      0.68     12506
-avg / total       0.82      0.73      0.76     44550
-------------------------------------------------
-AC Score: 0.7311335578
-F1 Score: 0.756322596966
----------------------------------------------------------------------------
-Testing Score
-------------------------------------------------
-             precision    recall  f1-score   support
-          0       0.91      0.70      0.79     10540
-          1       0.09      0.70      0.15       132
-          2       0.58      0.79      0.67      4178
-avg / total       0.81      0.72      0.75     14850
-------------------------------------------------
-AC Score: 0.72404040404
-F1 Score: 0.750366996656
----------------------------------------------------------------------------
-OneVsOneClassifier(estimator=RandomForestClassifier(n_jobs=-1,random_state=192))
----------------------------------------------------------------------------
-Training Score
-------------------------------------------------
-             precision    recall  f1-score   support
-          0       1.00      0.97      0.98     24779
-          1       0.88      0.99      0.93      2893
-          2       0.98      0.99      0.98     16878
-avg / total       0.98      0.98      0.98     44550
-------------------------------------------------
-AC Score: 0.980583613917
-F1 Score: 0.98079116669
----------------------------------------------------------------------------
-Testing Score
-------------------------------------------------
-             precision    recall  f1-score   support
-          0       0.89      0.77      0.83      9238
-          1       0.25      0.56      0.34       472
-          2       0.73      0.81      0.77      5140
-avg / total       0.81      0.78      0.79     14850
-------------------------------------------------
-AC Score: 0.779259259259
-F1 Score: 0.790187725313
----------------------------------------------------------------------------
-OneVsRestClassifier(estimator=RandomForestClassifier(random_state=192))
----------------------------------------------------------------------------
-Training Score
-------------------------------------------------
-             precision    recall  f1-score   support
-          0       0.99      0.99      0.99     24260
-          1       0.96      0.99      0.97      3140
-          2       0.99      0.99      0.99     17150
-avg / total       0.99      0.99      0.99     44550
-------------------------------------------------
-AC Score: 0.990819304153
-F1 Score: 0.990841995406
----------------------------------------------------------------------------
-Testing Score
-------------------------------------------------
-             precision    recall  f1-score   support
-          0       0.84      0.80      0.82      8509
-          1       0.30      0.52      0.38       625
-          2       0.78      0.78      0.78      5716
-avg / total       0.79      0.78      0.78     14850
-------------------------------------------------
-AC Score: 0.778047138047
-F1 Score: 0.784773818155
-```
+As you can see from above diagram, there are 3 significant features to identify
+Sudden drop at 10K sample point.
 
-* Performance of OnevsOne with OnevsRest: As we can see the Testing Results of for both the classifier, OneVsOne performed slightly better than OneVsRest and both have results improved from standard RF and GBT classifiers.
-* Performance of RF with GBT: Of course as we already knew from Algorithm selection, RF forest performed well.
+* Bother curves are almost converging to a best score of 0.745 on Y axis.
+* Light Green Aura of Green Line & Green Line is slowly reducing till it reached 30K sample.
+* After 30K Sample point, both the score and the green Aura sightly declined. After 30K Sample point, Red Aura slowly started decreasing further.
 
+Based on these features, I believe we can understand that our Xgboost learning kind of stagnated around 30K records point. Overall, we can learn that Algorithm is learning well and reached it stagnation point with current parameters. So either we tune the Algorithm feature to keep learning or we can limit the training data at 30K Limit.
 
-__Iteration 4__: (Refinement)
+I believe limiting data is bad as it would be a waste of valuable data, we will continue parameter tuning to keep learning. So we further fine tune the model to keep its learning nature even at 30K samples.
 
-* Goal: Parameter Tuning and grid CV
+_Compared to initial benchmark, we have clearly well performed with scores reaching to .745 from .543._
 
-From Iteration 3 we have got the results of OnevsOne wrapper over Random Forest but, till now we have not yet fine tune our RF Model. Here in this iteration our goal was to fine tune RF and Grid check the results.
-
-A random forest is a meta estimator that fits a number of decision tree classifiers on various sub-samples of the dataset and use averaging to improve the predictive accuracy and control over-fitting.
-
-__Parameters__:
-
-* n_estimators : integer, optional (default=10). The number of trees in the forest.
-* criterion : string, optional (default="gini"). The function to measure the quality of a split. Supported criteria are "gini" for the Gini impurity and "entropy" for the information gain. Note: this parameter is tree-specific.
-* class_weight : dict, list of dicts, "balanced", "balanced_subsample" or None, optional (default=None) Weights associated with classes in the form {class_label: weight}. If not given, all classes are supposed to have weight one. For multi-output problems, a list of dicts can be provided in the same order as the columns of y.
-The "balanced" mode uses the values of y to automatically adjust weights inversely proportional to class frequencies in the input data as
-`n_samples / (n_classes * np.bincount(y))`
-* max_features : int, float, string or None, optional (default="auto"). The number of features to consider when looking for the best split.
-* random_state: int, random_state is the seed used by the random number generator; To make results reproducible.
+As mentioned, here is the sample code of how fining, features selection are combined in short piece of code and generated below learning curve.
 
 ``` Python
-parameters = {
-    'n_estimators': [10, 50, 100, 150, 200],
-    'class_weight': ['balanced_subsample', 'balanced'],
-    'criterion': ['gini', 'entropy'],
-    # 'max_features': ['log2', 'auto', 25],
-    'random_state': [192]
-}
+# Variance Check
+vt = VarianceThreshold(threshold=(0.85 * (1 - 0.85)))
+threshold_fns = lambda x: (x * (1 - x))
+
+# Select K Best
+selection = SelectKBest(chi2)
+
+# Features Selector - Union
+combined_features = FeatureUnion([("vt", vt), ("univ_select", selection)])
+
+# Classifier
+clf = xgb.XGBClassifier()
+
+# Piplining
+pipeline = Pipeline([("features", combined_features), ("clf", clf)])
+
+# Grid check for Parameter Tuning
+param_grid = dict(features__vt__threshold=[threshold_fns(.65), threshold_fns(.75), threshold_fns(.85)],
+                  features__univ_select__k=[15, 20, 25],
+                  clf__n_estimators=[100, 150],
+                  clf__max_depth=[3, 5],
+                  clf__learning_rate=[.3, .1]
+                  )
+
+RS = RandomizedSearchCV(pipeline, param_grid, n_iter=10, n_jobs=-1, verbose=1)
 ```
 
-Best Results are generated are at following conditions
+Xgb Learning curve after feature selection and Model tuning:
 
-```
-clf_rf = RandomForestClassifier(n_estimators=150, criterion='entropy', class_weight="balanced_subsample", n_jobs=-1, random_state=192)
+![Image1](https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/TunedXgb.png?raw=true)
 
-AC Score: 0.81346801346801345
-```
+As tuned models are heavy for Cross validation check, we reduced the train sizes to show case only important of the learning(learning behavior around 30K samples). Thus maintain the learning curve still improving ensure that, after training with whole data our model will have very less overfitting.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Results
 
-__Iteration 5:
 
-* Final Stage
 
-In the final stage, where we clubbed the best of Iteration 4 and Iteration 5, as expected we have received a better model which improved a bit more.
+### Model Evaluation and Validation
 
-```
----------------------------------------------------------------------------
-             precision    recall  f1-score   support
-          0       0.89      0.80      0.84      9043
-          1       0.33      0.55      0.41       659
-          2       0.76      0.84      0.80      5148
-avg / total       0.82      0.80      0.81     14850
+During the initial development stages of model evaluation with accuracy score, we have ignore the concept of check training scores. Due to which we were not able to proper benchmark or done model selection. So after re-adjusting our scoring wrapper function to show details like training score and testing score  and confusion matrix of model performance when opt has improved our model selection. The closer train test score and score better than the benchmark score can be seen as a good indication of good model.
 
----------------------------------------------------------------------------
-AC Score: 0.800336700337
-F1 Score: 0.807207852789
-```
+We can also see that after comparing two images of Xgb learning curve in [Refinement](#refinement) section, our features selection with parameter tuning has certainly did good job. (Approximate converging point is improved from .745 to more than 0.79)
 
-Final post submission score we achieved is [0.8201][final_benchmark_model].
+So we believe that this model is reasonable and aligning with initial generic expected solution and parameter a tuned enough that learning is kept improving. As we have used Randomized Grid Parameter Cross Validation, we cannot be exactly sure that 100% perfect solution but in data science/statistical terms we can say we have an optimally robust model with dependable scores.
+
+
+
+### Justification
+
+Comparatively we have significantly improved our score from benchmark by roughly 20%. Though thoroughly analysis and model selection and checking, I believe the model we have is good enough to solve real time problems as ~80% accuracy score if pretty good enough score.
+
 
 
 ## Conclusion
+
 ### Free-Form Visualization
+
+We have already included visualizations of the key problems and key improvement of model in their respective location with label information. For simplicity and to maintain the storyline of the document, we have avoided to put all plot shown in the IPython Notebooks which are pointed out in [Methodology](#methodology) section.
+
+
 ### Reflection
+
+To summarize the whole process, we can explain in 3 to 4 simple steps. After selecting a scoring section, with simple and necessary data transformations we have labeled the data and built a Dummy Classifier for Benchmark Score(.54). Checking back at score function, was significant challenge due to huge improper portion of labels in data and finally we have settled for Accuracy score and F1 score(used 2 methods).
+
+After Benchmark selection, for better model developer around 60+ of time has been used for data engineering of features. As feature engineering is for model improvements, blindly and adding and improving/changing or adding features was huge challenge. So we wrote custom scripts for repetitive data analysis and simpler RF model score method was used to see that if the added features were really adding some improvements. During the initial benchmark score by RF, has created a big loss in time but in due to its nature of overfitting and fast execution, we have smartly used this behavior for feature engineering improvements. As data gets simple and cleaner, overfitting can get easy.
+
+Post data engineering stage, we have the algorithm testing to see which model is more generic and works well. So we have selection GBT as Random Forest was having huge train-test score differences and KNN model was also giving good results but again test-train score were ~8% while GBT last only 1% difference.
+
+Post Algorithms selection, we explored more algorithms to improve the speed of processing and further fine tune data with feature selections as GBT Trees work by boosting meathod(adds trees one after another checking the improvement), it was slow. Later we found Xgboost which is extreme gradient boosting, for scalable and portable model. With features selection algorithms like Variance Threshold check, Chi2 Best K Features selection and fine tuning, we generated a good cross validation score of around .789 which 3~4% more than normal GBT/XGB  score.
+
+
+
 ### Improvement
-* Using Longitude and Latitude, finding actually GPS Height and check if -tive GPS do exist using [Google Api](https://developers.google.com/maps/documentation/elevation/intro)
-* Like correlation for numerical columns, objects Columns can be looked up for Associations Techniques.
-* Unsupervised learning explorations were failed and could not generate much results till now, so there is score for further research in Unsupervised learning.
+
+Further improvement which has possibilities of improving the model are below,
+
+* We can try Unsupervised learning to check if any hidden patterns are there in the data.
+* PCA transformation, to reduce the dimensionality of the data.
+* Multi model training method/classifier like VotingClassifier can train multiple models on same data at same time to generate a higher form of model.
+* Instead of discarding the features, we can try to build models based on different sets features to predict and then use these features to predict a different form of higher order predicting model.
+* Tensflow, Deeplearning and Convolution Neural networks models.
+
+Due to the limitation of resources(time & documentation), we have avoided these stages to provide a simple solution and report.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Sources & References
 
@@ -825,6 +713,8 @@ Final post submission score we achieved is [0.8201][final_benchmark_model].
 * [Multi-class and multi label algorithms](http://scikit-learn.org/stable/modules/multiclass.html#ovr-classification)
 * [Multi-class Metric](http://sebastianraschka.com/faq/docs/multiclass-metric.html)
 * [Standford UnSupervised Learning](http://ufldl.stanford.edu/wiki/index.php/UFLDL_Tutorial)
+* [Xgboost](https://arxiv.org/pdf/1603.02754v1.pdf)
+* [BNP Paribas Cardif Claims - Winners Interview](http://blog.kaggle.com/tag/bnp-paribas-cardif-claims-management/)
 
 <!---Input Files-->
 
@@ -834,6 +724,7 @@ Final post submission score we achieved is [0.8201][final_benchmark_model].
 [input_file4]: https://s3.amazonaws.com/drivendata/data/7/public/SubmissionFormat.csv
 <!---Images-->
 
+[Software_development_methodologies]: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Software_development_methodologies.jpg/800px-Software_development_methodologies.jpg
 [classifier_comparision]: http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png?style=centerme
 [water_pump_with_kids]: http://drivendata.materials.s3.amazonaws.com/pumps/pumping.jpg?style=centerme
 [udacity_ml_course_plan]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/UDACITY_ML_COURSE_GIST.png?style=centerme
@@ -841,14 +732,21 @@ Final post submission score we achieved is [0.8201][final_benchmark_model].
 [features_vc_compare]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/features_vc_compare.png?style=centerme
 [features_vc_histogram]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/features_vc_histogram.png?style=centerme
 [new_benchmark_score]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/submissions_current_rank_192.png
-[final_benchmark_score]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/BenchmarkScore_0.8201.png?style=centerme
+<!-- [final_benchmark_score]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/BenchmarkScore_0.8201.png?style=centerme -->
+[COL_LONG_LAT_PROCESSED]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/COL_LONG_LAT_PROCESSED.png
+[COL_LONG_LAT_RAW]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/COL_LONG_LAT_RAW.png
 
 <!---others-->
 
 [F1_Score]: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score
-[benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb "IPython Notebook Link"
-[final_benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.8201.ipynb "IPython Notebook Link"
 [datadriven7]: https://www.drivendata.org/competitions/7/ "Driven Data Competition Page Link"
 [classifier_comparision_page]: http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html "Reference Page Link"
 [accuracy_score]: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score "Reference Page Link"
+<!-- [benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb "IPython Notebook Link"
+[final_benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.8201.ipynb "IPython Notebook Link" -->
+[PumpIt01]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-01.ipynb "IPython Notebook Link - Benchmark"
+[PumpIt02]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-02.ipynb "IPython Notebook Link - Data Analysis"
+[PumpIt03]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-03.ipynb "IPython Notebook Link - Data Transformations and Algorithm selection"
+[PumpIt04]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-04.ipynb "IPython Notebook Link - Curiosity & Classifier Performance Checks"
+[PumpIt05]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-05.ipynb "IPython Notebook Link - Xgboost & Final Submission"
 
