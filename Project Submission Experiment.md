@@ -860,6 +860,22 @@ During the further development we considered Xgboost model which is Production S
 
 We have already included visualizations of the key problems and key improvement of model in their respective location with label information. For simplicity and to maintain the storyline of the document, we have avoided to put all plot shown in the IPython Notebooks which are pointed out in [Methodology](#methodology) section.
 
+![!Image](images/Progress.png)
+
+* Benchmark Score using Dummy Classifier.
+* Gradient Boosting on processed Data.
+* eXtreme Gradient Boosting performance with features selection and parameter tuning.
+
+
+Some key highlights can observed from values counts shown below here, after manual text processing and labeling.
+
+![Image](images/PostProcessingVCs.png)
+
+During the data exploration, we have only shown the values counts of Object columns.
+
+Note: Only numerical columns are having unique values more than 6(red vertical line) in X-axis scale. We can also some known categorical groups like `funder` and `installer` are still having values more than 10K(crossed green line). As we have already done the processing of data, to check and use these columns if are useful, we have included Chi2 and variance threshold algorithms.
+
+
 
 ### Reflection
 
@@ -869,8 +885,7 @@ After Benchmark selection, for better model developer around 60+ of time has bee
 
 Post data engineering stage, we have the algorithm testing to see which model is more generic and works well. So we have selection GBT as Random Forest was having huge train-test score differences and KNN model was also giving good results but again test-train score were ~8% while GBT last only 1% difference.
 
-Post Algorithms selection, we explored more algorithms to improve the speed of processing and further fine tune data with feature selections as GBT Trees work by boosting meathod(adds trees one after another checking the improvement), it was slow. Later we found Xgboost which is extreme gradient boosting, for scalable and portable model. With features selection algorithms like Variance Threshold check, Chi2 Best K Features selection and fine tuning, we generated a good cross validation score of around .789 which 3~4% more than normal GBT/XGB  score.
-
+Post Algorithms selection, we explored more algorithms to improve the speed of processing and further fine tune data with feature selections as GBT Trees work by boosting method(adds trees one after another checking the improvement), it was slow. Later we found Xgboost which is extreme gradient boosting, for scalable and portable model. With features selection algorithms like Variance Threshold check, Chi2 Best K Features selection and fine tuning, we generated a good cross validation score of around .789 which 3~4% more than normal GBT/XGB  score.
 
 
 ### Improvement
