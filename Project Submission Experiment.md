@@ -524,7 +524,7 @@ array([480, 480, 480, 480, 481, 481, 481, 481, 482, 482])
 
 __Area, Population(2002, 2012):__
 
-Online, when we are searching for geographical information about Tanzania, we found a [source](https://www.citypopulation.de/Tanzania-Cities.html) for population and Districts in Tanzania. So, based on the `region` column we were able to add few additional features like `Area`,`population_2002` - Population of 2002 and Population of 2012 as `population_2012`. As Area and Population stats, generally effect City and State Water Consumption, so we have added these features.
+On-line, when we are searching for geographical information about Tanzania, we found a [source](https://www.citypopulation.de/Tanzania-Cities.html) for population and Districts in Tanzania. So, based on the `region` column we were able to add few additional features like `Area`,`population_2002` - Population of 2002 and Population of 2012 as `population_2012`. As Area and Population stats, generally effect City and State Water Consumption, so we have added these features.
 
 
 
@@ -739,14 +739,14 @@ Details of this experiment can be found [here][PumpIt04]. Surprising, as we expe
 
 During the search for Gradient Boosting parameter tuning, we found another gradient boosting model in Python. [Xgboost](https://xgboost.readthedocs.io/en/latest/) module which is an Extreme Gradient Boosting designed to be Flexible and Scalable. As current Gradient models is  slightly slow, so for further improvement, we used Xgboost Extreme Gradient Boosting Classifier for our multi class prediction.
 
-During data processing stage, we completed the data transformations based on the evidences we found from the data and removed the unnecessary columns by intuition. So, to further optimize this search for best columns and train a model we did [pipeline](http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline) of features selection and [RandomizedSearchCV](http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV)
+During data processing stage, we completed the data transformations based on the evidences we found from the data and removed the unnecessary columns by intuition. So, to further optimize this search for best columns and train a model we did [pipeline](http://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline) of features selection and [RandomizedSearchCV](http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.RandomizedSearchCV.html#sklearn.model_selection.RandomizedSearchCV) To put simple, Pipelining or FeatureUnions works like a wrapper to connect similar transformation & jobs together and as a single procedure or algorithm or job.
 
 
 For Finer model building, we generated a model building curve.
 
 ![Image](images/Xgb.png?raw=true)
 
-Note: Traning data used for this learning curve is our pre-processed data. No features selection is done here.
+Note: Training data used for this learning curve is our pre-processed data. No features selection is done here.
 
 As you can see from above diagram, there are 3 significant features to identify
 Sudden drop at 10K sample point.
@@ -873,19 +873,25 @@ Some key highlights can observed from values counts shown below here, after manu
 
 During the data exploration, we have only shown the values counts of Object columns.
 
-Note: Only numerical columns are having unique values more than 6(red vertical line) in X-axis scale. We can also some known categorical groups like `funder` and `installer` are still having values more than 10K(crossed green line). As we have already done the processing of data, to check and use these columns if are useful, we have included Chi2 and variance threshold algorithms.
+Note: Only numerical columns are having unique values more than 6(red vertical line) in X-axis scale. We can also some known categorical groups like `funder` and `installer` are still having values more than 55 unique values(crossed green line). As we have already done the processing of data, to check and use these columns if are useful, we have included Chi2 and variance threshold algorithms.
 
+For reference,
 
+(np.log -> Python numpy package's log transformation function)
+
+* np.log transform of 55 is 4.0073331852324712
+* np.log transform of 100 is 4.6051701859880918
+* np.log transform of 500 in 6.2146080984221914
 
 ### Reflection
 
-To summarize the whole process, we can explain in 3 to 4 simple steps. After selecting a scoring section, with simple and necessary data transformations we have labeled the data and built a Dummy Classifier for Benchmark Score(.54). Checking back at score function, was significant challenge due to huge improper portion of labels in data and finally we have settled for Accuracy score and F1 score(used 2 methods).
 
-After Benchmark selection, for better model developer around 60+ of time has been used for data engineering of features. As feature engineering is for model improvements, blindly and adding and improving/changing or adding features was huge challenge. So we wrote custom scripts for repetitive data analysis and simpler RF model score method was used to see that if the added features were really adding some improvements. During the initial benchmark score by RF, has created a big loss in time but in due to its nature of overfitting and fast execution, we have smartly used this behavior for feature engineering improvements. As data gets simple and cleaner, overfitting can get easy.
+From initial pumpit data sets we have spent a significant amount of time in understanding labels, data and different interesting issues with data. Like the missing data into Longitude & Latitude which we have filled with the help of another location based feature('region'). After filling of missing values, we have found that values are hold high precision which is too high for finding a simple usages like identifying pumps. Later biggest challenge was with text data/object columns where were having huge number of unique values groups(values counts). Post study we have created a reusable label transformer to identify the outliers or less frequency groups and clear them.
 
-Post data engineering stage, we have the algorithm testing to see which model is more generic and works well. So we have selection GBT as Random Forest was having huge train-test score differences and KNN model was also giving good results but again test-train score were ~8% while GBT last only 1% difference.
+Rest of the data transformation step like clearing too high variance or too low variance columns, finding suitable replacement for null values, removing strong co related columns and algorithm selection and fine tuning all became easy after using of using Sklearn Feature Union, Pipelining and RandomisedGridSearch.
 
-Post Algorithms selection, we explored more algorithms to improve the speed of processing and further fine tune data with feature selections as GBT Trees work by boosting method(adds trees one after another checking the improvement), it was slow. Later we found Xgboost which is extreme gradient boosting, for scalable and portable model. With features selection algorithms like Variance Threshold check, Chi2 Best K Features selection and fine tuning, we generated a good cross validation score of around .789 which 3~4% more than normal GBT/XGB  score.
+Feature Union, was helpful to connect several features selection transformers into one. Pipelining to connect these feature union wrapper with a selected classifier for model training and act like a single system and RandomisedGridSearchCV is for cross validation and fine tuning of ML Model(XGBoost).
+
 
 
 ### Improvement
