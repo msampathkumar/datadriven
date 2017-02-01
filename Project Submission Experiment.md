@@ -7,12 +7,7 @@ Sampath Kumar
 January 6th, 2017
 
 
-Keywords: Stats, Labeling, Transformation, Variance Threshold, Chi2, F1 Score, Random Forest, Gradient Boosting, Xgboost.
-
-__ INDEX __
-
-[TOC]
-
+Keywords: Statistics(stats), Labeling, Transformation, Sklearn, Scikit, Variance Threshold(VT), Chi2, F1 Score, Random Forest(RF), Gradient Boosting(GBT/GB), Xgboost.
 
 ## Definition
 
@@ -22,7 +17,7 @@ Across Africa, cholera, typhoid, dysentery and other diseases kill thousands eac
 
 The Taarifa Platform is an open source web API, designed to close citizen feedback loops. Using Taarifa people can report their social issues(like water, electricity, food and other) from different forms of communications like SMS, Web Forums, Emails or Twitter. Later these reports are placed into a work flow where they can be followed up and acted upon while engaging citizens and community. A message then will to local central governing body notifying the issue & the location.
 
-<!-- ![Image1][water_pump_with_kids] -->
+<!-- ![Image][water_pump_with_kids] -->
 
 In this Project, we will be using the well known algorithms like [Random Forest](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf), [Gradient Boosting Trees](https://www.cse.cuhk.edu.hk/irwin.king/_media/presentations/2001_greedy_function_approximation_a_gradient_boosting_machine.pdf), [Support Vector Machines](http://research.microsoft.com/en-us/um/people/cburges/papers/svmtutorial.pdf) and [Xgboost](https://xgboost.readthedocs.io/en/latest/). External Resources, where you can find the code and scripts used are available in below links.
 
@@ -59,7 +54,7 @@ Before we begin metrics selection, lets look at the distribution of labels in th
 * functional needs repair - the waterpoint is operational, but needs repairs
 * non functional - the waterpoint is not operational
 
-![Image1](http://drivendata.materials.s3.amazonaws.com/pumps/labeldistribution.png)
+![Image](http://drivendata.materials.s3.amazonaws.com/pumps/labeldistribution.png)
 
 In multi-class classification class imbalance effects more easily the typical performance metrics. As per competition posted by Data Driven suggests a simple Accuracy, given its imbalanced classes. So we have added a small wrapper function to provide both Scores for understanding a models performance, while Accuracy score is focuses on overall model performance, we added F1 Score to focus on balanced precision and recall scores in according to each classes distribution.
 
@@ -237,15 +232,15 @@ To create a generic model which could work in all scenario, we will use stratifi
 
 Visualization of Object Columns Value Counts.
 
-![Image1][cols_value_counts]
+![Image][cols_value_counts]
 
 Bar plot of all Object Column's Value counts.
 __ NOTES:__ Values shown in image are log transformed to show differences visually.
-![Image1][features_vc_compare]
+![Image][features_vc_compare]
 
 Histogram of all Object Column's Value counts.
 
-![Image1][features_vc_histogram]
+![Image][features_vc_histogram]
 
 
 __Observations:__
@@ -385,9 +380,9 @@ As you can see there is are details in a systematic order like Data Analysis(2),
 Based up on the observations of [Analysis](#analysis), we have already show cased the finding in _Data Exploration_(Second step in described methodology), here we will describing details of how and what we did to fix/solve these issues or observations from Analysis. Before we start lets start with understanding of two most used feature engineering concepts like [Features Scaling](https://en.wikipedia.org/wiki/Feature_scaling) and Noise reduction(Data Cleansing/Data Scrubbing).
 
 
-As we can understand from its name itself, Features Scaling is a kind of data transformation technique of numerical data from one dimension to another simpler dimensions, which can be done with out any loss of information. For example say in our data set we have regions codes like  4001, 4002, 4003,.. and so on. Say we are subtract 4000 from each one then the region code become like, 1, 2, 3,.. and so on. As you can understand, the computations involved with these numbers reduce as the number of bits involved in the computation is also less. Now consider, if we are using this number for a multiplication or division or in finding distance formula, with 1 or 2 or 3 is much easier than with 4001 or 4002 or 4003.
+As we can understand from its name itself, _Features Scaling_ is a kind of data transformation technique for numerical data to convert data in one dimension to another simpler dimensions, which can be done with out any loss of information. For example say in our data set we have regions codes like  4001, 4002, 4003,.. and so on. Say we are subtract 4000 from each one then the region code become like, 1, 2, 3,.. and so on. As you can understand, the computations involved with these numbers reduce as the number of bits involved in the computation is also less. Now consider, if we are using this number for a multiplication or division or in finding distance formula, with 1 or 2 or 3 is much easier than with 4001 or 4002 or 4003. Now imagine, if the numbers are in double integers or say 12 digit numbers then, these simple calculations would get heavy computationally.
 
-As for Noise Reduction or Outliers Detections, we refer to the huge variances/entropy found in categorical columns like Funder, Lga, Schema_name. In these columns, we observe huge variety of unique groups. As you can understand, having a unique id will help in identifying a row perfectly, but it will help in finding a pattern and so we called these as Noise or Outliers. So built a custom Label Transformer, to see how groups are actings are noise and cleaned them(replace with `other`) with out much loss of information.
+As for Noise Reduction or Outliers Detections, we refer to the huge variances/entropy found in categorical columns like Funder, Lga, Schema_name. In these columns, we observe huge variety of unique groups. As you can understand, having a unique id will help in identifying a row perfectly, but it will not help in finding a pattern and so we called these as Noise or Outliers. So we built a custom Label Transformer, to see how groups are actings are noise and clean them(replace with `other` keyword) with out much loss of much information.
 
 
 __Detailed Steps for Data Preprocessing__:
@@ -453,7 +448,7 @@ RAW_X.date_recorded = RAW_X.date_recorded.apply(f)
 RAW_TEST_X.date_recorded = RAW_TEST_X.date_recorded.apply(f)
 ```
 
-* __Boolean Columns__: For boolean columns `public_meetings` and `permit`, based upon their understanding and considering worst case possible, we filled with False.
+* __Boolean Columns__: For boolean columns `public_meetings` and `permit`, based upon their description and considering worst case possible, we filled with False.
 
 ``` Python
 tmp = ['public_meeting', 'permit']
@@ -469,17 +464,17 @@ __Longitude and Latitude:__
 
 Here is the plot for raw data.
 
-![Image1][COL_LONG_LAT_RAW]
+![Image][COL_LONG_LAT_RAW]
 
 
 Here is plot after Data Transformations
-![Image1][COL_LONG_LAT_PROCESSED]
+![Image][COL_LONG_LAT_PROCESSED]
 
 Also when we take a closer look at the data longitude and latitude details, the precision of data is up to such a level that one can even pin point the location to millimeters. As public water pumps are generally not install for every house and kept in open area which is accessible for lots of people, we reduced the precision where it can point location with in meters.
 
 As for the values used to replace (0, 0) with approximate location coordinate values, we had to study the how longitude and latitudes are in specific for a region. Here is a plot of how longitude and latitude are in specific to region. This chart and code for generating this chart can be seen [Data Analysis][PumpIt02].
 
-![Image](https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/LONG_LAT_TRENDS.png?raw=true)
+![Image](images/LONG_LAT_TRENDS.png?raw=true)
 
 _Plot: X - Axis, we have Location details, Y - Axis we have coordinates and lines are several approximate stats values related to each regions._
 
@@ -500,7 +495,7 @@ def f(row):
     return row
 ```
 
-Now we have the information filled and all zero values are cleared we used following method to reduce the location precision to 11 meters.
+Now we have the information filled and all zero values are cleared, we used following the method to reduce the location precision to 11 meters. As too much information might too much to handle. As per Ockham's Razor rule, we are simplifying data as much as possible and as much as needed.
 
 ``` Python
 # Reducing geo location precision to 11 meters
@@ -637,16 +632,24 @@ As the process of initiating a classifier and training it, testing it on train d
 
 ![Image](images/GAME.png?style=centerme)
 
-All the classifier initiated in game are using the default parameters except for random_state which was set to 192 to make results reproducible as much. Scripts details can be found [here](https://github.com/msampathkumar/datadriven_pumpit/blob/master/scripts/tools.py). For dummy classifier, we have used `most_frequent` which was explained in the Benchmark section.
+For selection of algorithm, we pass a parameter called `algo` by proving an input like rf - random forest, gb - gradient boost and other. All the classifier initiated in game are using the default parameters except for `random_state` which was set to 192, to make results reproducible as much. Scripts details can be found [here](scripts/tools.py). For dummy classifier, we have used `most_frequent` strategy which was explained in the Benchmark section.
 
 
 _Note:_
 
 * AC Score - implies Accuracy Score.
 * F1 Score - implies F1 Score(micro)
-* In this section, code comments has both python code and output are display. All the Python
+* In this section, code comments has both python code and output are display. All the Python code starts with `>>>`.
 
 __Random Forest__
+
+The random forest ([Breiman](http://oz.berkeley.edu/users/breiman/randomforest2001.pdf), 2001) is an ensemble approach that can also be thought of as a form of nearest neighbor predictor.
+
+Ensembles are a divide-and-conquer approach used to improve performance. The main principle behind ensemble methods is that a group of "weak learners" can come together to form a "strong learner". The figure below (taken from [here](http://en.wikipedia.org/wiki/Bootstrap_aggregating)) provides an example. Each classifier, individually, is a "weak learner" while all the classifiers taken together are a "strong learner".
+
+The random forest starts with a standard machine learning technique called a "decision tree" which, in ensemble terms, corresponds to our weak learner. In a decision tree, an input is entered at the top and as it traverses down the tree the data gets bucketed into smaller and smaller sets.
+
+The random forest takes this notion to the next level by combining trees with the notion of an ensemble. Thus, in ensemble terms, the trees are weak learners and the random forest is a strong learner.
 
 ``` Python
 >>> # Random Forest
@@ -663,6 +666,8 @@ AC Score: 0.798720538721 F1 Score: 0.798720538721
 
 __Gradient Boosting Trees__
 
+The Gradient Boosting tree also an ensemble approach like the random forest, one difference is learning separates both of them. In Gradient Boosting, instead of training multiple trees at once, we train each tree one after another to keep checking & improving accuracy. Also for this reason, GBT tend to be robust towards data overfitting issues but consumes time in developing. Where as Random Forest tend to over fit data but learns faster.
+
 ``` Python
 >>> # Random Forest
 >>> clf = game(X_train, X_test, y_train, y_test, algo='gb')
@@ -678,6 +683,8 @@ AC Score: 0.751043771044 F1 Score: 0.751043771044
 
 __KNN__
 
+KNN, short form for K Nearest Neighbors is a instance based learning model. In machine learning, instance-based learning (sometimes called memory-based learning) is a family of learning algorithms that, instead of performing explicit generalization, compares new problem instances with instances seen in training, which have been stored in memory. One advantage that instance-based learning has over other methods of machine learning is its ability to adapt its model to previously unseen data. Instance-based learners may simply store a new instance or throw an old instance away.
+
 ``` Python
 >>> # Random Forest
 >>> clf = game(X_train, X_test, y_train, y_test, algo='knn')
@@ -692,10 +699,10 @@ AC Score: 0.705521885522 F1 Score: 0.705521885522
 ```
 
 
-In general, when we do model training as data scientists we prefer to take a generic model which can identified the closer test and train results. As the model is a generic model these scores will be closer. And the reason we avoid models with huge train-test scores is that they tend of memorize the data well making them an experts in explaining the behavior of available data but fails to be generic enough to handle new kind of problems.
+In general, when we do model training as data scientists we prefer to take a generic model which can identified the closer test and train results. And the reason we avoid models with huge train-test scores difference, is that they tend of memorize the data well making them an experts in explaining the behavior of available data but they fails to be generic enough to handle new kind of problems. _When the model is a generic model they would be able to perform in similar fashion on unseen data_ like in real time situations.
 
 
-So, we will be using Gradient Boosting Trees as our model for solution building for following reasons.
+So to summarize, we will be using Gradient Boosting Trees as our model for solution building for following reasons.
 
 * Gradient Boosting Trees(75% Acc) are able to provide good testing compared to Random Forest(79% Acc) and KNN(70% Acc)
 * Gradient Boosting test-train score difference is less than 1%, which is lower than Random Forest(~20%) and KNN(8%)
@@ -705,9 +712,9 @@ Details of these results, logs and code are available at [here][PumpIt03]
 Out of curiosity and from our inspiration from SKlearn Documentation, we have copied the code from documentation and applied to our transformed data to understand the performance of other models and estimate if our model selection is been good enough.
 
 
-![Image1](https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/CompareClassfiers.png)
+![Image](images/CompareClassfiers.png)
 
-Details of this experiment can be found [here][PumpIt04]. Surprising, as we expected one our expected model did happen to be a top performer of these shown classifiers.
+Details of this experiment can be found [here][PumpIt04]. Surprising, as we expected one our expected model(GBT) did happen to be a top performer of these shown classifiers.
 
 
 
@@ -737,7 +744,7 @@ During data processing stage, we completed the data transformations based on the
 
 For Finer model building, we generated a model building curve.
 
-![Image1](https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/Xgb.png?raw=true)
+![Image](images/Xgb.png?raw=true)
 
 Note: Traning data used for this learning curve is our pre-processed data. No features selection is done here.
 
@@ -784,11 +791,20 @@ param_grid = dict(features__vt__threshold=[threshold_fns(.65), threshold_fns(.75
 RS = RandomizedSearchCV(pipeline, param_grid, n_iter=10, n_jobs=-1, verbose=1)
 ```
 
+As explained earlier, since we don't want the learning curve converge at 30K results we changed following parameters
+
+* Threshold is selection of variance for each feature, to make learning/pattern matching work easy for ML model.
+* Select K is similar to Threshold Variance, helps in selection top K best features according to Chi2 logic.
+* n_estimators, to define the number of tree our ML model can grow for improving its accuracy.
+* max_depth, sets the maximum limit a tree branches can grow.
+* learning_rate is how fast a ML models should start with for learning. Overtime, this automatically decreases.
+
+
 Xgb Learning curve after feature selection and Model tuning:
 
-![Image1](https://github.com/msampathkumar/datadriven_pumpit/blob/master/images/TunedXgb.png?raw=true)
+![Image](images/TunedXgb.png?raw=true)
 
-As tuned models are heavy for Cross validation check, we reduced the train sizes to show case only important of the learning(learning behavior around 30K samples). Thus maintain the learning curve still improving ensure that, after training with whole data our model will have very less overfitting.
+As tuned models are heavy for Cross validation check, we reduced the train sizes to show case only important of the learning(learning behavior around 30K samples). As you can see the learning curve is still improving and this is to ensure that, after training with whole data our model will have very less overfitting.
 
 
 
@@ -811,21 +827,30 @@ As tuned models are heavy for Cross validation check, we reduced the train sizes
 
 ## Results
 
-
-
 ### Model Evaluation and Validation
 
-During the initial development stages of model evaluation with accuracy score, we have ignore the concept of check training scores. Due to which we were not able to proper benchmark or done model selection. So after re-adjusting our scoring wrapper function to show details like training score and testing score  and confusion matrix of model performance when opt has improved our model selection. The closer train test score and score better than the benchmark score can be seen as a good indication of good model.
+In the Refinement section, as one might question to keep pushing the limit of parameter like max_depth to 7 or 10 or 20 and increasing the number of tree to 200 or 300 and so on to keep improving the accuracy of the model. Reason is computational cost gets expensive for both training and testing as number of trees & increase the time it take to generate a solution gets delayed. Also Ockham Razors rules, suggests to prefer to go for simple models over complex.
 
-We can also see that after comparing two images of Xgb learning curve in [Refinement](#refinement) section, our features selection with parameter tuning has certainly did good job. (Approximate converging point is improved from .745 to more than 0.79)
-
-So we believe that this model is reasonable and aligning with initial generic expected solution and parameter a tuned enough that learning is kept improving. As we have used Randomized Grid Parameter Cross Validation, we cannot be exactly sure that 100% perfect solution but in data science/statistical terms we can say we have an optimally robust model with dependable scores.
-
+To check the robustness of scores we receive, in the refinement stage, we actually have done a _cross validation_ of our data model. __Cross Validation__, sometimes called rotation estimation, is a model validation technique for assessing how the results of a statistical analysis will generalize to an independent data set. It is mainly used in settings where the goal is prediction, and one wants to estimate how accurately a predictive model will perform in practice. So we believe the score we receive about the model in Refinement state are robust enough to trust.
 
 
 ### Justification
 
-Comparatively we have significantly improved our score from benchmark by roughly 20%. Though thoroughly analysis and model selection and checking, I believe the model we have is good enough to solve real time problems as ~80% accuracy score if pretty good enough score.
+Looking back at the benchmark - Dummy Classifier with `most_frequent` strategy, does the prediction by simple logic of giving the most seen solution as the solution for all records used for predicting with that model. As that solution is most seen, it generally performance better than 50% in almost all cases and here in for our dataset, as we have one label in 54% of time our dummy classifier provided 54% Accuracy.
+
+Where as our initially proposed models (Random Forest Model, Gradient Boosting Trees and K Nearest Neighbor) develops a data model after understanding the relations between prediction labels and dataset features with scores around 75%. In which we selected GBT model which is least overfitting as our data model classifier.
+
+During the further development we considered Xgboost model which is Production Scalable version of gradient boosting model. After which during further refinement features selections with Variance Threshold and Chi2 best selection we improved our score 4% roughly.
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -899,6 +924,7 @@ Due to the limitation of resources(time & documentation), we have avoided these 
 * [Standford UnSupervised Learning](http://ufldl.stanford.edu/wiki/index.php/UFLDL_Tutorial)
 * [Xgboost](https://arxiv.org/pdf/1603.02754v1.pdf)
 * [BNP Paribas Cardif Claims - Winners Interview](http://blog.kaggle.com/tag/bnp-paribas-cardif-claims-management/)
+* [Random Forest Explanation](https://citizennet.com/blog/2012/11/10/random-forests-ensembles-and-performance-metrics/)
 
 <!---Input Files-->
 
@@ -911,14 +937,14 @@ Due to the limitation of resources(time & documentation), we have avoided these 
 [Software_development_methodologies]: https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Software_development_methodologies.jpg/800px-Software_development_methodologies.jpg
 [classifier_comparision]: http://scikit-learn.org/stable/_images/sphx_glr_plot_classifier_comparison_001.png?style=centerme
 [water_pump_with_kids]: http://drivendata.materials.s3.amazonaws.com/pumps/pumping.jpg?style=centerme
-[udacity_ml_course_plan]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/UDACITY_ML_COURSE_GIST.png?style=centerme
-[cols_value_counts]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/cols_value_count_li55.png?style=centerme
-[features_vc_compare]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/features_vc_compare.png?style=centerme
-[features_vc_histogram]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/features_vc_histogram.png?style=centerme
-[new_benchmark_score]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/submissions_current_rank_192.png
-<!-- [final_benchmark_score]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/BenchmarkScore_0.8201.png?style=centerme -->
-[COL_LONG_LAT_PROCESSED]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/COL_LONG_LAT_PROCESSED.png
-[COL_LONG_LAT_RAW]: https://raw.githubusercontent.com/msampathkumar/datadriven_pumpit/master/images/COL_LONG_LAT_RAW.png
+[udacity_ml_course_plan]: images/UDACITY_ML_COURSE_GIST.png?style=centerme
+[cols_value_counts]: images/cols_value_count_li55.png?style=centerme
+[features_vc_compare]: images/features_vc_compare.png?style=centerme
+[features_vc_histogram]: images/features_vc_histogram.png?style=centerme
+[new_benchmark_score]: images/submissions_current_rank_192.png
+<!-- [final_benchmark_score]: images/BenchmarkScore_0.8201.png?style=centerme -->
+[COL_LONG_LAT_PROCESSED]: images/COL_LONG_LAT_PROCESSED.png
+[COL_LONG_LAT_RAW]: images/COL_LONG_LAT_RAW.png
 
 <!---others-->
 
@@ -926,11 +952,11 @@ Due to the limitation of resources(time & documentation), we have avoided these 
 [datadriven7]: https://www.drivendata.org/competitions/7/ "Driven Data Competition Page Link"
 [classifier_comparision_page]: http://scikit-learn.org/stable/auto_examples/classification/plot_classifier_comparison.html "Reference Page Link"
 [accuracy_score]: http://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score "Reference Page Link"
-<!-- [benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.7970.ipynb "IPython Notebook Link"
-[final_benchmark_model]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/BenchMarkSeed_0.8201.ipynb "IPython Notebook Link" -->
-[PumpIt01]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-01.ipynb "IPython Notebook Link - Benchmark"
-[PumpIt02]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-02.ipynb "IPython Notebook Link - Data Analysis"
-[PumpIt03]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-03.ipynb "IPython Notebook Link - Data Transformations and Algorithm selection"
-[PumpIt04]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-04.ipynb "IPython Notebook Link - Curiosity & Classifier Performance Checks"
-[PumpIt05]: https://github.com/msampathkumar/datadriven_pumpit/blob/master/PumpIt-05.ipynb "IPython Notebook Link - Xgboost & Final Submission"
+<!-- [benchmark_model]: BenchMarkSeed_0.7970.ipynb "IPython Notebook Link"
+[final_benchmark_model]: BenchMarkSeed_0.8201.ipynb "IPython Notebook Link" -->
+[PumpIt01]: PumpIt-01.ipynb "IPython Notebook Link - Benchmark"
+[PumpIt02]: PumpIt-02.ipynb "IPython Notebook Link - Data Analysis"
+[PumpIt03]: PumpIt-03.ipynb "IPython Notebook Link - Data Transformations and Algorithm selection"
+[PumpIt04]: PumpIt-04.ipynb "IPython Notebook Link - Curiosity & Classifier Performance Checks"
+[PumpIt05]: PumpIt-05.ipynb "IPython Notebook Link - Xgboost & Final Submission"
 
