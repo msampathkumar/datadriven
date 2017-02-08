@@ -11,6 +11,7 @@ __Table of Contents__
 
 [TOC]
 
+
 ## Definition
 
 ### Project Overview
@@ -37,14 +38,16 @@ Improving access to water requires a combination of actions on hard infrastructu
 
 As per a U.N Report, to help the people of Tanzania(2007), The Tanzanian government, with support from UN Development Programme(UNDP), responded to the water problems by the installation of Drinking Water Taps and Decentralized the maintenance for a quick response. As explained earlier, today this water infrastructure is facing repair and maintenance issues causing a disconnection for drinking water needs. _The Taarifa Platform_ is an open source web API, designed to close citizen feedback loops. Using Taarifa people can report their social issues(like water, electricity, food and other) from different forms of communications like SMS, Web Forums, Emails or Twitter. Later these reports are placed into a work flow where they can be followed up and acted upon while engaging citizens and community. A message then will to local central governing body notifying the issue & the location.
 
-Sources:
+Information Sources:
+
 * [Tanzania: Water is life, but access remains a problem](http://blogs.worldbank.org/africacan/tanzania-water-is-life-but-access-remains-a-problem)
-* [UN Report](http://www.unwater.org/fileadmin/user_upload/unwater_new/docs/Publications/TZA_pagebypage.pdf)
+* [UN Water - United Repuplic of Tanzania](http://www.unwater.org/fileadmin/user_upload/unwater_new/docs/Publications/TZA_pagebypage.pdf)
+* [DataDriven - PumpIt](https://www.drivendata.org/competitions/7/)
 
 
 <!-- ![Image][water_pump_with_kids] -->
 
-In this Project, we will be using the well known algorithms like [Random Forest](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf), [Gradient Boosting Trees](https://www.cse.cuhk.edu.hk/irwin.king/_media/presentations/2001_greedy_function_approximation_a_gradient_boosting_machine.pdf), [Support Vector Machines](http://research.microsoft.com/en-us/um/people/cburges/papers/svmtutorial.pdf) and [Xgboost](https://xgboost.readthedocs.io/en/latest/). External Resources, where you can find the code and scripts used are available in below links.
+In this Project, we will be use some well known algorithms like [Random Forest](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf), [Gradient Boosting Trees](https://www.cse.cuhk.edu.hk/irwin.king/_media/presentations/2001_greedy_function_approximation_a_gradient_boosting_machine.pdf), [Support Vector Machines](http://research.microsoft.com/en-us/um/people/cburges/papers/svmtutorial.pdf) and [Xgboost](https://xgboost.readthedocs.io/en/latest/). External Resources, where you can find the code and scripts used are available in below links.
 
 1. [Benchmark (Data Load + Clean Up + Algorithm)][PumpIt01]
 2. [Data Analysis][PumpIt02]
@@ -55,10 +58,10 @@ In this Project, we will be using the well known algorithms like [Random Forest]
 
 __Personal Motivation__:
 
-"The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate, to have it make some difference that you have lived and lived well."
+>The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate, to have it make some difference that you have lived and lived well.
 ― Ralph Waldo Emerson
 
-When I was a child, I used see lots of common people standing in long queue for drinking water. May be it was the first time I have ever seen people struggling for drinking water till late evenings, on that day I did not know how to help them. Every time I read about this problem statement I still do feel the same way. We realize that trying a few algorithms and feature engineering techniques might not solve this problem of fixing the water issues of our fellow beings in Tanzania, but we hope and expect that this project to serve as a platform for building tools for proactive identifying .
+As a child, I used see lots of common people standing in long queue for drinking water. May be it was the first time I have ever seen people struggling for drinking water till late evenings, on that day I did not know how to help them. Every time I read about this problem statement I still do feel the same way. We realize that trying a few algorithms and feature engineering techniques might not solve this problem of fixing the water issues of our fellow beings in Tanzania, but we hope and expect that this project to serve as a platform for others as a learning & building solutions.
 
 > What we do is less than a drop in the ocean. But if it were missing, the ocean would lack something.  - Mother Teresa
 

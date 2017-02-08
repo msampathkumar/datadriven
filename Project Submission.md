@@ -1,25 +1,53 @@
-# Machine Learning Engineer Nanodegree
 
-## Capstone Project
+# Capstone Project
+## Machine Learning Engineer Nanodegree
 
-Sampath Kumar
+Sampath Kumar, M
+Feb 4th, 2017
 
-January 6th, 2017
+__Keywords:__ Statistics(stats), Labeling, Transformation, Sklearn, Scikit, Variance Threshold(VT), Chi2, F1 Score, Random Forest(RF), Gradient Boosting(GBT/GB), Xgboost.
 
+__Table of Contents__
 
-Keywords: Statistics(stats), Labeling, Transformation, Sklearn, Scikit, Variance Threshold(VT), Chi2, F1 Score, Random Forest(RF), Gradient Boosting(GBT/GB), Xgboost.
+[TOC]
+
 
 ## Definition
 
 ### Project Overview
 
-Across Africa, cholera, typhoid, dysentery and other diseases kill thousands each year. To help the people of Tanzania(2007), The Tanzanian government, with support from UN Development Programme(UNDP), responded to the water problems by the installation of Drinking Water Taps and Decentralized the maintenance for a quick response. Today this water infrastructure is facing repair and maintenance issues causing a disconnection for drinking water needs.
-
-The Taarifa Platform is an open source web API, designed to close citizen feedback loops. Using Taarifa people can report their social issues(like water, electricity, food and other) from different forms of communications like SMS, Web Forums, Emails or Twitter. Later these reports are placed into a work flow where they can be followed up and acted upon while engaging citizens and community. A message then will to local central governing body notifying the issue & the location.
 
 <!-- ![Image][water_pump_with_kids] -->
 
-In this Project, we will be using the well known algorithms like [Random Forest](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf), [Gradient Boosting Trees](https://www.cse.cuhk.edu.hk/irwin.king/_media/presentations/2001_greedy_function_approximation_a_gradient_boosting_machine.pdf), [Support Vector Machines](http://research.microsoft.com/en-us/um/people/cburges/papers/svmtutorial.pdf) and [Xgboost](https://xgboost.readthedocs.io/en/latest/). External Resources, where you can find the code and scripts used are available in below links.
+
+
+![Image](http://blogs.worldbank.org/africacan/files/africacan/girl_water_small.jpg)
+
+There is no doubt about the importance of water to human existence. People need clean water to survive and stay healthy. Lack of clean water contributes to the high mortality rates in children around the world. Water is also critical to a country’s development as it is needed not only for agricultural productivity but also for industrial production. Yet access to water remains a major challenge in many countries. Tanzania has been blessed, both on the surface and below ground, with three times more renewable water resources than Kenya and 37 per cent more than Uganda.
+
+Despite the vast amounts of fresh water available, many Tanzanians are still faced with water shortages due to insufficient capacity to access and store  it both in rural and urban areas. Few households have access to clean drinking water from a piped source. Only a small fraction of rural households can access water to irrigate their farms. The following statistics illustrate the magnitude of the problem:
+
+* Access to water from a piped source all but stagnated over the past two decades. In 1991/92, 33.5 per cent of the population had such access; this figure was 33.1 per cent in 2010.  Despite this, Tanzania is doing better than Uganda (15.3 per cent in 2006), at par with Kenya (34.3 per cent in 2008-09) but far behind Senegal (68.7 per cent in 2010);
+
+* Urban areas witnessed a sharp deterioration in access to water from 77.8 per cent to 58.6 per cent. On the other hand, - rural areas experienced a slight improvement from 19.2 percent to 24.1 per cent during the same period;
+
+* A large majority of rural households (more than 70 per cent) were more than 15 minutes away from their main water source in 2010;
+Only 3 per cent of total cultivated area in Tanzania was under irrigation in 2010.
+
+Improving access to water requires a combination of actions on hard infrastructure and systems. There is need to build pipes, irrigation systems and pumps in both urban and rural areas. Fortunately, the Government has started to take action and has significantly increased public resources to the water sector, from Sh183 billion in 2007/8 to Sh575 billion in 2011/12. Maintenance of existing systems, however, has been neglected as well as the development of new delivery mechanisms, such as partnerships with private operators and communities.
+
+As per a U.N Report, to help the people of Tanzania(2007), The Tanzanian government, with support from UN Development Programme(UNDP), responded to the water problems by the installation of Drinking Water Taps and Decentralized the maintenance for a quick response. As explained earlier, today this water infrastructure is facing repair and maintenance issues causing a disconnection for drinking water needs. _The Taarifa Platform_ is an open source web API, designed to close citizen feedback loops. Using Taarifa people can report their social issues(like water, electricity, food and other) from different forms of communications like SMS, Web Forums, Emails or Twitter. Later these reports are placed into a work flow where they can be followed up and acted upon while engaging citizens and community. A message then will to local central governing body notifying the issue & the location.
+
+Information Sources:
+
+* [Tanzania: Water is life, but access remains a problem](http://blogs.worldbank.org/africacan/tanzania-water-is-life-but-access-remains-a-problem)
+* [UN Water - United Repuplic of Tanzania](http://www.unwater.org/fileadmin/user_upload/unwater_new/docs/Publications/TZA_pagebypage.pdf)
+* [DataDriven - PumpIt](https://www.drivendata.org/competitions/7/)
+
+
+<!-- ![Image][water_pump_with_kids] -->
+
+In this Project, we will be use some well known algorithms like [Random Forest](https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf), [Gradient Boosting Trees](https://www.cse.cuhk.edu.hk/irwin.king/_media/presentations/2001_greedy_function_approximation_a_gradient_boosting_machine.pdf), [Support Vector Machines](http://research.microsoft.com/en-us/um/people/cburges/papers/svmtutorial.pdf) and [Xgboost](https://xgboost.readthedocs.io/en/latest/). External Resources, where you can find the code and scripts used are available in below links.
 
 1. [Benchmark (Data Load + Clean Up + Algorithm)][PumpIt01]
 2. [Data Analysis][PumpIt02]
@@ -28,23 +56,27 @@ In this Project, we will be using the well known algorithms like [Random Forest]
 5. [Algorithmic Features Selection & Hyper Parameter Tuning][PumpIt05]
 
 
-__Personal Motivation__: When I was a child, I used see lots of common people standing in long queue for drinking water. May be it was the first time I have ever seen people struggling for drinking water till late evenings(like the above image show), on that day I did not know how to help them. Every time I read about this problem statement I still do feel the same way. We realize that trying a few algorithms and feature engineering techniques might not solve this problem of fixing the water issues of our fellow beings in Tanzania, but we hope and expect that this project to serve as a platform for building tools for proactive identifying .
+__Personal Motivation__:
+
+>The purpose of life is not to be happy. It is to be useful, to be honorable, to be compassionate, to have it make some difference that you have lived and lived well.
+― Ralph Waldo Emerson
+
+As a child, I used see lots of common people standing in long queue for drinking water. May be it was the first time I have ever seen people struggling for drinking water till late evenings, on that day I did not know how to help them. Every time I read about this problem statement I still do feel the same way. We realize that trying a few algorithms and feature engineering techniques might not solve this problem of fixing the water issues of our fellow beings in Tanzania, but we hope and expect that this project to serve as a platform for others as a learning & building solutions.
 
 > What we do is less than a drop in the ocean. But if it were missing, the ocean would lack something.  - Mother Teresa
 
 ### Problem Statement
 
-Using the data gathered from Taarifa and the Tanzanian Ministry of Water, can we predict which pumps are functional, which need some repairs, and which don't work at all? Predicting one of these three classes that might have caused the failure of a water pump, can improve the maintenance operations to well prepare and ensure that clean, potable water is available to communities across Tanzania.
-
-This project is inspired by [DataDriven][datadriven7]! From logical perspective, as we can understand we are looking at a __Supervised Multi Label Classification problem__ and our goal is identifying which label, out of 3 possible labels is the cause for an issues entry in Taarifa complaints records. <!--  So based on the features and size of dataset, our course of action would be to identify a classifier out of many different kinds of classifiers which could understand and predict well. --> <!--
-As shown in below image, we are going to do a step by step development progress on here.
-![Udacity Machine Learning Course Plan][udacity_ml_course_plan] -->
+Using the data gathered from Taarifa and the Tanzanian Ministry of Water, can we predict which pumps are functional, which need some repairs, and which don't work at all? Predicting one of these three classes that might have caused the failure of a water pump, can improve the maintenance operations to well prepare and ensure that clean, potable water is available to communities across Tanzania. This project is inspired by [DataDriven][datadriven7]! From logical perspective, as we can understand we are looking at a __Supervised Multi Label Classification problem__ and our goal is identifying which label, out of 3 possible labels is the cause for an issues entry in Taarifa complaints records.
 
 Few key things to note:
 * Multi Label Prediction
 * Taarifa complaints records(Manually added data though a Social Application Platform)
 
 As observed from dataset given by Taarifa and DataDriven, most of the data is labeled data and would need concise text processing for improving data quality in a way that an AI Machine Learning Algorithm can understand & see patterns in data. So for improving the quality of data, first we need a reference benchmark point score to look and keep improving our data quality and progress towards build a solution. After setting a benchmark, we explore few well known Algorithms and followed by some further improvements of features selection and parameter tuning. As we believe good data is what generates a good model, we will try to focus more on building good quality data set.
+
+Since this is a problem of supervised learning and more specifically one of multiclass classification, the methods of classification will be used in order to attack the problem. Several algorithms will be explored, as discussed below in Analysis Phase.
+
 
 ### Metrics
 
@@ -58,7 +90,7 @@ Before we begin metrics selection, lets look at the distribution of labels in th
 
 In multi-class classification class imbalance effects more easily the typical performance metrics. As per competition posted by Data Driven suggests a simple Accuracy, given its imbalanced classes. So we have added a small wrapper function to provide both Scores for understanding a models performance, while Accuracy score is focuses on overall model performance, we added F1 Score to focus on balanced precision and recall scores in according to each classes distribution.
 
-#### Micro F1 Score
+__Micro F1 Score__
 
 The [F1 Score][F1_Score] can be interpreted as a weighted average of the precision and recall, where an F1 score reaches its best value at 1 and worst score at 0. The relative contribution of precision and recall to the F1 score are equal. The formula for the F1 score is:
 
@@ -83,7 +115,7 @@ As this is a multi class classification for averaging (`average` parameter of [s
 array([ 0.8,  0. ,  0. ])
 ```
 
-#### Accuracy Score
+__Accuracy Score__
 
 Accuracy classification score.
 
@@ -301,7 +333,7 @@ For Feature selection we will use following univariate algorithms,
 
 __Variance Threshold__ is a Feature selector that removes all low-variance features and __chi-square__ test measures dependence between stochastic variables, so using this function “weeds out” the features that are the most likely to be independent of class and therefore irrelevant for classification.
 
-### Benchmark Model
+### Benchmark
 
 With simplistic data labeling and with the help of Random Forest Classifiers, we have created a __benchmark submission__ of 0.79 for which source code is [here][PumpIt01].
 
@@ -885,7 +917,6 @@ For reference,
 
 ### Reflection
 
-
 From initial pumpit data sets we have spent a significant amount of time in understanding labels, data and different interesting issues with data. Like the missing data into Longitude & Latitude which we have filled with the help of another location based feature('region'). After filling of missing values, we have found that values are hold high precision which is too high for finding a simple usages like identifying pumps. Later biggest challenge was with text data/object columns where were having huge number of unique values groups(values counts). Post study we have created a reusable label transformer to identify the outliers or less frequency groups and clear them.
 
 Rest of the data transformation step like clearing too high variance or too low variance columns, finding suitable replacement for null values, removing strong co related columns and algorithm selection and fine tuning all became easy after using of using Sklearn Feature Union, Pipelining and RandomisedGridSearch.
@@ -928,13 +959,13 @@ Due to the limitation of resources(time & documentation), we have avoided these 
 
 
 
-## Sources & References
+__Sources & References__
 
 * [DataDriven](https://www.drivendata.org/competitions/7)
 * [Choosing a ML Classifier](http://blog.echen.me/2011/04/27/choosing-a-machine-learning-classifier/)
 * [Submission Code](https://github.com/msampathkumar/datadriven_pumpit)
 * [Wikipedia: Water Supply & Sanitation in Tanzania](https://en.wikipedia.org/wiki/Water_supply_and_sanitation_in_Tanzania)
-* [UN Report](http://www.unwater.org/fileadmin/user_upload/unwater_new/docs/Publications/TZA_pagebypage.pdf)
+
 * [UN 2007 Water Taps Installation](http://www.un.org/africarenewal/magazine/april-2007/water-betters-lives-tanzania)
 * [GBT Video Lecture](http://videolectures.net/solomon_caruana_wslmw/)
 * [GBT](http://fastml.com/what-is-better-gradient-boosted-trees-or-random-forest/)
